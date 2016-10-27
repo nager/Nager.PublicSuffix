@@ -11,10 +11,10 @@ install-package Nager.PublicSuffix
 
 #####Example
 ```cs
-	var publicSuffix = new PublicSuffix();
-	var data = await publicSuffix.LoadAsync();
-	var tldRules = publicSuffix.Parse(data);
-	publicSuffix.Add(tldRules);
+	var domainParser = new DomainParser();
+	var data = await domainParser.LoadDataAsync();
+	var tldRules = domainParser.ParseRules(data);
+	domainParser.AddRules(tldRules);
 
-	var domainName = publicSuffix.Get("sub.test.co.uk");
+	var domainName = domainParser.Get("sub.test.co.uk");
 ```
