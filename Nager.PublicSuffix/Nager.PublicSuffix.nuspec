@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Nager.PublicSuffix</id>
+    <version>1.0.0</version>
+    <authors>Tino Hager</authors>
+    <owners>nager</owners>
+    <licenseUrl>https://github.com/tinohager/Nager.PublicSuffix/blob/master/Licence.txt</licenseUrl>
+    <projectUrl>https://github.com/tinohager/Nager.PublicSuffix</projectUrl>
+    <!-- <iconUrl></iconUrl> -->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>publicsuffix.org a list of known public domain suffixes (TLD). Some example .com, .co.uk, co.at. Load the current data from https://publicsuffix.org</description>
+    <releaseNotes></releaseNotes>
+    <tags>publicsuffix.org public-suffix TLD DomainParser domain parser DomainName</tags>
+  </metadata>
+</package>
