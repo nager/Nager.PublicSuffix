@@ -104,6 +104,8 @@ namespace Nager.PublicSuffix
                 return null;
             }
 
+            //TODO:besser implementieren IdnMapping wird auch aufgerufen wenn es nicht benötigt wird
+
             var idnMapping = new IdnMapping();
             var parts = domain
                 .ToLowerInvariant().Split('.')

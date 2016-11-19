@@ -10,6 +10,8 @@ namespace Nager.PublicSuffix
         public TldRuleType Type { get; private set; }
         public int LabelCount { get; private set; }
 
+        //TODO:Wieder umstellen auf TldRuleType ist sauberer
+
         public TldRule(string ruleData)
         {
             if (string.IsNullOrEmpty(ruleData))
