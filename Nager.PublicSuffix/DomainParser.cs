@@ -24,7 +24,7 @@ namespace Nager.PublicSuffix
 
         public List<TldRule> ParseRules(string data)
         {
-            var lines = data.Split('\n');
+            var lines = data.Split(new char[] { '\n', '\r' });
             return this.ParseRules(lines);
         }
 
@@ -104,10 +104,10 @@ namespace Nager.PublicSuffix
                 return null;
             }
 
-            IdnMapping mapping = new IdnMapping();
+            var idnMapping = new IdnMapping();
             var parts = domain
                 .ToLowerInvariant().Split('.')
-                .Select(x => x.StartsWith("xn--")?mapping.GetUnicode(x).Trim():x.Trim()) //punycode
+                .Select(x => x.StartsWith("xn--")?idnMapping.GetUnicode(x).Trim():x.Trim()) //punycode
                 .Reverse().ToList();
 
             if (parts.Count == 0 || parts.Any(x => x.Equals("")))

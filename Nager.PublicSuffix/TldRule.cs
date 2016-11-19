@@ -7,6 +7,7 @@ namespace Nager.PublicSuffix
     {
         public string Name { get; private set; }
         public bool IsException { get; private set; }
+        public TldRuleType Type { get; private set; }
         public int LabelCount { get; private set; }
 
         public TldRule(string ruleData)
