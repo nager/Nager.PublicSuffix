@@ -8,13 +8,19 @@ namespace Nager.PublicSuffix.UnitTest
     {
         private DomainParser _domainParser;
 
-        private DomainParser BuildDomainParser()
+        //Run tests as specified here:
+        //https://raw.githubusercontent.com/publicsuffix/list/master/tests/test_psl.txt
+
+        [TestInitialize()]
+        public void Initialize()
         {
             var domainParser = new DomainParser();
             var ruleData = File.ReadAllText("effective_tld_names.dat");
             var rules = domainParser.ParseRules(ruleData);
             domainParser.AddRules(rules);
-            return domainParser;
+            domainParser.AddRule(new TldRule("*")); //Required for unlisted TLDs
+
+            this._domainParser = domainParser;
         }
 
         private void CheckPublicSuffix(string domain, string expected)
@@ -40,12 +46,6 @@ namespace Nager.PublicSuffix.UnitTest
         [TestMethod]
         public void ComprehensiveCheck()
         {
-            //Run tests as specified here:
-            //https://raw.githubusercontent.com/publicsuffix/list/master/tests/test_psl.txt
-
-            this._domainParser = this.BuildDomainParser();
-            this._domainParser.AddRule(new TldRule("*")); //Required for unlisted TLDs
-
             // null input.
             this.CheckPublicSuffix(null, null);
 
@@ -131,7 +131,11 @@ namespace Nager.PublicSuffix.UnitTest
             this.CheckPublicSuffix("k12.ak.us", null);
             this.CheckPublicSuffix("test.k12.ak.us", "test.k12.ak.us");
             this.CheckPublicSuffix("www.test.k12.ak.us", "test.k12.ak.us");
+        }
 
+        [TestMethod]
+        public void IdnDomainCheck()
+        {
             // IDN labels.
             this.CheckPublicSuffix("食狮.com.cn", "食狮.com.cn");
             this.CheckPublicSuffix("食狮.公司.cn", "食狮.公司.cn");

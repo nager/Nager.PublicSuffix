@@ -23,18 +23,22 @@ namespace Nager.PublicSuffix
             foreach (var part in parts)
             {
                 if (string.IsNullOrEmpty(part))
+                {
                     throw new FormatException("Rule contains empty part");
+                }
 
                 if (part.Contains("*") && part != "*")
+                {
                     throw new FormatException("Wildcard syntax not correct");
+                }
             }
 
-            
+
             if (ruleData.StartsWith("!", StringComparison.InvariantCultureIgnoreCase))
             {
                 this.Name = ruleData.Substring(1).ToLower();
                 this.IsException = true;
-                this.LabelCount = parts.Count-1; //Left-most label is removed for Wildcard Exceptions
+                this.LabelCount = parts.Count - 1; //Left-most label is removed for Wildcard Exceptions
             }
             else
             {

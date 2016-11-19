@@ -46,8 +46,6 @@ namespace Nager.PublicSuffix
                     continue;
                 }
 
-                //LL: Detect whitespace in middle of line
-
                 var tldRule = new TldRule(line.Trim());
 
                 items.Add(tldRule);
@@ -97,6 +95,19 @@ namespace Nager.PublicSuffix
             }
         }
 
+        public List<string> GetDomainParts(string domain)
+        {
+            var parts = domain.ToLowerInvariant().Split('.');
+
+            if (parts.Any(o=>o.StartsWith("xn--")))
+            {
+                var idnMapping = new IdnMapping();
+                return parts.Select(o => idnMapping.GetUnicode(o).Trim()).Reverse().ToList();
+            }
+
+            return parts.Reverse().ToList();
+        }
+
         public DomainName Get(string domain)
         {
             if (string.IsNullOrEmpty(domain))
@@ -104,15 +115,9 @@ namespace Nager.PublicSuffix
                 return null;
             }
 
-            //TODO:besser implementieren IdnMapping wird auch aufgerufen wenn es nicht benötigt wird
+            var parts = this.GetDomainParts(domain);
 
-            var idnMapping = new IdnMapping();
-            var parts = domain
-                .ToLowerInvariant().Split('.')
-                .Select(x => x.StartsWith("xn--")?idnMapping.GetUnicode(x).Trim():x.Trim()) //punycode
-                .Reverse().ToList();
-
-            if (parts.Count == 0 || parts.Any(x => x.Equals("")))
+            if (parts.Count == 0 || parts.Any(o => o.Equals("")))
             {
                 return null;
             }
@@ -131,7 +136,10 @@ namespace Nager.PublicSuffix
                     structure = structure.Nested["*"];
                     continue;
                 }
-                else break;
+                else
+                {
+                    break;
+                }
             }
 
             if (structure.TldRule == null)
