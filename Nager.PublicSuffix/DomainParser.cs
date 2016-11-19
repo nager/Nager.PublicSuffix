@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Nager.PublicSuffix
@@ -8,7 +10,6 @@ namespace Nager.PublicSuffix
     public class DomainParser
     {
         private DomainDataStructure _domainDataStructure = new DomainDataStructure(".");
-        private List<TldRule> _wildcardExceptions = new List<TldRule>();
 
         public async Task<string> LoadDataAsync(string url = "https://publicsuffix.org/list/effective_tld_names.dat")
         {
@@ -23,7 +24,7 @@ namespace Nager.PublicSuffix
 
         public List<TldRule> ParseRules(string data)
         {
-            var lines = data.Split('\n');
+            var lines = data.Split(new char[] { '\n', '\r' });
             return this.ParseRules(lines);
         }
 
@@ -63,41 +64,48 @@ namespace Nager.PublicSuffix
 
         public void AddRule(TldRule tldRule)
         {
-            if (tldRule.Type == TldRuleType.WildcardException)
-            {
-                this._wildcardExceptions.Add(tldRule);
-                return;
-            }
-
             var structure = this._domainDataStructure;
-            var domain = string.Empty;
+            var domainPart = string.Empty;
 
             var parts = tldRule.Name.Split('.').Reverse().ToList();
             for (var i = 0; i < parts.Count; i++)
             {
-                domain = parts[i];
+                domainPart = parts[i];
 
                 if (parts.Count - 1 > i)
                 {
                     //Check if domain exists
-                    if (!structure.Nested.ContainsKey(domain))
+                    if (!structure.Nested.ContainsKey(domainPart))
                     {
-                        structure.Nested.Add(domain, new DomainDataStructure(domain));
+                        structure.Nested.Add(domainPart, new DomainDataStructure(domainPart));
                     }
 
-                    structure = structure.Nested[domain];
+                    structure = structure.Nested[domainPart];
                     continue;
                 }
 
                 //Check if domain exists
-                if (structure.Nested.ContainsKey(domain))
+                if (structure.Nested.ContainsKey(domainPart))
                 {
-                    structure.Nested[domain].TldRule = tldRule;
+                    structure.Nested[domainPart].TldRule = tldRule;
                     continue;
                 }
 
-                structure.Nested.Add(domain, new DomainDataStructure(domain, tldRule));
+                structure.Nested.Add(domainPart, new DomainDataStructure(domainPart, tldRule));
             }
+        }
+
+        public List<string> GetDomainParts(string domain)
+        {
+            var parts = domain.ToLowerInvariant().Split('.');
+
+            if (parts.Any(o=>o.StartsWith("xn--")))
+            {
+                var idnMapping = new IdnMapping();
+                return parts.Select(o => idnMapping.GetUnicode(o).Trim()).Reverse().ToList();
+            }
+
+            return parts.Reverse().ToList();
         }
 
         public DomainName Get(string domain)
@@ -107,8 +115,9 @@ namespace Nager.PublicSuffix
                 return null;
             }
 
-            var parts = domain.ToLower().Split('.').Reverse().ToList();
-            if (parts.Count == 0)
+            var parts = this.GetDomainParts(domain);
+
+            if (parts.Count == 0 || parts.Any(o => o.Equals("")))
             {
                 return null;
             }
@@ -117,21 +126,19 @@ namespace Nager.PublicSuffix
 
             foreach (var part in parts)
             {
-                if (part.Equals(""))
-                {
-                    return null;
-                }
-
-                if (structure.Nested.ContainsKey("*"))
-                {
-                    structure = structure.Nested[part];
-                    continue;
-                }
-
                 if (structure.Nested.ContainsKey(part))
                 {
                     structure = structure.Nested[part];
                     continue;
+                }
+                else if (structure.Nested.ContainsKey("*"))
+                {
+                    structure = structure.Nested["*"];
+                    continue;
+                }
+                else
+                {
+                    break;
                 }
             }
 
@@ -141,7 +148,7 @@ namespace Nager.PublicSuffix
             }
 
             //Domain is TLD
-            if (domain == structure.TldRule.Name)
+            if (parts.Count == structure.TldRule.LabelCount)
             {
                 return null;
             }

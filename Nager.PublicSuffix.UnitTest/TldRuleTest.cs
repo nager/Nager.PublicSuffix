@@ -31,7 +31,21 @@ namespace Nager.PublicSuffix.UnitTest
         [ExpectedException(typeof(FormatException), "Wildcard syntax not correct")]
         public void InvalidRuleTest4()
         {
-            new TldRule("*");
+            new TldRule("*bar.foo");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(FormatException), "Rule contains invalid empty part")]
+        public void InvalidRuleTest5()
+        {
+            new TldRule(".com");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(FormatException), "Rule contains invalid empty part")]
+        public void InvalidRuleTest6()
+        {
+            new TldRule("www..com");
         }
 
         [TestMethod]
@@ -46,7 +60,7 @@ namespace Nager.PublicSuffix.UnitTest
         public void ValidRuleTest2()
         {
             var tldRule = new TldRule("*.com");
-            Assert.AreEqual("com", tldRule.Name);
+            Assert.AreEqual("*.com", tldRule.Name);
             Assert.AreEqual(TldRuleType.Wildcard, tldRule.Type);
         }
 
@@ -56,6 +70,22 @@ namespace Nager.PublicSuffix.UnitTest
             var tldRule = new TldRule("!com");
             Assert.AreEqual("com", tldRule.Name);
             Assert.AreEqual(TldRuleType.WildcardException, tldRule.Type);
+        }
+
+        [TestMethod]
+        public void ValidRuleTest4()
+        {
+            var tldRule = new TldRule("co.uk");
+            Assert.AreEqual("co.uk", tldRule.Name);
+            Assert.AreEqual(TldRuleType.Normal, tldRule.Type);
+        }
+
+        [TestMethod]
+        public void ValidRuleTest5()
+        {
+            var tldRule = new TldRule("*.*.foo");
+            Assert.AreEqual("*.*.foo", tldRule.Name);
+            Assert.AreEqual(TldRuleType.Wildcard, tldRule.Type);
         }
     }
 }

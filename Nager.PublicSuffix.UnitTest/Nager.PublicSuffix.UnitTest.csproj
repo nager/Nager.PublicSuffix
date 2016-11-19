@@ -52,6 +52,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="PublicSuffixTest.cs" />
     <Compile Include="DomainNameTest.cs" />
     <Compile Include="TldRuleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,6 +63,11 @@
       <Project>{5b564bba-82bd-4031-9cee-7253527e881a}</Project>
       <Name>Nager.PublicSuffix</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="effective_tld_names.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

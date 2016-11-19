@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Linq;
 
 namespace Nager.PublicSuffix
 {
     public class TldRule
     {
-        public string Name { get; set; }
-        public TldRuleType Type { get; set; }
+        public string Name { get; private set; }
+        public TldRuleType Type { get; private set; }
+        public int LabelCount { get; private set; }
 
         public TldRule(string ruleData)
         {
@@ -14,31 +16,44 @@ namespace Nager.PublicSuffix
                 throw new ArgumentException("RuleData is emtpy");
             }
 
-            if (ruleData.StartsWith("*", StringComparison.InvariantCultureIgnoreCase))
+            var parts = ruleData.Split('.').Select(x => x.Trim()).ToList();
+            foreach (var part in parts)
             {
-                if (ruleData.Length < 3 || ruleData[1] != '.')
+                if (string.IsNullOrEmpty(part))
+                {
+                    throw new FormatException("Rule contains empty part");
+                }
+
+                if (part.Contains("*") && part != "*")
                 {
                     throw new FormatException("Wildcard syntax not correct");
                 }
-
-                this.Type = TldRuleType.Wildcard;
-                this.Name = ruleData.Substring(2).ToLower();
-                return;
             }
-            else if (ruleData.StartsWith("!", StringComparison.InvariantCultureIgnoreCase))
+
+
+            if (ruleData.StartsWith("!", StringComparison.InvariantCultureIgnoreCase))
             {
                 this.Type = TldRuleType.WildcardException;
                 this.Name = ruleData.Substring(1).ToLower();
-                return;
+                this.LabelCount = parts.Count - 1; //Left-most label is removed for Wildcard Exceptions
             }
-
-            this.Type = TldRuleType.Normal;
-            this.Name = ruleData.ToLower();
+            else if (ruleData.Contains("*"))
+            {
+                this.Type = TldRuleType.Wildcard;
+                this.Name = ruleData.ToLower();
+                this.LabelCount = parts.Count;
+            }
+            else
+            {
+                this.Type = TldRuleType.Normal;
+                this.Name = ruleData.ToLower();
+                this.LabelCount = parts.Count;
+            }
         }
 
         public override string ToString()
         {
-            return $"TldRule Name:{this.Name} Type:{this.Type}";
+            return this.Name;
         }
     }
 }
