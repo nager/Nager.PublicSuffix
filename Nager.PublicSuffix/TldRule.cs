@@ -6,11 +6,8 @@ namespace Nager.PublicSuffix
     public class TldRule
     {
         public string Name { get; private set; }
-        public bool IsException { get; private set; }
         public TldRuleType Type { get; private set; }
         public int LabelCount { get; private set; }
-
-        //TODO:Wieder umstellen auf TldRuleType ist sauberer
 
         public TldRule(string ruleData)
         {
@@ -36,14 +33,20 @@ namespace Nager.PublicSuffix
 
             if (ruleData.StartsWith("!", StringComparison.InvariantCultureIgnoreCase))
             {
+                this.Type = TldRuleType.WildcardException;
                 this.Name = ruleData.Substring(1).ToLower();
-                this.IsException = true;
                 this.LabelCount = parts.Count - 1; //Left-most label is removed for Wildcard Exceptions
+            }
+            else if (ruleData.Contains("*"))
+            {
+                this.Type = TldRuleType.Wildcard;
+                this.Name = ruleData.ToLower();
+                this.LabelCount = parts.Count;
             }
             else
             {
+                this.Type = TldRuleType.Normal;
                 this.Name = ruleData.ToLower();
-                this.IsException = false;
                 this.LabelCount = parts.Count;
             }
         }
