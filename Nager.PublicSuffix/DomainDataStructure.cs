@@ -4,9 +4,9 @@ namespace Nager.PublicSuffix
 {
     internal class DomainDataStructure
     {
-        public string Domain;
-        public TldRule TldRule;
-        public Dictionary<string, DomainDataStructure> Nested;
+        public string Domain { get; internal set; }
+        public TldRule TldRule { get; internal set; }
+        public Dictionary<string, DomainDataStructure> Nested { get; internal set; }
 
         public DomainDataStructure(string domain)
         {

@@ -52,6 +52,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="PublicSuffixTest.cs" />
     <Compile Include="DomainNameTest.cs" />
     <Compile Include="TldRuleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
