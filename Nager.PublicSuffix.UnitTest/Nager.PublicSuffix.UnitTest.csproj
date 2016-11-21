@@ -64,6 +64,11 @@
       <Name>Nager.PublicSuffix</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="effective_tld_names.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

@@ -53,7 +53,7 @@ namespace Nager.PublicSuffix.UnitTest
         {
             var tldRule = new TldRule("com");
             Assert.AreEqual("com", tldRule.Name);
-            Assert.IsFalse(tldRule.IsException);
+            Assert.AreEqual(TldRuleType.Normal, tldRule.Type);
         }
 
         [TestMethod]
@@ -61,7 +61,7 @@ namespace Nager.PublicSuffix.UnitTest
         {
             var tldRule = new TldRule("*.com");
             Assert.AreEqual("*.com", tldRule.Name);
-            Assert.IsFalse(tldRule.IsException);
+            Assert.AreEqual(TldRuleType.Wildcard, tldRule.Type);
         }
 
         [TestMethod]
@@ -69,7 +69,7 @@ namespace Nager.PublicSuffix.UnitTest
         {
             var tldRule = new TldRule("!com");
             Assert.AreEqual("com", tldRule.Name);
-            Assert.IsTrue(tldRule.IsException);
+            Assert.AreEqual(TldRuleType.WildcardException, tldRule.Type);
         }
 
         [TestMethod]
@@ -77,7 +77,7 @@ namespace Nager.PublicSuffix.UnitTest
         {
             var tldRule = new TldRule("co.uk");
             Assert.AreEqual("co.uk", tldRule.Name);
-            Assert.IsFalse(tldRule.IsException);
+            Assert.AreEqual(TldRuleType.Normal, tldRule.Type);
         }
 
         [TestMethod]
@@ -85,7 +85,7 @@ namespace Nager.PublicSuffix.UnitTest
         {
             var tldRule = new TldRule("*.*.foo");
             Assert.AreEqual("*.*.foo", tldRule.Name);
-            Assert.IsFalse(tldRule.IsException);
+            Assert.AreEqual(TldRuleType.Wildcard, tldRule.Type);
         }
     }
 }

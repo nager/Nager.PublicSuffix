@@ -24,7 +24,7 @@ namespace Nager.PublicSuffix
 
         public List<TldRule> ParseRules(string data)
         {
-            var lines = data.Split('\n');
+            var lines = data.Split(new char[] { '\n', '\r' });
             return this.ParseRules(lines);
         }
 
@@ -45,8 +45,6 @@ namespace Nager.PublicSuffix
                 {
                     continue;
                 }
-
-                //LL: Detect whitespace in middle of line
 
                 var tldRule = new TldRule(line.Trim());
 
@@ -97,6 +95,19 @@ namespace Nager.PublicSuffix
             }
         }
 
+        public List<string> GetDomainParts(string domain)
+        {
+            var parts = domain.ToLowerInvariant().Split('.');
+
+            if (parts.Any(o=>o.StartsWith("xn--")))
+            {
+                var idnMapping = new IdnMapping();
+                return parts.Select(o => idnMapping.GetUnicode(o).Trim()).Reverse().ToList();
+            }
+
+            return parts.Reverse().ToList();
+        }
+
         public DomainName Get(string domain)
         {
             if (string.IsNullOrEmpty(domain))
@@ -104,13 +115,9 @@ namespace Nager.PublicSuffix
                 return null;
             }
 
-            IdnMapping mapping = new IdnMapping();
-            var parts = domain
-                .ToLowerInvariant().Split('.')
-                .Select(x => x.StartsWith("xn--")?mapping.GetUnicode(x).Trim():x.Trim()) //punycode
-                .Reverse().ToList();
+            var parts = this.GetDomainParts(domain);
 
-            if (parts.Count == 0 || parts.Any(x => x.Equals("")))
+            if (parts.Count == 0 || parts.Any(o => o.Equals("")))
             {
                 return null;
             }
@@ -129,7 +136,10 @@ namespace Nager.PublicSuffix
                     structure = structure.Nested["*"];
                     continue;
                 }
-                else break;
+                else
+                {
+                    break;
+                }
             }
 
             if (structure.TldRule == null)
