@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="PublicSuffixTest.cs" />
     <Compile Include="DomainNameTest.cs" />
+    <Compile Include="CachedTldRuleProviderTest.cs" />
     <Compile Include="TldRuleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ParseTest.cs" />
