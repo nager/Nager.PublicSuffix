@@ -31,6 +31,7 @@ namespace Nager.PublicSuffix
         public List<TldRule> ParseRules(string[] lines)
         {
             var items = new List<TldRule>();
+            var division = TldRuleDivision.Unknown;
 
             foreach (var line in lines)
             {
@@ -40,13 +41,32 @@ namespace Nager.PublicSuffix
                     continue;
                 }
 
-                //Ignore comments
+
+                //Ignore comments (and set Division)
                 if (line.StartsWith("//"))
                 {
+                    //Detect Division
+                    if (line.StartsWith("// ===BEGIN ICANN DOMAINS==="))
+                    {
+                        division = TldRuleDivision.ICANN;
+                    }
+                    else if (line.StartsWith("// ===END ICANN DOMAINS==="))
+                    {
+                        division = TldRuleDivision.Unknown;
+                    }
+                    else if (line.StartsWith("// ===BEGIN PRIVATE DOMAINS==="))
+                    {
+                        division = TldRuleDivision.Private;
+                    }
+                    else if (line.StartsWith("// ===END PRIVATE DOMAINS==="))
+                    {
+                        division = TldRuleDivision.Unknown;
+                    }
+
                     continue;
                 }
 
-                var tldRule = new TldRule(line.Trim());
+                var tldRule = new TldRule(line.Trim(), division);
 
                 items.Add(tldRule);
             }
