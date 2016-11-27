@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
@@ -115,46 +116,74 @@ namespace Nager.PublicSuffix
                 return null;
             }
 
-            var parts = this.GetDomainParts(domain);
+            //We use Uri methods to normalize host (So Punycode is converted to UTF-8
+            Uri uri;
+            if (!Uri.TryCreate(string.Concat("https://", domain), UriKind.RelativeOrAbsolute, out uri))
+            {
+                return null;
+            }
+            string normalizedDomain = uri.Host;
+            string normalizedHost = uri.GetComponents(UriComponents.NormalizedHost, UriFormat.UriEscaped); //Normalize punycode
 
-            if (parts.Count == 0 || parts.Any(o => o.Equals("")))
+            var parts = normalizedHost
+                .Split('.')
+                .Reverse()
+                .ToList();
+
+            if (parts.Count == 0 || parts.Any(x => x.Equals("")))
             {
                 return null;
             }
 
             var structure = this._domainDataStructure;
+            var matches = new List<TldRule>();
+            FindMatches(parts, structure, matches);
 
-            foreach (var part in parts)
-            {
-                if (structure.Nested.ContainsKey(part))
-                {
-                    structure = structure.Nested[part];
-                    continue;
-                }
-                else if (structure.Nested.ContainsKey("*"))
-                {
-                    structure = structure.Nested["*"];
-                    continue;
-                }
-                else
-                {
-                    break;
-                }
-            }
+            //Sort so exceptions are first, then by biggest label count (with wildcards at bottom) 
+            var sortedMatches = matches.OrderByDescending(x => x.Type == TldRuleType.WildcardException?1:0)
+                .ThenByDescending(x => x.LabelCount)
+                .ThenByDescending(x => x.Name);
 
-            if (structure.TldRule == null)
+            var winningRule = sortedMatches.FirstOrDefault();
+
+            if (winningRule == null)
             {
-                return null;
+                winningRule = new TldRule("*");
             }
 
             //Domain is TLD
-            if (parts.Count == structure.TldRule.LabelCount)
+            if (parts.Count == winningRule.LabelCount)
             {
                 return null;
             }
 
-            var domainName = new DomainName(domain, structure.TldRule);
+            var domainName = new DomainName(normalizedDomain, winningRule);
             return domainName;
+        }
+
+        private void FindMatches(IEnumerable<string> parts, DomainDataStructure structure, List<TldRule> matches)
+        {
+            if (structure.TldRule != null)
+            {
+                matches.Add(structure.TldRule);
+            }
+
+            var part = parts.FirstOrDefault();
+            if (string.IsNullOrEmpty(part))
+            {
+                return;
+            }
+
+            DomainDataStructure foundStructure;
+            if (structure.Nested.TryGetValue(part, out foundStructure))
+            {
+                FindMatches(parts.Skip(1), foundStructure, matches);
+            }
+
+            if (structure.Nested.TryGetValue("*", out foundStructure))
+            {
+                FindMatches(parts.Skip(1), foundStructure, matches);
+            }
         }
     }
 }

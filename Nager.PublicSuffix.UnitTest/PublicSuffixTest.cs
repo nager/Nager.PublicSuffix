@@ -18,7 +18,6 @@ namespace Nager.PublicSuffix.UnitTest
             var ruleData = File.ReadAllText("effective_tld_names.dat");
             var rules = domainParser.ParseRules(ruleData);
             domainParser.AddRules(rules);
-            domainParser.AddRule(new TldRule("*")); //Required for unlisted TLDs
 
             this._domainParser = domainParser;
         }
@@ -157,6 +156,19 @@ namespace Nager.PublicSuffix.UnitTest
             this.CheckPublicSuffix("www.xn--85x722f.xn--fiqs8s", "xn--85x722f.xn--fiqs8s");
             this.CheckPublicSuffix("shishi.xn--fiqs8s", "shishi.xn--fiqs8s");
             this.CheckPublicSuffix("xn--fiqs8s", null);
+        }
+
+        [TestMethod]
+        public void TreeSplitCheck()
+        {
+            //Extra tests (Added due to avoid regression bugs)
+            this.CheckPublicSuffix("co.ke", null);
+            this.CheckPublicSuffix("blogspot.co.ke", null);
+            this.CheckPublicSuffix("web.co.ke", "web.co.ke");
+            this.CheckPublicSuffix("a.b.web.co.ke", "web.co.ke");
+            this.CheckPublicSuffix("blogspot.co.ke", null);
+            this.CheckPublicSuffix("web.blogspot.co.ke", "web.blogspot.co.ke");
+            this.CheckPublicSuffix("a.b.web.blogspot.co.ke", "web.blogspot.co.ke");
         }
     }
 }
