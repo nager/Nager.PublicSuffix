@@ -96,19 +96,6 @@ namespace Nager.PublicSuffix
             }
         }
 
-        public List<string> GetDomainParts(string domain)
-        {
-            var parts = domain.ToLowerInvariant().Split('.');
-
-            if (parts.Any(o=>o.StartsWith("xn--")))
-            {
-                var idnMapping = new IdnMapping();
-                return parts.Select(o => idnMapping.GetUnicode(o).Trim()).Reverse().ToList();
-            }
-
-            return parts.Reverse().ToList();
-        }
-
         public DomainName Get(string domain)
         {
             if (string.IsNullOrEmpty(domain))
@@ -122,22 +109,23 @@ namespace Nager.PublicSuffix
             {
                 return null;
             }
-            string normalizedDomain = uri.Host;
-            string normalizedHost = uri.GetComponents(UriComponents.NormalizedHost, UriFormat.UriEscaped); //Normalize punycode
+
+            var normalizedDomain = uri.Host;
+            var normalizedHost = uri.GetComponents(UriComponents.NormalizedHost, UriFormat.UriEscaped); //Normalize punycode
 
             var parts = normalizedHost
                 .Split('.')
                 .Reverse()
                 .ToList();
 
-            if (parts.Count == 0 || parts.Any(x => x.Equals("")))
+            if (parts.Count == 0 || parts.Any(x => x.Equals(string.Empty)))
             {
                 return null;
             }
 
             var structure = this._domainDataStructure;
             var matches = new List<TldRule>();
-            FindMatches(parts, structure, matches);
+            this.FindMatches(parts, structure, matches);
 
             //Sort so exceptions are first, then by biggest label count (with wildcards at bottom) 
             var sortedMatches = matches.OrderByDescending(x => x.Type == TldRuleType.WildcardException?1:0)
@@ -145,7 +133,6 @@ namespace Nager.PublicSuffix
                 .ThenByDescending(x => x.Name);
 
             var winningRule = sortedMatches.FirstOrDefault();
-
             if (winningRule == null)
             {
                 winningRule = new TldRule("*");
