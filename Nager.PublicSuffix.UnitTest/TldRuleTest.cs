@@ -87,5 +87,13 @@ namespace Nager.PublicSuffix.UnitTest
             Assert.AreEqual("*.*.foo", tldRule.Name);
             Assert.AreEqual(TldRuleType.Wildcard, tldRule.Type);
         }
+
+        [TestMethod]
+        public void ValidRuleTest6()
+        {
+            var tldRule = new TldRule("a.b.web.*.foo", TldRuleDivision.Private);
+            Assert.AreEqual("a.b.web.*.foo", tldRule.Name);
+            Assert.AreEqual(TldRuleDivision.Private, tldRule.Division);
+        }
     }
 }

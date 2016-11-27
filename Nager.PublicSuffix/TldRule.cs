@@ -8,13 +8,16 @@ namespace Nager.PublicSuffix
         public string Name { get; private set; }
         public TldRuleType Type { get; private set; }
         public int LabelCount { get; private set; }
+        public TldRuleDivision Division { get; private set; }
 
-        public TldRule(string ruleData)
+        public TldRule(string ruleData, TldRuleDivision division = TldRuleDivision.Unknown)
         {
             if (string.IsNullOrEmpty(ruleData))
             {
                 throw new ArgumentException("RuleData is emtpy");
             }
+
+            this.Division = division;
 
             var parts = ruleData.Split('.').Select(x => x.Trim()).ToList();
             foreach (var part in parts)
