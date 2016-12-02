@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace Nager.PublicSuffix.UnitTest
 {
@@ -8,8 +9,10 @@ namespace Nager.PublicSuffix.UnitTest
         [TestMethod]
         public void CheckDomainName1()
         {
-            var domainParser = new DomainParser();
-            domainParser.AddRule(new TldRule("com"));
+            var rules = new List<TldRule>();
+            rules.Add(new TldRule("com"));
+
+            var domainParser = new DomainParser(rules);
 
             var domainName = domainParser.Get("test.com");
             Assert.AreEqual("test", domainName.Domain);
@@ -21,9 +24,11 @@ namespace Nager.PublicSuffix.UnitTest
         [TestMethod]
         public void CheckDomainName2()
         {
-            var domainParser = new DomainParser();
-            domainParser.AddRule(new TldRule("uk"));
-            domainParser.AddRule(new TldRule("co.uk"));
+            var rules = new List<TldRule>();
+            rules.Add(new TldRule("uk"));
+            rules.Add(new TldRule("co.uk"));
+
+            var domainParser = new DomainParser(rules);
 
             var domainName = domainParser.Get("test.co.uk");
             Assert.AreEqual("test", domainName.Domain);
@@ -35,9 +40,11 @@ namespace Nager.PublicSuffix.UnitTest
         [TestMethod]
         public void CheckDomainName3()
         {
-            var domainParser = new DomainParser();
-            domainParser.AddRule(new TldRule("uk"));
-            domainParser.AddRule(new TldRule("co.uk"));
+            var rules = new List<TldRule>();
+            rules.Add(new TldRule("uk"));
+            rules.Add(new TldRule("co.uk"));
+
+            var domainParser = new DomainParser(rules);
 
             var domainName = domainParser.Get("sub.test.co.uk");
             Assert.AreEqual("test", domainName.Domain);

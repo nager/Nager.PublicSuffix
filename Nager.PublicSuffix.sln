@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nager.PublicSuffix", "Nager
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nager.PublicSuffix.UnitTest", "Nager.PublicSuffix.UnitTest\Nager.PublicSuffix.UnitTest.csproj", "{EEE301BC-4640-4EEB-88B4-00BD9C0FFD97}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nager.PublicSuffix.TestConsole", "Nager.PublicSuffix.TestConsole\Nager.PublicSuffix.TestConsole.csproj", "{9FCB0FC2-65E0-4B94-AB2E-ABE533879334}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EEE301BC-4640-4EEB-88B4-00BD9C0FFD97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEE301BC-4640-4EEB-88B4-00BD9C0FFD97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEE301BC-4640-4EEB-88B4-00BD9C0FFD97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FCB0FC2-65E0-4B94-AB2E-ABE533879334}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FCB0FC2-65E0-4B94-AB2E-ABE533879334}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FCB0FC2-65E0-4B94-AB2E-ABE533879334}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FCB0FC2-65E0-4B94-AB2E-ABE533879334}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

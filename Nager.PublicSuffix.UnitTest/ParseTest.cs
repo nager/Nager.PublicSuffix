@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace Nager.PublicSuffix.UnitTest
 {
@@ -10,8 +11,8 @@ namespace Nager.PublicSuffix.UnitTest
         {
             var lines = new string[] { "com", "uk", "co.uk" };
 
-            var domainParser = new DomainParser();
-            var tldRules = domainParser.ParseRules(lines);
+            var ruleParser = new TldRuleParser();
+            var tldRules = ruleParser.ParseRules(lines).ToList();
 
             Assert.AreEqual("com", tldRules[0].Name);
             Assert.AreEqual("uk", tldRules[1].Name);
@@ -23,8 +24,8 @@ namespace Nager.PublicSuffix.UnitTest
         {
             var lines = new string[] { "com", "//this is a example comment", "uk", "co.uk" };
 
-            var domainParser = new DomainParser();
-            var tldRules = domainParser.ParseRules(lines);
+            var ruleParser = new TldRuleParser();
+            var tldRules = ruleParser.ParseRules(lines).ToList();
 
             Assert.AreEqual("com", tldRules[0].Name);
             Assert.AreEqual("uk", tldRules[1].Name);
@@ -47,8 +48,8 @@ namespace Nager.PublicSuffix.UnitTest
                 "example.after"
             };
 
-            var domainParser = new DomainParser();
-            var tldRules = domainParser.ParseRules(lines);
+            var ruleParser = new TldRuleParser();
+            var tldRules = ruleParser.ParseRules(lines).ToList();
 
             Assert.AreEqual("example.above", tldRules[0].Name);
             Assert.AreEqual(TldRuleDivision.Unknown, tldRules[0].Division);

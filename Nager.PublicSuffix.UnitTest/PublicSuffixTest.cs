@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using System.Linq;
 
 namespace Nager.PublicSuffix.UnitTest
 {
@@ -14,11 +15,7 @@ namespace Nager.PublicSuffix.UnitTest
         [TestInitialize()]
         public void Initialize()
         {
-            var domainParser = new DomainParser();
-            var ruleData = File.ReadAllText("effective_tld_names.dat");
-            var rules = domainParser.ParseRules(ruleData);
-            domainParser.AddRules(rules);
-
+            var domainParser = new DomainParser(new FileTldRuleProvider("effective_tld_names.dat"));
             this._domainParser = domainParser;
         }
 

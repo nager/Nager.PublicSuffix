@@ -1,82 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nager.PublicSuffix
 {
     public class DomainParser
     {
-        private DomainDataStructure _domainDataStructure = new DomainDataStructure(".");
+        private DomainDataStructure _domainDataStructure;
+        private readonly ITldRuleProvider _ruleProvider;
 
-        public async Task<string> LoadDataAsync(string url = "https://publicsuffix.org/list/effective_tld_names.dat")
+        public DomainParser(IEnumerable<TldRule> rules)
         {
-            using (var httpClient = new HttpClient())
+            if (rules == null)
             {
-                using (var response = await httpClient.GetAsync(url))
-                {
-                    return await response.Content.ReadAsStringAsync();
-                }
-            }
-        }
-
-        public List<TldRule> ParseRules(string data)
-        {
-            var lines = data.Split(new char[] { '\n', '\r' });
-            return this.ParseRules(lines);
-        }
-
-        public List<TldRule> ParseRules(string[] lines)
-        {
-            var items = new List<TldRule>();
-            var division = TldRuleDivision.Unknown;
-
-            foreach (var line in lines)
-            {
-                //Ignore empty lines
-                if (string.IsNullOrEmpty(line))
-                {
-                    continue;
-                }
-
-
-                //Ignore comments (and set Division)
-                if (line.StartsWith("//"))
-                {
-                    //Detect Division
-                    if (line.StartsWith("// ===BEGIN ICANN DOMAINS==="))
-                    {
-                        division = TldRuleDivision.ICANN;
-                    }
-                    else if (line.StartsWith("// ===END ICANN DOMAINS==="))
-                    {
-                        division = TldRuleDivision.Unknown;
-                    }
-                    else if (line.StartsWith("// ===BEGIN PRIVATE DOMAINS==="))
-                    {
-                        division = TldRuleDivision.Private;
-                    }
-                    else if (line.StartsWith("// ===END PRIVATE DOMAINS==="))
-                    {
-                        division = TldRuleDivision.Unknown;
-                    }
-
-                    continue;
-                }
-
-                var tldRule = new TldRule(line.Trim(), division);
-
-                items.Add(tldRule);
+                throw new ArgumentNullException("rules");
             }
 
-            return items;
+            this.AddRules(rules);
         }
 
-        public void AddRules(List<TldRule> tldRules)
+        public DomainParser(ITldRuleProvider ruleProvider)
         {
+            if (ruleProvider == null)
+            {
+                throw new ArgumentNullException("ruleProvider");
+            }
+
+            this._ruleProvider = ruleProvider;
+            this.AddRules(ruleProvider.BuildAsync().Result);
+        }
+
+        public void AddRules(IEnumerable<TldRule> tldRules)
+        {
+            this._domainDataStructure = new DomainDataStructure("*", new TldRule("*"));
+
             foreach (var tldRule in tldRules)
             {
                 this.AddRule(tldRule);
@@ -148,7 +105,7 @@ namespace Nager.PublicSuffix
             this.FindMatches(parts, structure, matches);
 
             //Sort so exceptions are first, then by biggest label count (with wildcards at bottom) 
-            var sortedMatches = matches.OrderByDescending(x => x.Type == TldRuleType.WildcardException?1:0)
+            var sortedMatches = matches.OrderByDescending(x => x.Type == TldRuleType.WildcardException ? 1 : 0)
                 .ThenByDescending(x => x.LabelCount)
                 .ThenByDescending(x => x.Name);
 
