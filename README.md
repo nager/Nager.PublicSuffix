@@ -1,5 +1,6 @@
 Nager.PublicSuffix
 ==========
+publicsuffix.org a list of known public domain suffixes (TLD). Some example .com, .co.uk, co.at. The current data loads from https://publicsuffix.org. This library does not nees a additional cache system is very fast on different domain names.
 
 #####nuget
 The package is available on nuget
