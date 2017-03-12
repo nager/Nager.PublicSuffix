@@ -8,7 +8,7 @@ namespace Nager.PublicSuffix
     {
         private readonly string _fileUrl;
 
-        public WebTldRuleProvider(string url = "https://publicsuffix.org/list/effective_tld_names.dat")
+        public WebTldRuleProvider(string url = "https://publicsuffix.org/list/public_suffix_list.dat")
         {
             this._fileUrl = url;
         }
