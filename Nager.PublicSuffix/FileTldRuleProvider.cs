@@ -15,7 +15,7 @@ namespace Nager.PublicSuffix
 
         public async Task<IEnumerable<TldRule>> BuildAsync()
         {
-            var ruleData = await this.LoadFromFile(_fileName);
+            var ruleData = await this.LoadFromFile(_fileName).ConfigureAwait(false);
 
             var ruleParser = new TldRuleParser();
             var rules = ruleParser.ParseRules(ruleData);
@@ -31,7 +31,7 @@ namespace Nager.PublicSuffix
 
             using (var reader = File.OpenText(fileName))
             {
-                return await reader.ReadToEndAsync();
+                return await reader.ReadToEndAsync().ConfigureAwait(false);
             }
         }
     }

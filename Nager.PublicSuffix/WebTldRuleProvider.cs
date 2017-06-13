@@ -17,7 +17,7 @@ namespace Nager.PublicSuffix
         {
             var ruleParser = new TldRuleParser();
 
-            var ruleData = await this.LoadFromUrl(this._fileUrl);
+            var ruleData = await this.LoadFromUrl(this._fileUrl).ConfigureAwait(false);
             var rules = ruleParser.ParseRules(ruleData);
 
             return rules;
@@ -27,9 +27,9 @@ namespace Nager.PublicSuffix
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync(url))
+                using (var response = await httpClient.GetAsync(url).ConfigureAwait(false))
                 {
-                    return await response.Content.ReadAsStringAsync();
+                    return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }
             }
         }
