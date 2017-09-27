@@ -1,64 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5B564BBA-82BD-4031-9CEE-7253527E881A}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nager.PublicSuffix</RootNamespace>
-    <AssemblyName>Nager.PublicSuffix</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+	<TargetFrameworks>net45;net461;netstandard2.0</TargetFrameworks>
+    <Authors>Tino Hager</Authors>
+    <Company>nager.at</Company>
+    <Copyright>Copyright ©  2017</Copyright>
+    <PackageLicenseUrl>https://github.com/tinohager/Nager.PublicSuffix/blob/master/Licence.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/tinohager/Nager.PublicSuffix</PackageProjectUrl>
+    <Description>Domain parsing and validating (TLD, domain, subdomain) provide easy and fast access to Public Suffix List</Description>
+    <PackageTags>PublicSuffix publicsuffix.org public-suffix TLD DomainParser domain parser Registrable Domain DomainName Hostname Subdomain</PackageTags>
+    <PackageReleaseNotes>add .netstandard 2.0 support</PackageReleaseNotes>
+    <AssemblyVersion>1.1.0</AssemblyVersion>
+    <FileVersion>1.1.0</FileVersion>
+    <Version>1.1.0</Version>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+  
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <Content Include="install.ps1">
+      <PackagePath>tools\</PackagePath>
+    </Content>
+    <PackageReference Include="System.Net.Http" Version="4.3.3" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="DomainDataStructure.cs" />
-    <Compile Include="DomainParser.cs" />
-    <Compile Include="DomainName.cs" />
-    <Compile Include="FileTldRuleProvider.cs" />
-    <Compile Include="ITldRuleProvider.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TldRule.cs" />
-    <Compile Include="TldRuleDivision.cs" />
-    <Compile Include="TldRuleParser.cs" />
-    <Compile Include="TldRuleType.cs" />
-    <Compile Include="WebTldRuleProvider.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

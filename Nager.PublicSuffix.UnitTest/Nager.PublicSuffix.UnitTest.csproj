@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Nager.PublicSuffix.UnitTest</RootNamespace>
     <AssemblyName>Nager.PublicSuffix.UnitTest</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -16,6 +16,7 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,15 +62,15 @@
     <Compile Include="ParseTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Nager.PublicSuffix\Nager.PublicSuffix.csproj">
-      <Project>{5b564bba-82bd-4031-9cee-7253527e881a}</Project>
-      <Name>Nager.PublicSuffix</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="effective_tld_names.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nager.PublicSuffix\Nager.PublicSuffix.csproj">
+      <Project>{b4a5999d-c331-4f7a-8bbe-d25e1c188365}</Project>
+      <Name>Nager.PublicSuffix</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

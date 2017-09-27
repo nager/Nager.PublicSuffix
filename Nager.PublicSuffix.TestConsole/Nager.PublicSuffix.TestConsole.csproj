@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Nager.PublicSuffix.TestConsole</RootNamespace>
     <AssemblyName>Nager.PublicSuffix.TestConsole</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nager.PublicSuffix\Nager.PublicSuffix.csproj">
-      <Project>{5b564bba-82bd-4031-9cee-7253527e881a}</Project>
+      <Project>{b4a5999d-c331-4f7a-8bbe-d25e1c188365}</Project>
       <Name>Nager.PublicSuffix</Name>
     </ProjectReference>
   </ItemGroup>
