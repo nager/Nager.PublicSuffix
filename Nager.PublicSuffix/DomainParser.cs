@@ -21,12 +21,7 @@ namespace Nager.PublicSuffix
 
         public DomainParser(ITldRuleProvider ruleProvider)
         {
-            if (ruleProvider == null)
-            {
-                throw new ArgumentNullException("ruleProvider");
-            }
-
-            this._ruleProvider = ruleProvider;
+            this._ruleProvider = ruleProvider ?? throw new ArgumentNullException("ruleProvider");
             this.AddRules(ruleProvider.BuildAsync().Result);
         }
 

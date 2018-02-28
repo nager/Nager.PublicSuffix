@@ -54,7 +54,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DomainParserTest.cs" />
+    <Compile Include="AsyncAwaitTest.cs" />
     <Compile Include="PublicSuffixTest.cs" />
     <Compile Include="DomainNameTest.cs" />
     <Compile Include="TldRuleTest.cs" />
