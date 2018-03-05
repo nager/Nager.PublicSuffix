@@ -28,32 +28,40 @@ namespace Nager.PublicSuffix
             this._fileCacheName = fileCacheName;
         }
 
-        public async Task<IEnumerable<TldRule>> BuildAsync()
+        public bool IsCacheValid()
         {
-            var reloadData = true;
-            var ruleParser = new TldRuleParser();
+            var cacheInvalid = true;
 
             var fileInfo = new FileInfo(this._fileCacheName);
             if (fileInfo.Exists)
             {
                 if (fileInfo.LastWriteTimeUtc > DateTime.UtcNow.Subtract(this._cacheTimeToLive))
                 {
-                    reloadData = false;
+                    cacheInvalid = false;
                 }
             }
 
+            return !cacheInvalid;
+        }
+
+        public async Task<IEnumerable<TldRule>> BuildAsync()
+        {
+            var ruleParser = new TldRuleParser();
+
+            var cacheValid = this.IsCacheValid();
+
             string ruleData;
-            if (reloadData)
+            if (cacheValid)
+            {
+                ruleData = File.ReadAllText(this._fileCacheName);
+            }
+            else
             {
                 ruleData = await this.LoadFromUrl(this._fileUrl).ConfigureAwait(false);
                 using (var streamWriter = File.CreateText(this._fileCacheName))
                 {
                     await streamWriter.WriteAsync(ruleData).ConfigureAwait(false);
                 }
-            }
-            else
-            {
-                ruleData = File.ReadAllText(this._fileCacheName);
             }
 
             var rules = ruleParser.ParseRules(ruleData);

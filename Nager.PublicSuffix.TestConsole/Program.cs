@@ -28,7 +28,10 @@ namespace Nager.PublicSuffix.TestConsole
 
         public static void LoadFromWeb()
         {
-            var domainParser = new DomainParser(new WebTldRuleProvider());
+            var webTldRuleProvider = new WebTldRuleProvider();
+            var isValid = webTldRuleProvider.IsCacheValid();
+
+            var domainParser = new DomainParser(webTldRuleProvider);
             var domainInfo = domainParser.Get("sub.test.co.uk");
 
             Console.WriteLine("RegistrableDomain:{0}", domainInfo.RegistrableDomain);
