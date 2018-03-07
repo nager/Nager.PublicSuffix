@@ -15,7 +15,7 @@ If this project help you reduce time to develop, you can give me a beer :beer:
 
 ### Exampels
 
-#### Load data from publicsuffix.org
+#### Load data from web (publicsuffix.org)
 ```cs
 var domainParser = new DomainParser(new WebTldRuleProvider());
 
@@ -25,6 +25,23 @@ var domainName = domainParser.Get("sub.test.co.uk");
 //domainName.RegistrableDomain = "test.co.uk";
 //domainName.SubDomain = "sub";
 //domainName.TLD = "co.uk";
+```
+
+#### Load data from web change cache config
+```cs
+var webTldRuleProvider = new WebTldRuleProvider(cacheTimeToLive: new TimeSpan(10, 0, 0)); //cache data for 10 hours
+
+var domainParser = new DomainParser(webTldRuleProvider);
+for (var i = 0; i < 100; i++)
+{
+	var isValid = webTldRuleProvider.IsCacheValid();
+	if (!isValid)
+	{
+		webTldRuleProvider.BuildAsync().GetAwaiter(); //Reload data
+	}
+	
+	var domainInfo = domainParser.Get($"sub{i}.test.co.uk");
+}
 ```
 
 #### Load data from file
