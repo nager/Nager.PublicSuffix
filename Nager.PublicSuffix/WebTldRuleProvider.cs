@@ -21,6 +21,10 @@ namespace Nager.PublicSuffix
             {
                 CacheProvider = new FileCacheProvider();
             }
+            else
+            {
+                CacheProvider = cacheProvider;
+            }
         }
 
         public async Task<IEnumerable<TldRule>> BuildAsync()

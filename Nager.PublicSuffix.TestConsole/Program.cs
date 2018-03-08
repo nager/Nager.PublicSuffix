@@ -39,7 +39,7 @@ namespace Nager.PublicSuffix.TestConsole
                     webTldRuleProvider.BuildAsync().GetAwaiter(); //Reload data
                 }
 
-                var domainInfo = domainParser.Get($"sub{i}.test.co.uk");
+                var domainInfo = domainParser.Get($"https://heb.spitball.co/item/university%20of%20michigan/113537/econ%20101/610562/econlecture6.docx/");
 
                 Console.WriteLine("RegistrableDomain:{0}", domainInfo.RegistrableDomain);
                 Console.WriteLine("SubDomain:{0}", domainInfo.SubDomain);
