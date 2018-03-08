@@ -68,20 +68,8 @@ namespace Nager.PublicSuffix
             }
         }
 
-        public DomainName Get(string domain)
+        public DomainName Get(Uri uri)
         {
-            if (string.IsNullOrEmpty(domain))
-            {
-                return null;
-            }
-
-            //We use Uri methods to normalize host (So Punycode is converted to UTF-8
-            Uri uri;
-            if (!Uri.TryCreate(string.Concat("https://", domain), UriKind.RelativeOrAbsolute, out uri))
-            {
-                return null;
-            }
-
             var normalizedDomain = uri.Host;
             var normalizedHost = uri.GetComponents(UriComponents.NormalizedHost, UriFormat.UriEscaped); //Normalize punycode
 
@@ -118,6 +106,28 @@ namespace Nager.PublicSuffix
 
             var domainName = new DomainName(normalizedDomain, winningRule);
             return domainName;
+        }
+
+        public DomainName Get(string domain)
+        {
+            if (string.IsNullOrEmpty(domain))
+            {
+                return null;
+            }
+
+            //We use Uri methods to normalize host (So Punycode is converted to UTF-8
+            Uri uri;
+            if (!domain.Contains("https://"))
+            {
+                domain = string.Concat("https://", domain);
+            }
+            if (!Uri.TryCreate(domain, UriKind.RelativeOrAbsolute, out uri))
+            {
+                return null;
+            }
+
+            return Get(uri);
+
         }
 
         private void FindMatches(IEnumerable<string> parts, DomainDataStructure structure, List<TldRule> matches)
