@@ -9,59 +9,29 @@ namespace Nager.PublicSuffix
     public class WebTldRuleProvider : ITldRuleProvider
     {
         private readonly string _fileUrl;
-        private readonly string _fileCacheName;
-        private readonly TimeSpan _cacheTimeToLive;
+        //private readonly string _fileCacheName;
+        //private readonly TimeSpan _cacheTimeToLive;
+        public ITldCacheProvider CacheProvider { get; }
 
-        public WebTldRuleProvider(string url = "https://publicsuffix.org/list/public_suffix_list.dat", string fileCacheName = "publicsuffixcache.dat", TimeSpan? cacheTimeToLive = null)
+        public WebTldRuleProvider(string url = "https://publicsuffix.org/list/public_suffix_list.dat", ITldCacheProvider cacheProvider = null/*, string fileCacheName = "publicsuffixcache.dat", TimeSpan? cacheTimeToLive = null*/)
         {
             this._fileUrl = url;
 
-            if (cacheTimeToLive.HasValue)
+            if (cacheProvider == null)
             {
-                this._cacheTimeToLive = cacheTimeToLive.Value;
+                CacheProvider = new FileCacheProvider();
             }
-            else
-            {
-                this._cacheTimeToLive = TimeSpan.FromDays(1);
-            }
-
-            this._fileCacheName = fileCacheName;
-        }
-
-        public bool IsCacheValid()
-        {
-            var cacheInvalid = true;
-
-            var fileInfo = new FileInfo(this._fileCacheName);
-            if (fileInfo.Exists)
-            {
-                if (fileInfo.LastWriteTimeUtc > DateTime.UtcNow.Subtract(this._cacheTimeToLive))
-                {
-                    cacheInvalid = false;
-                }
-            }
-
-            return !cacheInvalid;
         }
 
         public async Task<IEnumerable<TldRule>> BuildAsync()
         {
             var ruleParser = new TldRuleParser();
 
-            var cacheValid = this.IsCacheValid();
-
-            string ruleData;
-            if (cacheValid)
-            {
-                ruleData = File.ReadAllText(this._fileCacheName);
-            }
-            else
+            var ruleData = await CacheProvider.GetValueAsync().ConfigureAwait(false);
+            if (string.IsNullOrEmpty(ruleData))
             {
                 ruleData = await this.LoadFromUrl(this._fileUrl).ConfigureAwait(false);
-                using (var streamWriter = File.CreateText(this._fileCacheName))
-                {
-                    await streamWriter.WriteAsync(ruleData).ConfigureAwait(false);
-                }
+                await CacheProvider.SetValueAsync(ruleData).ConfigureAwait(false);
             }
 
             var rules = ruleParser.ParseRules(ruleData);
