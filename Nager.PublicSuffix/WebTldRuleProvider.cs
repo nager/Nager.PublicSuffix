@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -9,21 +7,21 @@ namespace Nager.PublicSuffix
     public class WebTldRuleProvider : ITldRuleProvider
     {
         private readonly string _fileUrl;
-        //private readonly string _fileCacheName;
-        //private readonly TimeSpan _cacheTimeToLive;
-        public ITldCacheProvider CacheProvider { get; }
+        private readonly ICacheProvider _cacheProvider;
 
-        public WebTldRuleProvider(string url = "https://publicsuffix.org/list/public_suffix_list.dat", ITldCacheProvider cacheProvider = null/*, string fileCacheName = "publicsuffixcache.dat", TimeSpan? cacheTimeToLive = null*/)
+        public ICacheProvider CacheProvider { get { return this._cacheProvider; } }
+
+        public WebTldRuleProvider(string url = "https://publicsuffix.org/list/public_suffix_list.dat", ICacheProvider cacheProvider = null)
         {
             this._fileUrl = url;
 
             if (cacheProvider == null)
             {
-                CacheProvider = new FileCacheProvider();
+                this._cacheProvider = new FileCacheProvider();
             }
             else
             {
-                CacheProvider = cacheProvider;
+                this._cacheProvider = cacheProvider;
             }
         }
 

@@ -68,10 +68,10 @@ namespace Nager.PublicSuffix
             }
         }
 
-        public DomainName Get(Uri uri)
+        public DomainName Get(Uri domain)
         {
-            var normalizedDomain = uri.Host;
-            var normalizedHost = uri.GetComponents(UriComponents.NormalizedHost, UriFormat.UriEscaped); //Normalize punycode
+            var normalizedDomain = domain.Host;
+            var normalizedHost = domain.GetComponents(UriComponents.NormalizedHost, UriFormat.UriEscaped); //Normalize punycode
 
             var parts = normalizedHost
                 .Split('.')
@@ -116,18 +116,18 @@ namespace Nager.PublicSuffix
             }
 
             //We use Uri methods to normalize host (So Punycode is converted to UTF-8
-            Uri uri;
             if (!domain.Contains("https://"))
             {
                 domain = string.Concat("https://", domain);
             }
+
+            Uri uri;
             if (!Uri.TryCreate(domain, UriKind.RelativeOrAbsolute, out uri))
             {
                 return null;
             }
 
             return Get(uri);
-
         }
 
         private void FindMatches(IEnumerable<string> parts, DomainDataStructure structure, List<TldRule> matches)

@@ -4,11 +4,10 @@ using System.Threading.Tasks;
 
 namespace Nager.PublicSuffix
 {
-    public class FileCacheProvider : ITldCacheProvider
+    public class FileCacheProvider : ICacheProvider
     {
         private readonly string _cacheName;
         private readonly TimeSpan _timeToLive;
-
 
         public FileCacheProvider(string fileCacheName = "publicsuffixcache.dat", TimeSpan? cacheTimeToLive = null)
         {
@@ -51,7 +50,6 @@ namespace Nager.PublicSuffix
 
         public async Task SetValueAsync(string val)
         {
-            //File.WriteAllText(this._cacheName,val);
             using (var streamWriter = File.CreateText(this._cacheName))
             {
                 await streamWriter.WriteAsync(val).ConfigureAwait(false);

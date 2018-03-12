@@ -2,7 +2,7 @@
 
 namespace Nager.PublicSuffix
 {
-    public interface ITldCacheProvider
+    public interface ICacheProvider
     {
         Task<string> GetValueAsync();
         Task SetValueAsync(string val);
