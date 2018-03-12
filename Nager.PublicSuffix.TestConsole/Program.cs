@@ -28,17 +28,17 @@ namespace Nager.PublicSuffix.TestConsole
 
         public static void LoadFromWeb()
         {
-            var webTldRuleProvider = new WebTldRuleProvider(cacheTimeToLive: new TimeSpan(10, 0, 0)); //cache data for 10 hours
+            var webTldRuleProvider = new WebTldRuleProvider(cacheProvider: new FileCacheProvider(cacheTimeToLive: new TimeSpan(10, 0, 0)));
 
             var domainParser = new DomainParser(webTldRuleProvider);
             for (var i = 0; i < 1000; i++)
             {
-                var isValid = webTldRuleProvider.IsCacheValid();
+                var isValid = webTldRuleProvider.CacheProvider.IsCacheValid();
                 if (!isValid)
                 {
                     webTldRuleProvider.BuildAsync().GetAwaiter(); //Reload data
                 }
-                
+
                 var domainInfo = domainParser.Get($"sub{i}.test.co.uk");
 
                 Console.WriteLine("RegistrableDomain:{0}", domainInfo.RegistrableDomain);

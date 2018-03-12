@@ -23,7 +23,6 @@ namespace Nager.PublicSuffix
                     continue;
                 }
 
-
                 //Ignore comments (and set Division)
                 if (line.StartsWith("//"))
                 {
@@ -49,7 +48,6 @@ namespace Nager.PublicSuffix
                 }
 
                 var tldRule = new TldRule(line.Trim(), division);
-
                 items.Add(tldRule);
             }
 

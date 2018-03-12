@@ -33,7 +33,6 @@ namespace Nager.PublicSuffix
                 }
             }
 
-
             if (ruleData.StartsWith("!", StringComparison.InvariantCultureIgnoreCase))
             {
                 this.Type = TldRuleType.WildcardException;
