@@ -29,11 +29,11 @@ namespace Nager.PublicSuffix
         {
             var ruleParser = new TldRuleParser();
 
-            var ruleData = await CacheProvider.GetValueAsync().ConfigureAwait(false);
+            var ruleData = await this._cacheProvider.GetValueAsync().ConfigureAwait(false);
             if (string.IsNullOrEmpty(ruleData))
             {
                 ruleData = await this.LoadFromUrl(this._fileUrl).ConfigureAwait(false);
-                await CacheProvider.SetValueAsync(ruleData).ConfigureAwait(false);
+                await this._cacheProvider.SetValueAsync(ruleData).ConfigureAwait(false);
             }
 
             var rules = ruleParser.ParseRules(ruleData);

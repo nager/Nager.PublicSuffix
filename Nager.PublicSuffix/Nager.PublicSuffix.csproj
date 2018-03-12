@@ -9,10 +9,10 @@
     <PackageProjectUrl>https://github.com/tinohager/Nager.PublicSuffix</PackageProjectUrl>
     <Description>Domain parsing and validating (TLD, domain, subdomain) provide easy and fast access to Public Suffix List</Description>
     <PackageTags>PublicSuffix publicsuffix.org public-suffix TLD DomainParser domain parser Registrable Domain DomainName Hostname Subdomain</PackageTags>
-    <PackageReleaseNotes>Optimize caching strategy</PackageReleaseNotes>
-    <AssemblyVersion>1.1.1</AssemblyVersion>
-    <FileVersion>1.1.1</FileVersion>
-    <Version>1.1.1</Version>
+    <PackageReleaseNotes>Optimize caching logic</PackageReleaseNotes>
+    <AssemblyVersion>1.2.0</AssemblyVersion>
+    <FileVersion>1.2.0</FileVersion>
+    <Version>1.2.0</Version>
   </PropertyGroup>
   
   <ItemGroup>
