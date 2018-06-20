@@ -41,7 +41,7 @@ namespace Nager.PublicSuffix
 
         public Task<string> GetValueAsync()
         {
-            if (!IsCacheValid())
+            if (!this.IsCacheValid())
             {
                 return Task.FromResult<string>(null);
             }
