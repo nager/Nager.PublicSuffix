@@ -14,7 +14,7 @@ namespace Nager.PublicSuffix
         {
             if (string.IsNullOrEmpty(ruleData))
             {
-                throw new ArgumentException("RuleData is emtpy");
+                throw new ArgumentException("RuleData is empty");
             }
 
             this.Division = division;
