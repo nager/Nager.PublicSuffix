@@ -19,6 +19,7 @@ namespace Nager.PublicSuffix.UnitTest
             Assert.AreEqual("com", domainName.TLD);
             Assert.AreEqual("test.com", domainName.RegistrableDomain);
             Assert.AreEqual(null, domainName.SubDomain);
+            Assert.AreEqual("com", domainName.TLDRule.Name);
         }
 
         [TestMethod]
@@ -35,6 +36,7 @@ namespace Nager.PublicSuffix.UnitTest
             Assert.AreEqual("co.uk", domainName.TLD);
             Assert.AreEqual("test.co.uk", domainName.RegistrableDomain);
             Assert.AreEqual(null, domainName.SubDomain);
+            Assert.AreEqual("co.uk", domainName.TLDRule.Name);
         }
 
         [TestMethod]
@@ -51,6 +53,7 @@ namespace Nager.PublicSuffix.UnitTest
             Assert.AreEqual("co.uk", domainName.TLD);
             Assert.AreEqual("test.co.uk", domainName.RegistrableDomain);
             Assert.AreEqual("sub", domainName.SubDomain);
+            Assert.AreEqual("co.uk", domainName.TLDRule.Name);
         }
     }
 }
