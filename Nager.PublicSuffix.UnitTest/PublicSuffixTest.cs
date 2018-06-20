@@ -23,11 +23,6 @@ namespace Nager.PublicSuffix.UnitTest
         {
             Assert.IsNotNull(this._domainParser, "_domainParser is null");
 
-            if (!string.IsNullOrEmpty(domain))
-            {
-                domain = domain.ToLowerInvariant();
-            }
-
             var domainData = this._domainParser.Get(domain);
             if (domainData == null)
             {
