@@ -55,5 +55,39 @@ namespace Nager.PublicSuffix.UnitTest
             Assert.AreEqual("sub", domainName.SubDomain);
             Assert.AreEqual("co.uk", domainName.TLDRule.Name);
         }
+
+        [TestMethod]
+        public void CheckDomainName4()
+        {
+            var rules = new List<TldRule>();
+            rules.Add(new TldRule("uk"));
+            rules.Add(new TldRule("co.uk"));
+            rules.Add(new TldRule("*.sch.uk"));
+
+            var domainParser = new DomainParser(rules);
+
+            var domainName = domainParser.Get("sub.test1.test2.sch.uk");
+            Assert.AreEqual("test1", domainName.Domain);
+            Assert.AreEqual("test2.sch.uk", domainName.TLD);
+            Assert.AreEqual("test1.test2.sch.uk", domainName.RegistrableDomain);
+            Assert.AreEqual("sub", domainName.SubDomain);
+            Assert.AreEqual("*.sch.uk", domainName.TLDRule.Name);
+        }
+
+        [TestMethod]
+        public void CheckDomainNameForUnlistedTld()
+        {
+            var rules = new List<TldRule>();
+            rules.Add(new TldRule("uk"));
+            rules.Add(new TldRule("co.uk"));
+            var domainParser = new DomainParser(rules);
+
+            var domainName = domainParser.Get("unlisted.domain.example");
+            Assert.AreEqual("domain", domainName.Domain);
+            Assert.AreEqual("example", domainName.TLD);
+            Assert.AreEqual("domain.example", domainName.RegistrableDomain);
+            Assert.AreEqual("unlisted", domainName.SubDomain);
+            Assert.AreEqual("*", domainName.TLDRule.Name);
+        }
     }
 }
