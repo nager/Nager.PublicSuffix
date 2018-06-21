@@ -8,7 +8,7 @@ namespace Nager.PublicSuffix.UnitTest
         [TestInitialize()]
         public void Initialize()
         {
-            var domainParser = new DomainParser(new FileTldRuleProvider("effective_tld_names.dat"));
+            var domainParser = new DomainParser(new FileTldRuleProvider("effective_tld_names.dat"), new UriNormalizer());
             this._domainParser = domainParser;
         }
 
