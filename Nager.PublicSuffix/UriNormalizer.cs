@@ -6,9 +6,9 @@ namespace Nager.PublicSuffix
 {
     public class UriNormalizer : IDomainNormalizer
     {
-        public List<string> NormalizeDomainAndExtractParts(string domain, out string normalizedDomain)
+        public List<string> PartlyNormalizeDomainAndExtractFullyNormalizedParts(string domain, out string partlyNormalizedDomain)
         {
-            normalizedDomain = null;
+            partlyNormalizedDomain = null;
 
             if (string.IsNullOrEmpty(domain))
             {
@@ -26,7 +26,7 @@ namespace Nager.PublicSuffix
                 return null;
             }
 
-            normalizedDomain = uri.Host;
+            partlyNormalizedDomain = uri.Host;
             var normalizedHost = uri.GetComponents(UriComponents.NormalizedHost, UriFormat.UriEscaped); //Normalize punycode
 
             return normalizedHost

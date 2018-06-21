@@ -73,7 +73,7 @@ namespace Nager.PublicSuffix
 
         public DomainName Get(Uri domain)
         {
-            var normalizedDomain = domain.Host;
+            var partlyNormalizedDomain = domain.Host;
             var normalizedHost = domain.GetComponents(UriComponents.NormalizedHost, UriFormat.UriEscaped); //Normalize punycode
 
             var parts = normalizedHost
@@ -81,13 +81,13 @@ namespace Nager.PublicSuffix
                 .Reverse()
                 .ToList();
 
-            return this.GetDomainFromParts(normalizedDomain, parts);
+            return this.GetDomainFromParts(partlyNormalizedDomain, parts);
         }
 
         public DomainName Get(string domain)
         {
-            var parts = this._domainNormalizer.NormalizeDomainAndExtractParts(domain, out string normalizedDomain);
-            return this.GetDomainFromParts(normalizedDomain, parts);
+            var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string partlyNormalizedDomain);
+            return this.GetDomainFromParts(partlyNormalizedDomain, parts);
         }
 
         private DomainName GetDomainFromParts(string domain, List<string> parts)

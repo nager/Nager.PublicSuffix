@@ -4,6 +4,6 @@ namespace Nager.PublicSuffix
 {
     public interface IDomainNormalizer
     {
-        List<string> NormalizeDomainAndExtractParts(string domain, out string normalizedDomain);
+        List<string> PartlyNormalizeDomainAndExtractFullyNormalizedParts(string domain, out string partlyNormalizedDomain);
     }
 }
