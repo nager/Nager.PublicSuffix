@@ -8,22 +8,24 @@ namespace Nager.PublicSuffix
     {
         private DomainDataStructure _domainDataStructure;
         private readonly ITldRuleProvider _ruleProvider;
-        private IDomainNormalizer _domainNormalizer = new UriNormalizer();
+        private IDomainNormalizer _domainNormalizer;
 
-        public DomainParser(IEnumerable<TldRule> rules)
+        public DomainParser(IEnumerable<TldRule> rules, IDomainNormalizer domainNormalizer = null)
         {
             if (rules == null)
             {
                 throw new ArgumentNullException("rules");
             }
 
-            this.AddRules(rules);
+            Initialize(rules, domainNormalizer);
         }
 
-        public DomainParser(ITldRuleProvider ruleProvider)
+        public DomainParser(ITldRuleProvider ruleProvider, IDomainNormalizer domainNormalizer = null)
         {
             this._ruleProvider = ruleProvider ?? throw new ArgumentNullException("ruleProvider");
-            this.AddRules(ruleProvider.BuildAsync().Result);
+
+            var rules = ruleProvider.BuildAsync().Result;
+            this.Initialize(rules, domainNormalizer);
         }
 
         public void AddRules(IEnumerable<TldRule> tldRules)
@@ -143,6 +145,12 @@ namespace Nager.PublicSuffix
             {
                 FindMatches(parts.Skip(1), foundStructure, matches);
             }
+        }
+
+        private void Initialize(IEnumerable<TldRule> rules, IDomainNormalizer domainNormalizer)
+        {
+            this.AddRules(rules);
+            this._domainNormalizer = domainNormalizer ?? new UriNormalizer();
         }
     }
 }
