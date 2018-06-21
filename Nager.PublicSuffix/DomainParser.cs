@@ -8,6 +8,7 @@ namespace Nager.PublicSuffix
     {
         private DomainDataStructure _domainDataStructure;
         private readonly ITldRuleProvider _ruleProvider;
+        private IDomainNormalizer _domainNormalizer = new UriNormalizer();
 
         public DomainParser(IEnumerable<TldRule> rules)
         {
@@ -83,31 +84,7 @@ namespace Nager.PublicSuffix
 
         public DomainName Get(string domain)
         {
-            if (string.IsNullOrEmpty(domain))
-            {
-                return null;
-            }
-
-            //We use Uri methods to normalize host (So Punycode is converted to UTF-8
-            if (!domain.Contains("https://"))
-            {
-                domain = string.Concat("https://", domain);
-            }
-
-            Uri uri;
-            if (!Uri.TryCreate(domain, UriKind.RelativeOrAbsolute, out uri))
-            {
-                return null;
-            }
-
-            var normalizedDomain = uri.Host;
-            var normalizedHost = uri.GetComponents(UriComponents.NormalizedHost, UriFormat.UriEscaped); //Normalize punycode
-
-            var parts = normalizedHost
-                .Split('.')
-                .Reverse()
-                .ToList();
-
+            var parts = this._domainNormalizer.NormalizeDomainAndExtractParts(domain, out string normalizedDomain);
             return this.GetDomainFromParts(normalizedDomain, parts);
         }
 
