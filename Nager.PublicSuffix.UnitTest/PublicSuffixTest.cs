@@ -173,7 +173,7 @@ namespace Nager.PublicSuffix.UnitTest
             // These tests demonstrate unwanted behaviour due to a 'bug' in Uri construction
             // def._ghi.jkl.com is valid but
             // abc.def._ghi.jkl.com is invalid.
-            // It can't be correct that adding abc. in front of a valid domain makes in invalid
+            // It can't be correct that adding abc. in front of a valid domain makes it invalid
             this.CheckPublicSuffix("abc.def._ghi.jkl.com", null);
             this.CheckPublicSuffix("abc.def.ghi._jkl.com", null);
         }
