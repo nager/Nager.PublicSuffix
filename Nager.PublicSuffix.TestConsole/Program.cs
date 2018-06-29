@@ -17,9 +17,14 @@ namespace Nager.PublicSuffix.TestConsole
             LoadFromFile();
 
             Console.WriteLine();
-            Console.WriteLine("Performance");
+            Console.WriteLine("Performance (UriNormalization)");
             Console.WriteLine("------------------------------");
-            Performance();
+            Performance(true);
+
+            Console.WriteLine();
+            Console.WriteLine("Performance (IdnMappingNormalization)");
+            Console.WriteLine("------------------------------");
+            Performance(false);
 
             Console.WriteLine();
             Console.WriteLine("----------- DONE -------------");
@@ -55,9 +60,20 @@ namespace Nager.PublicSuffix.TestConsole
             Console.WriteLine("SubDomain:{0}", domainInfo.SubDomain);
         }
 
-        public static void Performance()
+        public static void Performance(bool useUriNormalization)
         {
-            var domainParser = new DomainParser(new FileTldRuleProvider("effective_tld_names.dat"));
+            IDomainNormalizer normalizer;
+
+            if (useUriNormalization)
+            {
+                normalizer = new UriNormalizer();
+            }
+            else
+            {
+                normalizer = new IdnMappingNormalizer();
+            }
+
+            var domainParser = new DomainParser(new FileTldRuleProvider("effective_tld_names.dat"), normalizer);
 
             var sw = new Stopwatch();
             sw.Start();

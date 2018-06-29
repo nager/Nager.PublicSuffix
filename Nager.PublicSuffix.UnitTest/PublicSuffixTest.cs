@@ -1,32 +1,17 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
-using System.Linq;
 
 namespace Nager.PublicSuffix.UnitTest
 {
-    [TestClass]
-    public class PublicSuffixTest
+    public abstract class PublicSuffixTest
     {
-        private DomainParser _domainParser;
+        protected DomainParser _domainParser;
 
         //Run tests as specified here:
         //https://raw.githubusercontent.com/publicsuffix/list/master/tests/test_psl.txt
 
-        [TestInitialize()]
-        public void Initialize()
-        {
-            var domainParser = new DomainParser(new FileTldRuleProvider("effective_tld_names.dat"));
-            this._domainParser = domainParser;
-        }
-
-        private void CheckPublicSuffix(string domain, string expected)
+        protected void CheckPublicSuffix(string domain, string expected)
         {
             Assert.IsNotNull(this._domainParser, "_domainParser is null");
-
-            if (!string.IsNullOrEmpty(domain))
-            {
-                domain = domain.ToLowerInvariant();
-            }
 
             var domainData = this._domainParser.Get(domain);
             if (domainData == null)

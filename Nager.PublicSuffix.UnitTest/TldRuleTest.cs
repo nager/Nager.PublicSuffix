@@ -7,14 +7,14 @@ namespace Nager.PublicSuffix.UnitTest
     public class TldRuleTest
     {
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "RuleData is emtpy")]
+        [ExpectedException(typeof(ArgumentException), "RuleData is empty")]
         public void InvalidRuleTest1()
         {
             new TldRule("");
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "RuleData is emtpy")]
+        [ExpectedException(typeof(ArgumentException), "RuleData is empty")]
         public void InvalidRuleTest2()
         {
             new TldRule(null);

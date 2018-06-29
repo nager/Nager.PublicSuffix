@@ -55,8 +55,13 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AsyncAwaitTest.cs" />
+    <Compile Include="DomainNameTestsWithIdnMappingNormalization.cs" />
+    <Compile Include="DomainNameTestsWithUriNormalization.cs" />
+    <Compile Include="NormalizationVariationTests.cs" />
     <Compile Include="PublicSuffixTest.cs" />
     <Compile Include="DomainNameTest.cs" />
+    <Compile Include="PublicSuffixTestsWithIdnMappingNormalization.cs" />
+    <Compile Include="PublicSuffixTestsWithUriNormalization.cs" />
     <Compile Include="TldRuleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ParseTest.cs" />

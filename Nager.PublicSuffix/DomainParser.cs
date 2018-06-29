@@ -8,21 +8,24 @@ namespace Nager.PublicSuffix
     {
         private DomainDataStructure _domainDataStructure;
         private readonly ITldRuleProvider _ruleProvider;
+        private IDomainNormalizer _domainNormalizer;
 
-        public DomainParser(IEnumerable<TldRule> rules)
+        public DomainParser(IEnumerable<TldRule> rules, IDomainNormalizer domainNormalizer = null)
         {
             if (rules == null)
             {
                 throw new ArgumentNullException("rules");
             }
 
-            this.AddRules(rules);
+            Initialize(rules, domainNormalizer);
         }
 
-        public DomainParser(ITldRuleProvider ruleProvider)
+        public DomainParser(ITldRuleProvider ruleProvider, IDomainNormalizer domainNormalizer = null)
         {
             this._ruleProvider = ruleProvider ?? throw new ArgumentNullException("ruleProvider");
-            this.AddRules(ruleProvider.BuildAsync().Result);
+
+            var rules = ruleProvider.BuildAsync().Result;
+            this.Initialize(rules, domainNormalizer);
         }
 
         public void AddRules(IEnumerable<TldRule> tldRules)
@@ -70,7 +73,7 @@ namespace Nager.PublicSuffix
 
         public DomainName Get(Uri domain)
         {
-            var normalizedDomain = domain.Host;
+            var partlyNormalizedDomain = domain.Host;
             var normalizedHost = domain.GetComponents(UriComponents.NormalizedHost, UriFormat.UriEscaped); //Normalize punycode
 
             var parts = normalizedHost
@@ -78,7 +81,18 @@ namespace Nager.PublicSuffix
                 .Reverse()
                 .ToList();
 
-            if (parts.Count == 0 || parts.Any(x => x.Equals(string.Empty)))
+            return this.GetDomainFromParts(partlyNormalizedDomain, parts);
+        }
+
+        public DomainName Get(string domain)
+        {
+            var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string partlyNormalizedDomain);
+            return this.GetDomainFromParts(partlyNormalizedDomain, parts);
+        }
+
+        private DomainName GetDomainFromParts(string domain, List<string> parts)
+        {
+            if (parts == null || parts.Count == 0 || parts.Any(x => x.Equals(string.Empty)))
             {
                 return null;
             }
@@ -104,30 +118,8 @@ namespace Nager.PublicSuffix
                 return null;
             }
 
-            var domainName = new DomainName(normalizedDomain, winningRule);
+            var domainName = new DomainName(domain, winningRule);
             return domainName;
-        }
-
-        public DomainName Get(string domain)
-        {
-            if (string.IsNullOrEmpty(domain))
-            {
-                return null;
-            }
-
-            //We use Uri methods to normalize host (So Punycode is converted to UTF-8
-            if (!domain.Contains("https://"))
-            {
-                domain = string.Concat("https://", domain);
-            }
-
-            Uri uri;
-            if (!Uri.TryCreate(domain, UriKind.RelativeOrAbsolute, out uri))
-            {
-                return null;
-            }
-
-            return Get(uri);
         }
 
         private void FindMatches(IEnumerable<string> parts, DomainDataStructure structure, List<TldRule> matches)
@@ -153,6 +145,12 @@ namespace Nager.PublicSuffix
             {
                 FindMatches(parts.Skip(1), foundStructure, matches);
             }
+        }
+
+        private void Initialize(IEnumerable<TldRule> rules, IDomainNormalizer domainNormalizer)
+        {
+            this.AddRules(rules);
+            this._domainNormalizer = domainNormalizer ?? new UriNormalizer();
         }
     }
 }
