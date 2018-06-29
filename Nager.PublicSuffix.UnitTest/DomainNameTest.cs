@@ -5,6 +5,8 @@ namespace Nager.PublicSuffix.UnitTest
 {
     public abstract class DomainNameTest
     {
+        protected abstract DomainParser GetParserForRules(List<TldRule> rules);
+
         [TestMethod]
         public void CheckDomainName1()
         {
@@ -89,7 +91,5 @@ namespace Nager.PublicSuffix.UnitTest
             Assert.AreEqual("unlisted", domainName.SubDomain);
             Assert.AreEqual("*", domainName.TLDRule.Name);
         }
-
-        protected abstract DomainParser GetParserForRules(List<TldRule> rules);
     }
 }

@@ -17,7 +17,7 @@ namespace Nager.PublicSuffix
                 throw new ArgumentNullException("rules");
             }
 
-            Initialize(rules, domainNormalizer);
+            this.Initialize(rules, domainNormalizer);
         }
 
         public DomainParser(ITldRuleProvider ruleProvider, IDomainNormalizer domainNormalizer = null)
@@ -26,6 +26,12 @@ namespace Nager.PublicSuffix
 
             var rules = ruleProvider.BuildAsync().Result;
             this.Initialize(rules, domainNormalizer);
+        }
+
+        private void Initialize(IEnumerable<TldRule> rules, IDomainNormalizer domainNormalizer)
+        {
+            this.AddRules(rules);
+            this._domainNormalizer = domainNormalizer ?? new UriNormalizer();
         }
 
         public void AddRules(IEnumerable<TldRule> tldRules)
@@ -135,22 +141,15 @@ namespace Nager.PublicSuffix
                 return;
             }
 
-            DomainDataStructure foundStructure;
-            if (structure.Nested.TryGetValue(part, out foundStructure))
+            if (structure.Nested.TryGetValue(part, out DomainDataStructure foundStructure))
             {
-                FindMatches(parts.Skip(1), foundStructure, matches);
+                this.FindMatches(parts.Skip(1), foundStructure, matches);
             }
 
             if (structure.Nested.TryGetValue("*", out foundStructure))
             {
-                FindMatches(parts.Skip(1), foundStructure, matches);
+                this.FindMatches(parts.Skip(1), foundStructure, matches);
             }
-        }
-
-        private void Initialize(IEnumerable<TldRule> rules, IDomainNormalizer domainNormalizer)
-        {
-            this.AddRules(rules);
-            this._domainNormalizer = domainNormalizer ?? new UriNormalizer();
         }
     }
 }
