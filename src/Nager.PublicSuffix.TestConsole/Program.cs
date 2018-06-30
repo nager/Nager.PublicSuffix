@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Nager.PublicSuffix.TestConsole
 {
@@ -7,27 +8,6 @@ namespace Nager.PublicSuffix.TestConsole
     {
         static void Main(string[] args)
         {
-            var webTldRuleProvider = new WebTldRuleProvider(cacheProvider: new FileCacheProvider(cacheTimeToLive: new TimeSpan(10, 0, 0))); //cache data for 10 hours
-
-            var domainParser = new DomainParser(webTldRuleProvider);
-            for (var i = 0; i < 100; i++)
-            {
-                var isValid = webTldRuleProvider.CacheProvider.IsCacheValid();
-                if (!isValid)
-                {
-                    webTldRuleProvider.BuildAsync().GetAwaiter(); //Reload data
-                }
-
-                var domainInfo = domainParser.Get($"sub{i}.test.co.uk");
-            }
-
-            var domainName = domainParser.Get("sub.test.co.uk");
-            //domainName.Domain = "test";
-            //domainName.Hostname = "sub.test.co.uk";
-            //domainName.RegistrableDomain = "test.co.uk";
-            //domainName.SubDomain = "sub";
-            //domainName.TLD = "co.uk";
-
             Console.WriteLine("WebTldRuleProvider");
             Console.WriteLine("------------------------------");
             LoadFromWeb();
@@ -54,21 +34,23 @@ namespace Nager.PublicSuffix.TestConsole
 
         public static void LoadFromWeb()
         {
-            var webTldRuleProvider = new WebTldRuleProvider(cacheProvider: new FileCacheProvider(cacheTimeToLive: new TimeSpan(10, 0, 0)));
+            var webTldRuleProvider = new WebTldRuleProvider(cacheProvider: new FileCacheProvider(cacheTimeToLive: new TimeSpan(0, 0, 10)));
 
             var domainParser = new DomainParser(webTldRuleProvider);
-            for (var i = 0; i < 1000; i++)
+            for (var i = 0; i < 20; i++)
             {
                 var isValid = webTldRuleProvider.CacheProvider.IsCacheValid();
                 if (!isValid)
                 {
-                    webTldRuleProvider.BuildAsync().GetAwaiter(); //Reload data
+                    webTldRuleProvider.BuildAsync().GetAwaiter().GetResult(); //Reload data
+                    Console.WriteLine("Reload data");
                 }
 
                 var domainInfo = domainParser.Get($"sub{i}.test.co.uk");
 
                 Console.WriteLine("RegistrableDomain:{0}", domainInfo.RegistrableDomain);
                 Console.WriteLine("SubDomain:{0}", domainInfo.SubDomain);
+                Thread.Sleep(1000);
             }
         }
 
