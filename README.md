@@ -28,7 +28,7 @@ var domainName = domainParser.Get("sub.test.co.uk");
 
 #### Load data from web change cache config
 ```cs
-var webTldRuleProvider = new WebTldRuleProvider(cacheTimeToLive: new TimeSpan(10, 0, 0)); //cache data for 10 hours
+var webTldRuleProvider = new WebTldRuleProvider(cacheProvider: new FileCacheProvider(cacheTimeToLive: new TimeSpan(10, 0, 0))); //cache data for 10 hours
 
 var domainParser = new DomainParser(webTldRuleProvider);
 for (var i = 0; i < 100; i++)
