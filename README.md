@@ -36,7 +36,7 @@ for (var i = 0; i < 100; i++)
 	var isValid = webTldRuleProvider.CacheProvider.IsCacheValid();
 	if (!isValid)
 	{
-		webTldRuleProvider.BuildAsync().GetAwaiter(); //Reload data
+		webTldRuleProvider.BuildAsync().GetAwaiter().GetResult(); //Reload data
 	}
 	
 	var domainInfo = domainParser.Get($"sub{i}.test.co.uk");
