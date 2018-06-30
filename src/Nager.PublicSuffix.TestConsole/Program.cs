@@ -7,6 +7,27 @@ namespace Nager.PublicSuffix.TestConsole
     {
         static void Main(string[] args)
         {
+            var webTldRuleProvider = new WebTldRuleProvider(cacheProvider: new FileCacheProvider(cacheTimeToLive: new TimeSpan(10, 0, 0))); //cache data for 10 hours
+
+            var domainParser = new DomainParser(webTldRuleProvider);
+            for (var i = 0; i < 100; i++)
+            {
+                var isValid = webTldRuleProvider.CacheProvider.IsCacheValid();
+                if (!isValid)
+                {
+                    webTldRuleProvider.BuildAsync().GetAwaiter(); //Reload data
+                }
+
+                var domainInfo = domainParser.Get($"sub{i}.test.co.uk");
+            }
+
+            var domainName = domainParser.Get("sub.test.co.uk");
+            //domainName.Domain = "test";
+            //domainName.Hostname = "sub.test.co.uk";
+            //domainName.RegistrableDomain = "test.co.uk";
+            //domainName.SubDomain = "sub";
+            //domainName.TLD = "co.uk";
+
             Console.WriteLine("WebTldRuleProvider");
             Console.WriteLine("------------------------------");
             LoadFromWeb();
