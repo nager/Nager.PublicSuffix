@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -37,19 +38,25 @@ namespace Nager.PublicSuffix
             }
 
             var rules = ruleParser.ParseRules(ruleData);
-
             return rules;
         }
 
         public async Task<string> LoadFromUrl(string url)
         {
-            using (var httpClient = new HttpClient())
+            try
             {
-                using (var response = await httpClient.GetAsync(url).ConfigureAwait(false))
+                using (var httpClient = new HttpClient())
                 {
-                    return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    using (var response = await httpClient.GetAsync(url).ConfigureAwait(false))
+                    {
+                        return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    }
                 }
             }
-        }
+            catch (Exception exception)
+            {
+                return await Task.FromResult("error");
+            }
+         }
     }
 }

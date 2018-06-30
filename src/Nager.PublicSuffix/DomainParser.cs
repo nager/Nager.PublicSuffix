@@ -24,7 +24,7 @@ namespace Nager.PublicSuffix
         {
             this._ruleProvider = ruleProvider ?? throw new ArgumentNullException("ruleProvider");
 
-            var rules = ruleProvider.BuildAsync().Result;
+            var rules = ruleProvider.BuildAsync().GetAwaiter().GetResult();
             this.Initialize(rules, domainNormalizer);
         }
 
