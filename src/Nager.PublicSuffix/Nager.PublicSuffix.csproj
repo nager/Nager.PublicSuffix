@@ -13,6 +13,7 @@
     <AssemblyVersion>1.2.1</AssemblyVersion>
     <FileVersion>1.2.1</FileVersion>
     <Version>1.2.1</Version>
+	<PackageIconUrl>https://raw.githubusercontent.com/tinohager/Nager.PublicSuffix/master/doc/icon/logo.png</PackageIconUrl>
   </PropertyGroup>
   
   <ItemGroup>
