@@ -33,7 +33,7 @@ var webTldRuleProvider = new WebTldRuleProvider(cacheProvider: new FileCacheProv
 var domainParser = new DomainParser(webTldRuleProvider);
 for (var i = 0; i < 100; i++)
 {
-	var isValid = webTldRuleProvider.IsCacheValid();
+	var isValid = webTldRuleProvider.CacheProvider.IsCacheValid();
 	if (!isValid)
 	{
 		webTldRuleProvider.BuildAsync().GetAwaiter(); //Reload data
