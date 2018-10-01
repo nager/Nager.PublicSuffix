@@ -1,12 +1,18 @@
 Nager.PublicSuffix
 ==========
-publicsuffix.org a list of known public domain suffixes (TLD). Some example .com, .co.uk, co.at. The current data loads from https://publicsuffix.org. This library does not nees a additional cache system is very fast on different domain names.
+The TLD proliferation makes it difficult to check domain names are valid. This project use the data of publicsuffix.org a list of known public domain suffixes (TLD) to validate and split domains in the parts (tld, domain, subdomain). The validation data loads direct from https://publicsuffix.org.
 
 ### nuget
 The package is available on [nuget](https://www.nuget.org/packages/Nager.PublicSuffix)
 ```
 PM> install-package Nager.PublicSuffix
 ```
+
+### Benefits
+
+- Very fast
+- Integrated cache
+- Async
 
 ### Donation possibilities
 If this project help you reduce time to develop, you can give me a beer :beer:
