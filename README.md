@@ -1,6 +1,14 @@
 Nager.PublicSuffix
 ==========
-The TLD proliferation makes it difficult to check domain names are valid. This project use the data of publicsuffix.org a list of known public domain suffixes (TLD) to validate and split domains in the parts (tld, domain, subdomain). The validation data loads direct from https://publicsuffix.org.
+The TLD proliferation makes it difficult to check domain names are valid. This project use the rules of publicsuffix.org a list of known public domain suffixes (TLD) to validate and split domains in the parts (tld, domain, subdomain). The validation rules are load direct from https://publicsuffix.org.
+
+A domain name has 3 major parts:
+
+TLD | Domain | Subdomain |
+--- | --- | --- |
+com | google | blog |
+org | wikipedia | www |
+ru | yandex | mail |
 
 ### nuget
 The package is available on [nuget](https://www.nuget.org/packages/Nager.PublicSuffix)
@@ -9,7 +17,6 @@ PM> install-package Nager.PublicSuffix
 ```
 
 ### Benefits
-
 - Very fast
 - Integrated cache
 - Async
