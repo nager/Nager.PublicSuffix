@@ -15,7 +15,7 @@ namespace Nager.PublicSuffix
                 return null;
             }
 
-            //We use Uri methods to normalize host (So Punycode is converted to UTF-8 
+            //We use Uri methods to normalize host (So Punycode is converted to UTF-8)
             if (!domain.Contains("https://"))
             {
                 domain = string.Concat("https://", domain);

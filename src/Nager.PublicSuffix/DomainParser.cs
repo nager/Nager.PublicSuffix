@@ -6,8 +6,8 @@ namespace Nager.PublicSuffix
 {
     public class DomainParser
     {
-        private DomainDataStructure _domainDataStructure;
         private readonly ITldRuleProvider _ruleProvider;
+        private DomainDataStructure _domainDataStructure;
         private IDomainNormalizer _domainNormalizer;
 
         public DomainParser(IEnumerable<TldRule> rules, IDomainNormalizer domainNormalizer = null)
@@ -34,7 +34,7 @@ namespace Nager.PublicSuffix
             this._domainNormalizer = domainNormalizer ?? new UriNormalizer();
         }
 
-        public void AddRules(IEnumerable<TldRule> tldRules)
+        private void AddRules(IEnumerable<TldRule> tldRules)
         {
             this._domainDataStructure = new DomainDataStructure("*", new TldRule("*"));
 
@@ -44,7 +44,7 @@ namespace Nager.PublicSuffix
             }
         }
 
-        public void AddRule(TldRule tldRule)
+        private void AddRule(TldRule tldRule)
         {
             var structure = this._domainDataStructure;
             var domainPart = string.Empty;
@@ -94,6 +94,13 @@ namespace Nager.PublicSuffix
         {
             var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string partlyNormalizedDomain);
             return this.GetDomainFromParts(partlyNormalizedDomain, parts);
+        }
+
+        public bool IsValidDomain(string domain)
+        {
+            var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string partlyNormalizedDomain);
+            var domainName = this.GetDomainFromParts(partlyNormalizedDomain, parts);
+            return domainName.TLDRule.Name != "*";
         }
 
         private DomainName GetDomainFromParts(string domain, List<string> parts)
