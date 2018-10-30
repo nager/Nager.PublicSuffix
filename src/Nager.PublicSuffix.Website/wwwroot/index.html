@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>PublicSuffix</title>
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>PublicSuffix</h1>
+        <div id="app">
+            <div>
+                <div class="form-group">
+                    <label for="domainInput">Domain</label>
+                    <input type="text" v-model="domain" class="form-control" />
+                </div>
+                    <button @click="analyze" class="btn btn-primary">Analyze</button>
+                    <div v-if="info" style="margin-top:20px;">
+                        <h2>Report</h2>
+                        <pre>{{ info }}</pre>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <script src="/lib/bundle.min.js"></script>
+    <script src="VueApp.js"></script>
+</body>
+</html>

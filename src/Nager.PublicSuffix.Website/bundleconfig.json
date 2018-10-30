@@ -1,0 +1,14 @@
+[
+  {
+    "outputFileName": "wwwroot/lib/bundle.min.js",
+    "inputFiles": [
+      "wwwroot/lib/axios/axios.js",
+      "wwwroot/lib/vue/vue.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]
