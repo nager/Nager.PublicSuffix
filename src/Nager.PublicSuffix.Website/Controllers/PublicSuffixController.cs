@@ -19,11 +19,11 @@ namespace Nager.PublicSuffix.Website.Controllers
             var domainReport = new DomainReport
             {
                 Valid = valid,
-                TLD = domainName.TLD,
-                Domain = domainName.Domain,
-                SubDomain = domainName.SubDomain,
-                RegistrableDomain = domainName.RegistrableDomain,
-                Hostname = domainName.Hostname,
+                TLD = domainName?.TLD,
+                Domain = domainName?.Domain,
+                SubDomain = domainName?.SubDomain,
+                RegistrableDomain = domainName?.RegistrableDomain,
+                Hostname = domainName?.Hostname,
             };
 
             return StatusCode(StatusCodes.Status200OK, domainReport);

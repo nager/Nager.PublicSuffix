@@ -2,25 +2,95 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>PublicSuffix</title>
+    <title>nager.publicsuffix</title>
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="common.css">
 </head>
 <body>
-    <div class="container">
-        <h1>PublicSuffix</h1>
-        <div id="app">
-            <div>
-                <div class="form-group">
-                    <label for="domainInput">Domain</label>
-                    <input type="text" v-model="domain" class="form-control" />
-                </div>
-                    <button @click="analyze" class="btn btn-primary">Analyze</button>
-                    <div v-if="info" style="margin-top:20px;">
-                        <h2>Report</h2>
-                        <pre>{{ info }}</pre>
+
+    <div id="app">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-light bg-light static-top">
+            <div class="container">
+                <a class="navbar-brand" href="/">nager.publicsuffix - <small>Domain analyzer</small></a>
+            </div>
+        </nav>
+
+        <!-- Masthead -->
+        <header class="masthead text-white text-center">
+            <div class="overlay"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-9 mx-auto">
+                        <h1 class="mb-5">Check a domain and get more details</h1>
+                    </div>
+                    <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+                        <div class="form-row">
+                            <div class="col-12 col-md-9 mb-2 mb-md-0">
+                                <input type="text" v-model="domain" class="form-control form-control-lg" />
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <button @click="analyze" class="btn btn-block btn-lg btn-primary">Analyze</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </header>
+
+        <section v-if="info" class="report bg-light">
+            <div class="row justify-content-md-center">
+                <div class="col-lg-4">
+                    <h2>Report</h2>
+                    <table class="table table-dark">
+                        <tbody>
+                            <tr>
+                                <th class="w-50">Valid</th>
+                                <td class="w-50">{{ info.valid ? '✔' : '❌' }}</td>
+                            </tr>
+                            <tr v-if="info.tld">
+                                <th>TLD</th>
+                                <td>{{ info.tld }}</td>
+                            </tr>
+                            <tr v-if="info.domain">
+                                <th>Domain</th>
+                                <td>{{ info.domain }}</td>
+                            </tr>
+                            <tr v-if="info.subDomain">
+                                <th>SubDomain</th>
+                                <td>{{ info.subDomain }}</td>
+                            </tr>
+                            <tr v-if="info.registrableDomain">
+                                <th>RegistrableDomain</th>
+                                <td>{{ info.registrableDomain }}</td>
+                            </tr>
+                            <tr v-if="info.hostname">
+                                <th>Hostname</th>
+                                <td>{{ info.hostname }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+        <footer class="footer bg-white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+                        <ul class="list-inline mb-2">
+                            <li class="list-inline-item">
+                                <a href="https://www.nager.at">Imprint</a>
+                            </li>
+                        </ul>
+                        <p class="text-muted small mb-4 mb-lg-0">publicsuffix.nager.at</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
     </div>
     <script src="/lib/bundle.min.js"></script>
     <script src="VueApp.js"></script>
