@@ -1,7 +1,7 @@
 var app = new Vue({
     el: '#app',
     data: {
-        info: null,
+        report: null,
         domain: 'mail.example.com'
     },
     created() {
@@ -12,7 +12,7 @@ var app = new Vue({
             axios.get(`api/publicsuffix?domain=${this.domain}`)
                 .then(response => {
                     // JSON responses are automatically parsed.
-                    this.info = response.data;
+                    this.report = response.data;
                 })
                 .catch(exception => {
                     console.log(exception);

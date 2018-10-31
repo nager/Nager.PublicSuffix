@@ -39,7 +39,7 @@
             </div>
         </header>
 
-        <section v-if="info" class="report bg-light">
+        <section v-if="report" class="report bg-light">
             <div class="row justify-content-md-center">
                 <div class="col-lg-4">
                     <h2>Report</h2>
@@ -47,27 +47,27 @@
                         <tbody>
                             <tr>
                                 <th class="w-50">Valid</th>
-                                <td class="w-50">{{ info.valid ? '✔' : '❌' }}</td>
+                                <td class="w-50">{{ report.valid ? '✔' : '❌' }}</td>
                             </tr>
-                            <tr v-if="info.tld">
+                            <tr v-if="report.tld">
                                 <th>TLD</th>
-                                <td>{{ info.tld }}</td>
+                                <td>{{ report.tld }}</td>
                             </tr>
-                            <tr v-if="info.domain">
+                            <tr v-if="report.domain">
                                 <th>Domain</th>
-                                <td>{{ info.domain }}</td>
+                                <td>{{ report.domain }}</td>
                             </tr>
-                            <tr v-if="info.subDomain">
+                            <tr v-if="report.subDomain">
                                 <th>SubDomain</th>
-                                <td>{{ info.subDomain }}</td>
+                                <td>{{ report.subDomain }}</td>
                             </tr>
-                            <tr v-if="info.registrableDomain">
+                            <tr v-if="report.registrableDomain">
                                 <th>RegistrableDomain</th>
-                                <td>{{ info.registrableDomain }}</td>
+                                <td>{{ report.registrableDomain }}</td>
                             </tr>
-                            <tr v-if="info.hostname">
+                            <tr v-if="report.hostname">
                                 <th>Hostname</th>
-                                <td>{{ info.hostname }}</td>
+                                <td>{{ report.hostname }}</td>
                             </tr>
                         </tbody>
                     </table>
