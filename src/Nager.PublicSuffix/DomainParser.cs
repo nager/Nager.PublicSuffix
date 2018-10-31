@@ -9,6 +9,7 @@ namespace Nager.PublicSuffix
         private readonly ITldRuleProvider _ruleProvider;
         private DomainDataStructure _domainDataStructure;
         private IDomainNormalizer _domainNormalizer;
+        private TldRule _rootTldRule = new TldRule("*");
 
         public DomainParser(IEnumerable<TldRule> rules, IDomainNormalizer domainNormalizer = null)
         {
@@ -36,7 +37,7 @@ namespace Nager.PublicSuffix
 
         private void AddRules(IEnumerable<TldRule> tldRules)
         {
-            this._domainDataStructure = new DomainDataStructure("*", new TldRule("*"));
+            this._domainDataStructure = new DomainDataStructure("*", this._rootTldRule);
 
             foreach (var tldRule in tldRules)
             {
@@ -100,7 +101,12 @@ namespace Nager.PublicSuffix
         {
             var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string partlyNormalizedDomain);
             var domainName = this.GetDomainFromParts(partlyNormalizedDomain, parts);
-            return domainName.TLDRule.Name != "*";
+            if (domainName == null)
+            {
+                return false;
+            }
+
+            return !domainName.TLDRule.Equals(this._rootTldRule);
         }
 
         private DomainName GetDomainFromParts(string domain, List<string> parts)
@@ -120,10 +126,6 @@ namespace Nager.PublicSuffix
                 .ThenByDescending(x => x.Name);
 
             var winningRule = sortedMatches.FirstOrDefault();
-            if (winningRule == null)
-            {
-                winningRule = new TldRule("*");
-            }
 
             //Domain is TLD
             if (parts.Count == winningRule.LabelCount)
