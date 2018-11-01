@@ -10,6 +10,9 @@ com | google | blog |
 org | wikipedia | www |
 ru | yandex | mail |
 
+### Website
+https://publicsuffix.nager.at/
+
 ### nuget
 The package is available on [nuget](https://www.nuget.org/packages/Nager.PublicSuffix)
 ```
