@@ -1,26 +1,38 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFrameworks>net45;net461;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net45;net461;netstandard2.0</TargetFrameworks>
+    <Version>1.3.1</Version>
+    <AssemblyVersion>1.3.1</AssemblyVersion>
+    <FileVersion>1.3.1</FileVersion>
     <Authors>Tino Hager</Authors>
     <Company>nager.at</Company>
     <Copyright>Copyright ©  2017</Copyright>
-    <PackageLicenseUrl>https://github.com/tinohager/Nager.PublicSuffix/blob/master/Licence.txt</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/tinohager/Nager.PublicSuffix</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/tinohager/Nager.PublicSuffix</RepositoryUrl>
     <Description>Domain parsing and validating (TLD, domain, subdomain) provide easy and fast access to Public Suffix List</Description>
     <PackageTags>PublicSuffix publicsuffix.org public-suffix TLD DomainParser domain parser Registrable Domain DomainName Hostname Subdomain</PackageTags>
-    <PackageReleaseNotes>Optimize cache provider, some optimizations</PackageReleaseNotes>
-    <AssemblyVersion>1.3.0</AssemblyVersion>
-    <FileVersion>1.3.0</FileVersion>
-    <Version>1.3.0</Version>
-	<PackageIconUrl>https://raw.githubusercontent.com/tinohager/Nager.PublicSuffix/master/doc/icon/logo.png</PackageIconUrl>
+    <PackageReleaseNotes>Add License file</PackageReleaseNotes>
+    <PackageIconUrl>https://raw.githubusercontent.com/tinohager/Nager.PublicSuffix/master/doc/icon/logo.png</PackageIconUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   
   <ItemGroup>
-    <Content Include="install.ps1">
-      <PackagePath>tools\</PackagePath>
-    </Content>
     <PackageReference Include="System.Net.Http" Version="4.3.3" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="..\..\LICENSE.md" Pack="true" PackagePath="LICENSE.md" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="readme.txt">
+      <Pack>true</Pack>
+      <PackagePath>\</PackagePath>
+    </Content>
   </ItemGroup>
 
 </Project>
