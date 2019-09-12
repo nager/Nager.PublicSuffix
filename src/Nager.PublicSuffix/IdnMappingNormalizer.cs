@@ -1,34 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Nager.PublicSuffix.Exceptions;
 
-namespace Nager.PublicSuffix
-{
-    public class IdnMappingNormalizer : IDomainNormalizer
-    {
-        private readonly IdnMapping _idnMapping = new IdnMapping();
+namespace Nager.PublicSuffix {
+    public class IdnMappingNormalizer : IDomainNormalizer {
+        private readonly IdnMapping _idnMapping = new IdnMapping ();
 
-        public List<string> PartlyNormalizeDomainAndExtractFullyNormalizedParts(string domain, out string partlyNormalizedDomain)
-        {
-            partlyNormalizedDomain = null;
+        public List<string> PartlyNormalizeDomainAndExtractFullyNormalizedParts (string url, out Uri partlyNormalizedDomain) {
+            partlyNormalizedDomain = UrlFixer.Repair (url);
 
-            if (string.IsNullOrEmpty(domain))
-            {
-                return null;
-            }
+            if (string.IsNullOrEmpty (url) || partlyNormalizedDomain == null)
+                return default;
 
-            partlyNormalizedDomain = domain.ToLowerInvariant();
-
-            string punycodeConvertedDomain = partlyNormalizedDomain;
-            if (partlyNormalizedDomain.Contains("xn--"))
-            {
-                punycodeConvertedDomain = this._idnMapping.GetUnicode(partlyNormalizedDomain);
+            string punycodeConvertedDomain = partlyNormalizedDomain.ToString ();
+            if (partlyNormalizedDomain.OriginalString.Contains ("xn--")) {
+                punycodeConvertedDomain = this._idnMapping.GetUnicode (partlyNormalizedDomain.ToString ());
             }
 
             return punycodeConvertedDomain
-                .Split('.')
-                .Reverse()
-                .ToList();
+                .Split ('.')
+                .Reverse ()
+                .ToList ();
         }
     }
 }

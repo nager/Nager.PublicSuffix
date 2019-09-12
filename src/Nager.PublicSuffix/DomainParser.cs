@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
+using Nager.PublicSuffix.Exceptions;
 
 namespace Nager.PublicSuffix {
     public class DomainParser {
@@ -67,43 +69,45 @@ namespace Nager.PublicSuffix {
             }
         }
 
-        public DomainName Get (Uri domain, bool isResolver = false) {
-            if (isResolver)
-                domain = GetResolvedUrl (domain);
-
-            var partlyNormalizedDomain = domain.Host;
-            var normalizedHost = domain.GetComponents (UriComponents.NormalizedHost, UriFormat.UriEscaped); //Normalize punycode
-
-            var parts = normalizedHost
-                .Split ('.')
-                .Reverse ()
-                .ToList ();
-
-            return this.GetDomainFromParts (partlyNormalizedDomain, parts);
+        public DomainName Get (Uri url, bool isResolver = false, bool repairUrl = false) {
+            if (!repairUrl && UrlFixer.IsValidUrl (url.ToString ()))
+                return GetDomainName (url.ToString (), isResolver);
+            throw new InvalidUrlException ("This url is invalid");
         }
 
-        public DomainName Get (string domain, bool isResolver = false) {
-            if (isResolver)
-                domain = GetResolvedUrl (new Uri (domain, UriKind.RelativeOrAbsolute)).Host;
-
-            var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts (domain, out string partlyNormalizedDomain);
-            return this.GetDomainFromParts (partlyNormalizedDomain, parts);
+        public DomainName Get (string url, bool isResolver = false, bool repairUrl = false) {
+            return GetDomainName (repairUrl ? UrlFixer.Repair (url).ToString () : url, isResolver);
         }
 
-        private Uri GetResolvedUrl (Uri uri) {
+        private DomainName GetDomainName (string url, bool isResolver = false) {
+            try {
+                string unresolvedUrl = url;
+                if (isResolver)
+                    url = GetResolvedUrl (url);
+
+                var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts (url, out Uri partlyNormalizedDomain);
+
+                return this.GetDomainFromParts (partlyNormalizedDomain, parts, unresolvedUrl);
+            } catch (NonResolvedDomainNameException ex) {
+                throw new NonResolvedDomainNameException (@"Domain name not resolved:\n\r" + ex.Message);
+            }
+        }
+
+        private string GetResolvedUrl (string uri) {
             try {
                 using (var httpClient = new HttpClient ()) {
                     using (var response = httpClient.GetAsync (uri).ConfigureAwait (false).GetAwaiter ().GetResult ()) {
-                        return response.RequestMessage.RequestUri;
+                        return response.RequestMessage.RequestUri.ToString ();
                     }
                 }
-            } catch (System.Exception) {
+            } catch (NonResolvedUrlException ex) {
+                //log(ex)
                 return uri;
             }
         }
 
-        public bool IsValidDomain (string domain) {
-            var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts (domain, out string partlyNormalizedDomain);
+        public bool IsValidDomain (string uri) {
+            var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts (uri, out Uri partlyNormalizedDomain);
             var domainName = this.GetDomainFromParts (partlyNormalizedDomain, parts);
             if (domainName == null) {
                 return false;
@@ -112,7 +116,7 @@ namespace Nager.PublicSuffix {
             return !domainName.TLDRule.Equals (this._rootTldRule);
         }
 
-        private DomainName GetDomainFromParts (string domain, List<string> parts) {
+        private DomainName GetDomainFromParts (Uri uri, List<string> parts, string unresolvedUrl = default) {
             if (parts == null || parts.Count == 0 || parts.Any (x => x.Equals (string.Empty))) {
                 return null;
             }
@@ -133,8 +137,7 @@ namespace Nager.PublicSuffix {
                 return null;
             }
 
-            var domainName = new DomainName (domain, winningRule);
-            return domainName;
+            return new DomainName (uri, winningRule, unresolvedUrl);
         }
 
         private void FindMatches (IEnumerable<string> parts, DomainDataStructure structure, List<TldRule> matches) {
