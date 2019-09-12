@@ -1,99 +1,85 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
+using Xunit;
 
-namespace Nager.PublicSuffix.UnitTest
-{
-    [TestClass]
-    public class TldRuleTest
-    {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "RuleData is empty")]
-        public void InvalidRuleTest1()
-        {
-            new TldRule("");
+namespace Nager.PublicSuffix.UnitTest {
+
+    public class TldRuleTest {
+        [Fact]
+        public void InvalidRuleTest1 () {
+            var exception = Assert.Throws<ArgumentException> (() => new TldRule (""));
+            Assert.Equal ("RuleData is empty", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "RuleData is empty")]
-        public void InvalidRuleTest2()
-        {
-            new TldRule(null);
+        [Fact]
+        public void InvalidRuleTest2 () {
+            var exception = Assert.Throws<ArgumentException> (() => new TldRule (null));
+            Assert.Equal ("RuleData is empty", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException), "Wildcard syntax not correct")]
-        public void InvalidRuleTest3()
-        {
-            new TldRule("*com");
+        [Fact]
+        public void InvalidRuleTest3 () {
+            var exception = Assert.Throws<FormatException> (() => new TldRule ("*com"));
+            Assert.Equal ("Wildcard syntax not correct", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException), "Wildcard syntax not correct")]
-        public void InvalidRuleTest4()
-        {
-            new TldRule("*bar.foo");
+        [Fact]
+        public void InvalidRuleTest4 () {
+            var exception = Assert.Throws<FormatException> (() => new TldRule ("*bar.foo"));
+            Assert.Equal ("Wildcard syntax not correct", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException), "Rule contains invalid empty part")]
-        public void InvalidRuleTest5()
-        {
-            new TldRule(".com");
+        [Fact]
+        public void InvalidRuleTest5 () {
+            var exception = Assert.Throws<FormatException> (() => new TldRule (".com"));
+            Assert.Equal ("Rule contains empty part", exception.Message);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FormatException), "Rule contains invalid empty part")]
-        public void InvalidRuleTest6()
-        {
-            new TldRule("www..com");
+        [Fact]
+        public void InvalidRuleTest6 () {
+            var exception = Assert.Throws<FormatException> (() => new TldRule ("www..com"));
+            Assert.Equal ("Rule contains empty part", exception.Message);
         }
 
-        [TestMethod]
-        public void ValidRuleTest1()
-        {
-            var tldRule = new TldRule("com");
-            Assert.AreEqual("com", tldRule.Name);
-            Assert.AreEqual(TldRuleType.Normal, tldRule.Type);
+        [Fact]
+        public void ValidRuleTest1 () {
+            var tldRule = new TldRule ("com");
+            Assert.Equal ("com", tldRule.Name);
+            Assert.Equal (TldRuleType.Normal, tldRule.Type);
         }
 
-        [TestMethod]
-        public void ValidRuleTest2()
-        {
-            var tldRule = new TldRule("*.com");
-            Assert.AreEqual("*.com", tldRule.Name);
-            Assert.AreEqual(TldRuleType.Wildcard, tldRule.Type);
+        [Fact]
+        public void ValidRuleTest2 () {
+            var tldRule = new TldRule ("*.com");
+            Assert.Equal ("*.com", tldRule.Name);
+            Assert.Equal (TldRuleType.Wildcard, tldRule.Type);
         }
 
-        [TestMethod]
-        public void ValidRuleTest3()
-        {
-            var tldRule = new TldRule("!com");
-            Assert.AreEqual("com", tldRule.Name);
-            Assert.AreEqual(TldRuleType.WildcardException, tldRule.Type);
+        [Fact]
+        public void ValidRuleTest3 () {
+            var tldRule = new TldRule ("!com");
+            Assert.Equal ("com", tldRule.Name);
+            Assert.Equal (TldRuleType.WildcardException, tldRule.Type);
         }
 
-        [TestMethod]
-        public void ValidRuleTest4()
-        {
-            var tldRule = new TldRule("co.uk");
-            Assert.AreEqual("co.uk", tldRule.Name);
-            Assert.AreEqual(TldRuleType.Normal, tldRule.Type);
+        [Fact]
+        public void ValidRuleTest4 () {
+            var tldRule = new TldRule ("co.uk");
+            Assert.Equal ("co.uk", tldRule.Name);
+            Assert.Equal (TldRuleType.Normal, tldRule.Type);
         }
 
-        [TestMethod]
-        public void ValidRuleTest5()
-        {
-            var tldRule = new TldRule("*.*.foo");
-            Assert.AreEqual("*.*.foo", tldRule.Name);
-            Assert.AreEqual(TldRuleType.Wildcard, tldRule.Type);
+        [Fact]
+        public void ValidRuleTest5 () {
+            var tldRule = new TldRule ("*.*.foo");
+            Assert.Equal ("*.*.foo", tldRule.Name);
+            Assert.Equal (TldRuleType.Wildcard, tldRule.Type);
         }
 
-        [TestMethod]
-        public void ValidRuleTest6()
-        {
-            var tldRule = new TldRule("a.b.web.*.foo", TldRuleDivision.Private);
-            Assert.AreEqual("a.b.web.*.foo", tldRule.Name);
-            Assert.AreEqual(TldRuleDivision.Private, tldRule.Division);
+        [Fact]
+        public void ValidRuleTest6 () {
+            var tldRule = new TldRule ("a.b.web.*.foo", TldRuleDivision.Private);
+            Assert.Equal ("a.b.web.*.foo", tldRule.Name);
+            Assert.Equal (TldRuleDivision.Private, tldRule.Division);
         }
     }
 }

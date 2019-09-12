@@ -1,14 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
-namespace Nager.PublicSuffix.UnitTest
-{
-    [TestClass]
-    public class PublicSuffixTestsWithIdnMappingNormalization : PublicSuffixTest
-    {
-        [TestInitialize()]
-        public void Initialize()
-        {
-            var domainParser = new DomainParser(new FileTldRuleProvider("effective_tld_names.dat"), new IdnMappingNormalizer());
+namespace Nager.PublicSuffix.UnitTest {
+    public class PublicSuffixTestsWithIdnMappingNormalization : PublicSuffixTest {
+        public PublicSuffixTestsWithIdnMappingNormalization () {
+            var domainParser = new DomainParser (new FileTldRuleProvider ("effective_tld_names.dat"), new IdnMappingNormalizer ());
             this._domainParser = domainParser;
         }
     }
