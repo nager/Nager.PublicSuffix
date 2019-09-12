@@ -70,13 +70,13 @@ namespace Nager.PublicSuffix {
         }
 
         public DomainName Get (Uri url, bool isResolver = false, bool repairUrl = false) {
-            if (!repairUrl && UrlFixer.IsValidUrl (url.ToString ()))
+            if ((!isResolver || !repairUrl) && UrlFixer.IsValidUrl (url.ToString ()))
                 return GetDomainName (url.ToString (), isResolver);
             throw new InvalidUrlException ("This url is invalid");
         }
 
         public DomainName Get (string url, bool isResolver = false, bool repairUrl = false) {
-            return GetDomainName (repairUrl ? UrlFixer.Repair (url).ToString () : url, isResolver);
+            return GetDomainName ((isResolver || repairUrl) ? UrlFixer.Repair (url).ToString () : url, isResolver);
         }
 
         private DomainName GetDomainName (string url, bool isResolver = false) {
