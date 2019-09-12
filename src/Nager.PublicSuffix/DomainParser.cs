@@ -96,8 +96,13 @@ namespace Nager.PublicSuffix {
         private string GetResolvedUrl (string uri) {
             try {
                 using (var httpClient = new HttpClient ()) {
-                    using (var response = httpClient.GetAsync (uri).ConfigureAwait (false).GetAwaiter ().GetResult ()) {
-                        return response.RequestMessage.RequestUri.ToString ();
+                    // using (var response = httpClient.GetAsync (uri).ConfigureAwait (false).GetAwaiter ().GetResult ()) {
+                    //     return response.RequestMessage.RequestUri.ToString ();
+                    // }
+                    using (var request = new HttpRequestMessage (new HttpMethod ("HEAD"), uri)) {
+                        using (var response = httpClient.SendAsync (request).ConfigureAwait (false).GetAwaiter ().GetResult ()) {
+                            return response.RequestMessage.RequestUri.ToString ();
+                        }
                     }
                 }
             } catch (NonResolvedUrlException ex) {
