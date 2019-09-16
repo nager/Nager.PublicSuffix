@@ -1,83 +1,68 @@
-﻿using System;
+﻿using Nager.PublicSuffix.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Nager.PublicSuffix
 {
+    /// <summary>
+    /// A TLD Domain parser
+    /// </summary>
     public class DomainParser
     {
-        private readonly ITldRuleProvider _ruleProvider;
         private DomainDataStructure _domainDataStructure;
         private IDomainNormalizer _domainNormalizer;
-        private TldRule _rootTldRule = new TldRule("*");
+        private readonly TldRule _rootTldRule = new TldRule("*");
 
+        /// <summary>
+        /// Creates and Initializes a DomainParse.
+        /// </summary>
+        /// <param name="rules">The list of rules.</param>
+        /// <param name="domainNormalizer">An <see cref="IDomainNormalizer"/>.</param>
         public DomainParser(IEnumerable<TldRule> rules, IDomainNormalizer domainNormalizer = null)
+            : this(domainNormalizer)
         {
             if (rules == null)
             {
                 throw new ArgumentNullException("rules");
             }
 
-            this.Initialize(rules, domainNormalizer);
-        }
-
-        public DomainParser(ITldRuleProvider ruleProvider, IDomainNormalizer domainNormalizer = null)
-        {
-            this._ruleProvider = ruleProvider ?? throw new ArgumentNullException("ruleProvider");
-
-            var rules = ruleProvider.BuildAsync().GetAwaiter().GetResult();
-            this.Initialize(rules, domainNormalizer);
-        }
-
-        private void Initialize(IEnumerable<TldRule> rules, IDomainNormalizer domainNormalizer)
-        {
             this.AddRules(rules);
+        }
+
+        /// <summary>
+        /// Creates and initializes a DomainParser.
+        /// </summary>
+        /// <param name="ruleProvider">A <see cref="TldRule"/> provider.</param>
+        /// <param name="domainNormalizer">An <see cref="IDomainNormalizer"/>.</param>
+        public DomainParser(ITldRuleProvider ruleProvider, IDomainNormalizer domainNormalizer = null)
+            : this(domainNormalizer)
+        {
+            var rules = ruleProvider.BuildAsync().GetAwaiter().GetResult();
+            this.AddRules(rules);
+        }
+
+        /// <summary>
+        /// Creates a DomainParser based on an already initialzed tree.
+        /// </summary>
+        /// <param name="initializedDataStructure">An already initialized tree.</param>
+        /// <param name="domainNormalizer">An <see cref="IDomainNormalizer"/>.</param>
+        public DomainParser(DomainDataStructure initializedDataStructure, IDomainNormalizer domainNormalizer = null)
+            : this(domainNormalizer)
+        {
+            _domainDataStructure = initializedDataStructure;
+        }
+
+        private DomainParser(IDomainNormalizer domainNormalizer)
+        {
             this._domainNormalizer = domainNormalizer ?? new UriNormalizer();
         }
 
-        private void AddRules(IEnumerable<TldRule> tldRules)
-        {
-            this._domainDataStructure = new DomainDataStructure("*", this._rootTldRule);
-
-            foreach (var tldRule in tldRules)
-            {
-                this.AddRule(tldRule);
-            }
-        }
-
-        private void AddRule(TldRule tldRule)
-        {
-            var structure = this._domainDataStructure;
-            var domainPart = string.Empty;
-
-            var parts = tldRule.Name.Split('.').Reverse().ToList();
-            for (var i = 0; i < parts.Count; i++)
-            {
-                domainPart = parts[i];
-
-                if (parts.Count - 1 > i)
-                {
-                    //Check if domain exists
-                    if (!structure.Nested.ContainsKey(domainPart))
-                    {
-                        structure.Nested.Add(domainPart, new DomainDataStructure(domainPart));
-                    }
-
-                    structure = structure.Nested[domainPart];
-                    continue;
-                }
-
-                //Check if domain exists
-                if (structure.Nested.ContainsKey(domainPart))
-                {
-                    structure.Nested[domainPart].TldRule = tldRule;
-                    continue;
-                }
-
-                structure.Nested.Add(domainPart, new DomainDataStructure(domainPart, tldRule));
-            }
-        }
-
+        /// <summary>
+        /// Tries to get a Domain from <paramref name="domain"/>.
+        /// </summary>
+        /// <param name="domain">The domain to parse.</param>
+        /// <returns><strong>null</strong> if <paramref name="domain"/> it's invalid.</returns>
         public DomainName Get(Uri domain)
         {
             var partlyNormalizedDomain = domain.Host;
@@ -91,12 +76,22 @@ namespace Nager.PublicSuffix
             return this.GetDomainFromParts(partlyNormalizedDomain, parts);
         }
 
+        /// <summary>
+        /// Tries to get a Domain from <paramref name="domain"/>.
+        /// </summary>
+        /// <param name="domain">The domain to parse.</param>
+        /// <returns><strong>null</strong> if <paramref name="domain"/> it's invalid.</returns>
         public DomainName Get(string domain)
         {
             var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string partlyNormalizedDomain);
             return this.GetDomainFromParts(partlyNormalizedDomain, parts);
         }
 
+        /// <summary>
+        /// Return whether <paramref name="domain"/> is valid or not.
+        /// </summary>
+        /// <param name="domain">The domain to check.</param>
+        /// <returns><strong>true</strong> if <paramref name="domain"/> it's valid.</returns>
         public bool IsValidDomain(string domain)
         {
             var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string partlyNormalizedDomain);
@@ -107,6 +102,13 @@ namespace Nager.PublicSuffix
             }
 
             return !domainName.TLDRule.Equals(this._rootTldRule);
+        }
+
+        private void AddRules(IEnumerable<TldRule> tldRules)
+        {
+            this._domainDataStructure = this._domainDataStructure ?? new DomainDataStructure("*", this._rootTldRule);
+
+            this._domainDataStructure.AddRules(tldRules);
         }
 
         private DomainName GetDomainFromParts(string domain, List<string> parts)
