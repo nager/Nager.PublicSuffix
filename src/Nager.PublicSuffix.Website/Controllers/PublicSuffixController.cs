@@ -9,10 +9,17 @@ namespace Nager.PublicSuffix.Website.Controllers
     [ApiController]
     public class PublicSuffixController : ControllerBase
     {
+        private readonly DomainDataStructure _domainDataStructure;
+
+        public PublicSuffixController(DomainDataStructure domainDataStructure)
+        {
+            _domainDataStructure = domainDataStructure;
+        }
+
         [HttpGet]
         public ActionResult<Task<DomainReport>> Get(string domain)
         {
-            var domainParser = new DomainParser(new WebTldRuleProvider());
+            var domainParser = new DomainParser(_domainDataStructure);
             var domainName = domainParser.Get(domain);
             var valid = domainParser.IsValidDomain(domain);
 

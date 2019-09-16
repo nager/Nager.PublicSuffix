@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Nager.PublicSuffix.Extensions;
 
 namespace Nager.PublicSuffix.Website
 {
@@ -25,6 +19,15 @@ namespace Nager.PublicSuffix.Website
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(svcs =>
+            {
+                var provider = new WebTldRuleProvider();
+                var rules = provider.BuildAsync().GetAwaiter().GetResult();
+                var structure = new DomainDataStructure("*", new TldRule("*"));
+                structure.AddRules(rules);
+                return structure;
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
