@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="AsyncAwaitTest.cs" />
     <Compile Include="DomainNameTestsWithIdnMappingNormalization.cs" />
+    <Compile Include="DomainNameTestsWithInitializedStructure.cs" />
     <Compile Include="DomainNameTestsWithUriNormalization.cs" />
     <Compile Include="NormalizationVariationTests.cs" />
     <Compile Include="PublicSuffixTest.cs" />
