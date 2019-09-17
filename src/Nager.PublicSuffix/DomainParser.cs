@@ -50,7 +50,7 @@ namespace Nager.PublicSuffix
         public DomainParser(DomainDataStructure initializedDataStructure, IDomainNormalizer domainNormalizer = null)
             : this(domainNormalizer)
         {
-            _domainDataStructure = initializedDataStructure;
+            this._domainDataStructure = initializedDataStructure;
         }
 
         private DomainParser(IDomainNormalizer domainNormalizer)

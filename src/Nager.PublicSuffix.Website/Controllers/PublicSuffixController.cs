@@ -13,13 +13,13 @@ namespace Nager.PublicSuffix.Website.Controllers
 
         public PublicSuffixController(DomainDataStructure domainDataStructure)
         {
-            _domainDataStructure = domainDataStructure;
+            this._domainDataStructure = domainDataStructure;
         }
 
         [HttpGet]
         public ActionResult<Task<DomainReport>> Get(string domain)
         {
-            var domainParser = new DomainParser(_domainDataStructure);
+            var domainParser = new DomainParser(this._domainDataStructure);
             var domainName = domainParser.Get(domain);
             var valid = domainParser.IsValidDomain(domain);
 
