@@ -1,6 +1,6 @@
 Nager.PublicSuffix
 ==========
-The TLD proliferation makes it difficult to check domain names are valid. This project use the rules of publicsuffix.org a list of known public domain suffixes (TLD) to validate and split domains in the parts (tld, domain, subdomain). The validation rules are load direct from https://publicsuffix.org.
+The TLD proliferation makes it difficult to check whether domain names are valid. This project uses the rules of publicsuffix.org, a list of known public domain suffixes (TLD) to validate and split domains into three the parts (TLD, domain, subdomain). The validation rules are loaded directly from https://publicsuffix.org.
 
 A domain name has 3 major parts:
 
@@ -25,12 +25,12 @@ PM> install-package Nager.PublicSuffix
 - Async
 
 ### Donation possibilities
-If this project help you reduce time to develop, you can give me a beer :beer:
+If this project helps you reduce development time, you may buy me a beer :beer:
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/nagerat/25)
 
 ### Examples
 
-#### Load data from web (publicsuffix.org)
+#### Loading data from web (publicsuffix.org)
 ```cs
 var domainParser = new DomainParser(new WebTldRuleProvider());
 
@@ -42,7 +42,7 @@ var domainName = domainParser.Get("sub.test.co.uk");
 //domainName.TLD = "co.uk";
 ```
 
-#### Load data from web change cache config
+#### Loading data from web change cache config
 ```cs
 var webTldRuleProvider = new WebTldRuleProvider(cacheProvider: new FileCacheProvider(cacheTimeToLive: new TimeSpan(10, 0, 0))); //cache data for 10 hours
 
@@ -59,7 +59,7 @@ for (var i = 0; i < 100; i++)
 }
 ```
 
-#### Load data from file
+#### Loading data from file
 ```cs
 var domainParser = new DomainParser(new FileTldRuleProvider("effective_tld_names.dat"));
 
