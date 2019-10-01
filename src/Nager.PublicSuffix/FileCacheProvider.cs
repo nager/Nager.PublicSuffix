@@ -40,20 +40,24 @@ namespace Nager.PublicSuffix
             return !cacheInvalid;
         }
 
-        public Task<string> GetValueAsync()
+        public async Task<string> GetAsync()
         {
             if (!this.IsCacheValid())
             {
-                return Task.FromResult<string>(null);
+                return null;
             }
-            return Task.FromResult(File.ReadAllText(this._cacheFilePath));
+
+            using (var reader = File.OpenText(this._cacheFilePath))
+            {
+                return await reader.ReadToEndAsync().ConfigureAwait(false);
+            }
         }
 
-        public async Task SetValueAsync(string val)
+        public async Task SetAsync(string data)
         {
             using (var streamWriter = File.CreateText(this._cacheFilePath))
             {
-                await streamWriter.WriteAsync(val).ConfigureAwait(false);
+                await streamWriter.WriteAsync(data).ConfigureAwait(false);
             }
         }
     }

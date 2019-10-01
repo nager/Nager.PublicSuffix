@@ -9,7 +9,6 @@ namespace Nager.PublicSuffix
         /// Builds the list of TldRules
         /// </summary>
         /// <returns>List of TldRules</returns>
-
         Task<IEnumerable<TldRule>> BuildAsync();
     }
 }

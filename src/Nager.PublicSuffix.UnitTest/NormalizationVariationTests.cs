@@ -26,7 +26,7 @@ namespace Nager.PublicSuffix.UnitTest
         }
 
         [TestMethod]
-        public void UnderscoreBasedVariations()
+        public void UnderscoreBasedVariationsValid()
         {
             // this test reveals the motivation for creating a different method of normalization because of the handling of underscore characters
             // by the Uri class.
@@ -40,7 +40,12 @@ namespace Nager.PublicSuffix.UnitTest
             this.PerformParsingCheck("_abc.def.ghi.jkl.com", "jkl.com", "jkl.com");
             this.PerformParsingCheck("abc._def.ghi.jkl.com", "jkl.com", "jkl.com");
             this.PerformParsingCheck("def._ghi.jkl.com", "jkl.com", "jkl.com");
+        }
 
+        [TestMethod]
+        [ExpectedException(typeof(ParseException))]
+        public void UnderscoreBasedVariationsInvalid()
+        {
             // These domains are treated as invalid and produce null via the Uri normalization method.
             // def._ghi.jkl.com is valid but
             // abc.def._ghi.jkl.com is invalid.
@@ -49,12 +54,14 @@ namespace Nager.PublicSuffix.UnitTest
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ParseException))]
         public void SingleWordTest()
         {
             this.PerformParsingCheck("singleword", null, null);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ParseException))]
         public void SimpleNumberTest()
         {
             // Uri object transforms 12344 to 48.57 because 12345 = (48 * 256) + (57 * 1)
@@ -64,7 +71,7 @@ namespace Nager.PublicSuffix.UnitTest
         }
 
         [TestMethod]
-        public void DashBasedVariations()
+        public void DashBasedVariationsValid()
         {
             // Adding sub domains to these examples demonstrates how the Uri validation behaves in an unexpected way.
             // For example "sub.-example.com" is valid but "double.sub.-example.com" is not.
@@ -75,13 +82,22 @@ namespace Nager.PublicSuffix.UnitTest
             this.PerformParsingCheck("example.-com-", "example.-com-", "example.-com-");
 
             this.PerformParsingCheck("sub.-example.com", "-example.com", "-example.com");
-            this.PerformParsingCheck("sub.example.-com", null, "example.-com");
             this.PerformParsingCheck("sub.example.com-", "example.com-", "example.com-");
-            this.PerformParsingCheck("sub.example.-com-", null, "example.-com-");
 
+            this.PerformParsingCheck("double.sub.example.com-", "example.com-", "example.com-");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ParseException))]
+        public void DashBasedVariationsInvalid()
+        {
+            // Adding sub domains to these examples demonstrates how the Uri validation behaves in an unexpected way.
+            // For example "sub.-example.com" is valid but "double.sub.-example.com" is not.
+
+            this.PerformParsingCheck("sub.example.-com", null, "example.-com");
+            this.PerformParsingCheck("sub.example.-com-", null, "example.-com-");
             this.PerformParsingCheck("double.sub.-example.com", null, "-example.com");
             this.PerformParsingCheck("double.sub.example.-com", null, "example.-com");
-            this.PerformParsingCheck("double.sub.example.com-", "example.com-", "example.com-");
             this.PerformParsingCheck("double.sub.example.-com-", null, "example.-com-");
         }
 

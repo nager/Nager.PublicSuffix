@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>net45;net461;netstandard2.0</TargetFrameworks>
-    <Version>1.4.0</Version>
-    <AssemblyVersion>1.4.0</AssemblyVersion>
-    <FileVersion>1.4.0</FileVersion>
+    <Version>1.5.0</Version>
+    <AssemblyVersion>1.5.0</AssemblyVersion>
+    <FileVersion>1.5.0</FileVersion>
     <Authors>Tino Hager</Authors>
     <Company>nager.at</Company>
     <Copyright>Copyright ©  2017</Copyright>
@@ -13,7 +13,7 @@
     <RepositoryUrl>https://github.com/tinohager/Nager.PublicSuffix</RepositoryUrl>
     <Description>Domain parsing and validating (TLD, domain, subdomain) provide easy and fast access to Public Suffix List</Description>
     <PackageTags>PublicSuffix publicsuffix.org public-suffix TLD DomainParser domain parser Registrable Domain DomainName Hostname Subdomain</PackageTags>
-    <PackageReleaseNotes>New ctor to take initialized DomainDataStructure</PackageReleaseNotes>
+    <PackageReleaseNotes>Remove null returns replace with Exceptions</PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/tinohager/Nager.PublicSuffix/master/doc/icon/logo.png</PackageIconUrl>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>true</IncludeSymbols>

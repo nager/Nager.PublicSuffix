@@ -115,7 +115,7 @@ namespace Nager.PublicSuffix
         {
             if (parts == null || parts.Count == 0 || parts.Any(x => x.Equals(string.Empty)))
             {
-                return null;
+                throw new ParseException("Invalid domain part detected");
             }
 
             var structure = this._domainDataStructure;
@@ -132,11 +132,16 @@ namespace Nager.PublicSuffix
             //Domain is TLD
             if (parts.Count == winningRule.LabelCount)
             {
-                return null;
+                parts.Reverse();
+                if (string.Join(".", parts).Equals(winningRule.Name))
+                {
+                    throw new ParseException($"Domain is a TLD {winningRule.Name}");
+                }
+
+                throw new ParseException($"Unknown domain {domain}");
             }
 
-            var domainName = new DomainName(domain, winningRule);
-            return domainName;
+            return new DomainName(domain, winningRule);
         }
 
         private void FindMatches(IEnumerable<string> parts, DomainDataStructure structure, List<TldRule> matches)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -19,22 +18,25 @@ namespace Nager.PublicSuffix
             if (cacheProvider == null)
             {
                 this._cacheProvider = new FileCacheProvider();
+                return;
             }
-            else
-            {
-                this._cacheProvider = cacheProvider;
-            }
+
+            this._cacheProvider = cacheProvider;
         }
 
         public async Task<IEnumerable<TldRule>> BuildAsync()
         {
             var ruleParser = new TldRuleParser();
 
-            var ruleData = await this._cacheProvider.GetValueAsync().ConfigureAwait(false);
-            if (string.IsNullOrEmpty(ruleData))
+            string ruleData;
+            if (!this._cacheProvider.IsCacheValid())
             {
                 ruleData = await this.LoadFromUrl(this._fileUrl).ConfigureAwait(false);
-                await this._cacheProvider.SetValueAsync(ruleData).ConfigureAwait(false);
+                await this._cacheProvider.SetAsync(ruleData).ConfigureAwait(false);
+            }
+            else
+            {
+                ruleData = await this._cacheProvider.GetAsync().ConfigureAwait(false);
             }
 
             var rules = ruleParser.ParseRules(ruleData);
@@ -43,20 +45,16 @@ namespace Nager.PublicSuffix
 
         public async Task<string> LoadFromUrl(string url)
         {
-            try
+            using (var httpClient = new HttpClient())
+            using (var response = await httpClient.GetAsync(url).ConfigureAwait(false))
             {
-                using (var httpClient = new HttpClient())
+                if (!response.IsSuccessStatusCode)
                 {
-                    using (var response = await httpClient.GetAsync(url).ConfigureAwait(false))
-                    {
-                        return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    }
+                    throw new RuleLoadException($"Cannot load from {url} {response.StatusCode}");
                 }
+
+                return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             }
-            catch (Exception exception)
-            {
-                return await Task.FromResult("error");
-            }
-         }
+        }
     }
 }

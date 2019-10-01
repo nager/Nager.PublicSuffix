@@ -23,7 +23,7 @@ namespace Nager.PublicSuffix
 
             if (!Uri.TryCreate(domain, UriKind.RelativeOrAbsolute, out Uri uri))
             {
-                return null;
+                throw new ParseException("Cannot parse domain to an uri");
             }
 
             partlyNormalizedDomain = uri.Host;

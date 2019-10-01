@@ -76,6 +76,18 @@ namespace Nager.PublicSuffix.UnitTest
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ParseException))]
+        public void CheckDomainName5()
+        {
+            var rules = new List<TldRule>();
+            rules.Add(new TldRule("uk"));
+            rules.Add(new TldRule("co.uk"));
+            var domainParser = this.GetParserForRules(rules);
+
+            domainParser.Get("co.uk");
+        }
+
+        [TestMethod]
         public void CheckDomainNameForUnlistedTld()
         {
             var rules = new List<TldRule>();
