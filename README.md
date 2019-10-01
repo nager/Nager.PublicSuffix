@@ -25,10 +25,6 @@ You can try the logic right here [publicsuffix test tool](https://publicsuffix.n
 - CacheProvider
 - Async support
 
-## Donation possibilities
-If this project helps you reduce development time, you may buy me a beer :beer:
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/nagerat/25)
-
 ## Examples
 
 ### Loading data from web (publicsuffix.org)
