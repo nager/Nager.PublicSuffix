@@ -28,6 +28,7 @@ You can try the logic right here [publicsuffix test tool](https://publicsuffix.n
 ## Examples
 
 ### Loading data from web (publicsuffix.org)
+Without any config the `WebTldRuleProvider` have a default cache live time of 1 day then you must refresh the cache with execute  `BuildAsync`;
 ```cs
 var domainParser = new DomainParser(new WebTldRuleProvider());
 
@@ -41,7 +42,9 @@ var domainName = domainParser.Get("sub.test.co.uk");
 
 ### Loading data from web change cache config
 ```cs
-var webTldRuleProvider = new WebTldRuleProvider(cacheProvider: new FileCacheProvider(cacheTimeToLive: new TimeSpan(10, 0, 0))); //cache data for 10 hours
+//cache data for 10 hours
+var cacheProvider = new FileCacheProvider(cacheTimeToLive: new TimeSpan(10, 0, 0));
+var webTldRuleProvider = new WebTldRuleProvider(cacheProvider: cacheProvider);
 
 var domainParser = new DomainParser(webTldRuleProvider);
 for (var i = 0; i < 100; i++)
