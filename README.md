@@ -4,33 +4,34 @@ The TLD proliferation makes it difficult to check whether domain names are valid
 
 A domain name has 3 major parts:
 
-TLD | Domain | Subdomain |
---- | --- | --- |
-com | google | blog |
-org | wikipedia | www |
-ru | yandex | mail |
+Example | TLD | Domain | Subdomain |
+--- | --- | --- | --- |
+blog.google.com | com | google | blog |
+www.wikipedia.org | org | wikipedia | www |
+mail.yandex.ru | ru | yandex | mail |
+www.amazon.co.uk | co.uk | amazon | www |
 
-### Website
-https://publicsuffix.nager.at/
-
-### nuget
+## nuget
 The package is available on [nuget](https://www.nuget.org/packages/Nager.PublicSuffix)
 ```
 PM> install-package Nager.PublicSuffix
 ```
+## Online test tool
+You can try the logic right here [publicsuffix test tool](https://publicsuffix.nager.at)
 
-### Benefits
-- Very fast
-- Integrated cache
-- Async
+## Benefits
+- High performance
+- FileTldRuleProvider or WebTldRuleProvider
+- CacheProvider
+- Async support
 
-### Donation possibilities
+## Donation possibilities
 If this project helps you reduce development time, you may buy me a beer :beer:
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/nagerat/25)
 
-### Examples
+## Examples
 
-#### Loading data from web (publicsuffix.org)
+### Loading data from web (publicsuffix.org)
 ```cs
 var domainParser = new DomainParser(new WebTldRuleProvider());
 
@@ -42,24 +43,24 @@ var domainName = domainParser.Get("sub.test.co.uk");
 //domainName.TLD = "co.uk";
 ```
 
-#### Loading data from web change cache config
+### Loading data from web change cache config
 ```cs
 var webTldRuleProvider = new WebTldRuleProvider(cacheProvider: new FileCacheProvider(cacheTimeToLive: new TimeSpan(10, 0, 0))); //cache data for 10 hours
 
 var domainParser = new DomainParser(webTldRuleProvider);
 for (var i = 0; i < 100; i++)
 {
-	var isValid = webTldRuleProvider.CacheProvider.IsCacheValid();
-	if (!isValid)
-	{
-		webTldRuleProvider.BuildAsync().GetAwaiter().GetResult(); //Reload data
-	}
+    var isValid = webTldRuleProvider.CacheProvider.IsCacheValid();
+    if (!isValid)
+    {
+        webTldRuleProvider.BuildAsync().GetAwaiter().GetResult(); //Reload data
+    }
 	
-	var domainInfo = domainParser.Get($"sub{i}.test.co.uk");
+    var domainInfo = domainParser.Get($"sub{i}.test.co.uk");
 }
 ```
 
-#### Loading data from file
+### Loading data from file
 ```cs
 var domainParser = new DomainParser(new FileTldRuleProvider("effective_tld_names.dat"));
 
