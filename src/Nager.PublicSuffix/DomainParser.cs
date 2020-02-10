@@ -133,9 +133,21 @@ namespace Nager.PublicSuffix
             if (parts.Count == winningRule.LabelCount)
             {
                 parts.Reverse();
-                if (string.Join(".", parts).Equals(winningRule.Name))
+                var tld = string.Join(".", parts);
+
+                if (winningRule.Type == TldRuleType.Wildcard)
                 {
-                    throw new ParseException($"Domain is a TLD {winningRule.Name}");
+                    if (tld.EndsWith(winningRule.Name.Substring(1)))
+                    {
+                        throw new ParseException("Domain is a TLD according publicsuffix", winningRule);
+                    }
+                }
+                else
+                {
+                    if (tld.Equals(winningRule.Name))
+                    {
+                        throw new ParseException("Domain is a TLD according publicsuffix", winningRule);
+                    }
                 }
 
                 throw new ParseException($"Unknown domain {domain}");

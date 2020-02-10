@@ -10,15 +10,27 @@ namespace Nager.PublicSuffix
         /// <summary>
         /// Reason of exception
         /// </summary>
-        public string Reason { get; set; }
+        public TldRule WinningRule { get; private set; }
+
+        /// <summary>
+        /// Reason of exception
+        /// </summary>
+        public string ErrorMessage { get; private set; }
 
         /// <summary>
         /// Parse Exception
         /// </summary>
-        /// <param name="reason"></param>
-        public ParseException(string reason)
+        /// <param name="errorMessage"></param>
+        /// <param name="winningRule"></param>
+        public ParseException(string errorMessage, TldRule winningRule = null)
         {
-            this.Reason = reason;
+            this.ErrorMessage = errorMessage;
+            this.WinningRule = winningRule;
         }
+
+        /// <summary>
+        /// Message
+        /// </summary>
+        public override string Message => this.ErrorMessage;
     }
 }

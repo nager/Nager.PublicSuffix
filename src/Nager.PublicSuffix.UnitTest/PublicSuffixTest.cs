@@ -111,6 +111,7 @@ namespace Nager.PublicSuffix.UnitTest
 
         [DataTestMethod]
         [DataRow("COM")]
+        [DataRow("com")]
         [DataRow("公司.cn")]
         [DataRow("中国")]
         [DataRow("xn--55qx5d.cn")]
@@ -124,9 +125,21 @@ namespace Nager.PublicSuffix.UnitTest
         [DataRow("ac.jp")]
         [DataRow("jp")]
         [DataRow("uk.com")]
-        [DataRow("com")]
         [DataRow("biz")]
-        [ExpectedException(typeof(ParseException))]
+        [DataRow("w.bg")]
+        [DataRow("bi")]
+        [DataRow("info.bo")]
+        [DataRow("ns.ca")]
+        [DataRow("ha.cn")]
+        [DataRow("fm")]
+        [DataRow("gmx")]
+        [DataRow("hotmail")]
+        [DataRow("cloudfront.net")]
+        [DataRow("us-east-1.amazonaws.com")]
+        [DataRow("ec2-34-206-8-177.compute-1.amazonaws.com")]
+        [DataRow("s3-website.us-east-2.amazonaws.com")]
+        [DataRow("test.stg.dev")]
+        [ExpectedExceptionWithMessage(typeof(ParseException), "Domain is a TLD according publicsuffix")]
         public void TldCheck(string domain)
         {
             this.CheckPublicSuffix(domain, null);
