@@ -8,22 +8,22 @@ namespace Nager.PublicSuffix
     public class DomainInfo
     {
         /// <summary>
-        /// Domain Name without the TLD
+        /// Domain Name without the TLD<para />
         /// e.x. microsoft, google
         /// </summary>
         public string Domain { get; private set; }
         /// <summary>
-        /// The TLD
+        /// The TLD<para />
         /// e.x. com, net, de, co.uk
         /// </summary>
         public string TLD { get; private set; }
         /// <summary>
-        /// The Sub Domain
+        /// The Sub Domain<para />
         /// e.x. www, mail
         /// </summary>
         public string SubDomain { get; private set; }
         /// <summary>
-        /// The Registrable Domain
+        /// The Registrable Domain<para />
         /// e.x. microsoft.com, amazon.co.uk
         /// </summary>
         public string RegistrableDomain { get; private set; }
