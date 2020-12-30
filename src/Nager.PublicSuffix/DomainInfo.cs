@@ -9,22 +9,22 @@ namespace Nager.PublicSuffix
     {
         /// <summary>
         /// Domain Name without the TLD<para />
-        /// e.x. microsoft, google
+        /// e.g. microsoft, google
         /// </summary>
         public string Domain { get; private set; }
         /// <summary>
         /// The TLD<para />
-        /// e.x. com, net, de, co.uk
+        /// e.g. com, net, de, co.uk
         /// </summary>
         public string TLD { get; private set; }
         /// <summary>
         /// The Sub Domain<para />
-        /// e.x. www, mail
+        /// e.g. www, mail
         /// </summary>
         public string SubDomain { get; private set; }
         /// <summary>
         /// The Registrable Domain<para />
-        /// e.x. microsoft.com, amazon.co.uk
+        /// e.g. microsoft.com, amazon.co.uk
         /// </summary>
         public string RegistrableDomain { get; private set; }
         /// <summary>
