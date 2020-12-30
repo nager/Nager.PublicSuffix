@@ -14,7 +14,7 @@ namespace Nager.PublicSuffix.UnitTest
             rules.Add(new TldRule("com"));
             var domainParser = this.GetParserForRules(rules);
 
-            var domainName = domainParser.Get("test.com");
+            var domainName = domainParser.Parse("test.com");
 
             Assert.AreEqual("test", domainName.Domain);
             Assert.AreEqual("com", domainName.TLD);
@@ -31,7 +31,7 @@ namespace Nager.PublicSuffix.UnitTest
             rules.Add(new TldRule("co.uk"));
             var domainParser = this.GetParserForRules(rules);
 
-            var domainName = domainParser.Get("test.co.uk");
+            var domainName = domainParser.Parse("test.co.uk");
 
             Assert.AreEqual("test", domainName.Domain);
             Assert.AreEqual("co.uk", domainName.TLD);
@@ -48,7 +48,7 @@ namespace Nager.PublicSuffix.UnitTest
             rules.Add(new TldRule("co.uk"));
             var domainParser = this.GetParserForRules(rules);
 
-            var domainName = domainParser.Get("sub.test.co.uk");
+            var domainName = domainParser.Parse("sub.test.co.uk");
 
             Assert.AreEqual("test", domainName.Domain);
             Assert.AreEqual("co.uk", domainName.TLD);
@@ -66,7 +66,7 @@ namespace Nager.PublicSuffix.UnitTest
             rules.Add(new TldRule("*.sch.uk"));
             var domainParser = this.GetParserForRules(rules);
 
-            var domainName = domainParser.Get("sub.test1.test2.sch.uk");
+            var domainName = domainParser.Parse("sub.test1.test2.sch.uk");
 
             Assert.AreEqual("test1", domainName.Domain);
             Assert.AreEqual("test2.sch.uk", domainName.TLD);
@@ -84,7 +84,7 @@ namespace Nager.PublicSuffix.UnitTest
             rules.Add(new TldRule("co.uk"));
             var domainParser = this.GetParserForRules(rules);
 
-            domainParser.Get("co.uk");
+            domainParser.Parse("co.uk");
         }
 
         [TestMethod]
@@ -95,7 +95,7 @@ namespace Nager.PublicSuffix.UnitTest
             rules.Add(new TldRule("co.uk"));
             var domainParser = this.GetParserForRules(rules);
 
-            var domainName = domainParser.Get("unlisted.domain.example");
+            var domainName = domainParser.Parse("unlisted.domain.example");
 
             Assert.AreEqual("domain", domainName.Domain);
             Assert.AreEqual("example", domainName.TLD);

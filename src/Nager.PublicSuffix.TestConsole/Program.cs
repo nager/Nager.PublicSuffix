@@ -46,7 +46,7 @@ namespace Nager.PublicSuffix.TestConsole
                     Console.WriteLine("Reload data");
                 }
 
-                var domainInfo = domainParser.Get($"sub{i}.test.co.uk");
+                var domainInfo = domainParser.Parse($"sub{i}.test.co.uk");
 
                 Console.WriteLine("RegistrableDomain:{0}", domainInfo.RegistrableDomain);
                 Console.WriteLine("SubDomain:{0}", domainInfo.SubDomain);
@@ -57,7 +57,7 @@ namespace Nager.PublicSuffix.TestConsole
         public static void LoadFromFile()
         {
             var domainParser = new DomainParser(new FileTldRuleProvider("effective_tld_names.dat"));
-            var domainInfo = domainParser.Get("sub.test.co.uk");
+            var domainInfo = domainParser.Parse("sub.test.co.uk");
 
             Console.WriteLine("RegistrableDomain:{0}", domainInfo.RegistrableDomain);
             Console.WriteLine("SubDomain:{0}", domainInfo.SubDomain);
@@ -82,7 +82,7 @@ namespace Nager.PublicSuffix.TestConsole
             sw.Start();
             for (var i = 0; i< 100000; i++)
             {
-                var domainInfo = domainParser.Get($"sub{i}.test.co.uk");
+                var domainInfo = domainParser.Parse($"sub{i}.test.co.uk");
             }
             sw.Stop();
 

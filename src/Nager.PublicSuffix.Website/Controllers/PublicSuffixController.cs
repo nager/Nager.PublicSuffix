@@ -20,7 +20,7 @@ namespace Nager.PublicSuffix.Website.Controllers
         public ActionResult<Task<DomainReport>> Get(string domain)
         {
             var domainParser = new DomainParser(this._domainDataStructure);
-            var domainName = domainParser.Get(domain);
+            var domainName = domainParser.Parse(domain);
             var valid = domainParser.IsValidDomain(domain);
 
             var domainReport = new DomainReport

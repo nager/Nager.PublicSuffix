@@ -27,20 +27,28 @@ You can try the logic right here [publicsuffix test tool](https://publicsuffix.n
 
 ## Examples
 
-### Loading data from web (publicsuffix.org)
-Without any config the `WebTldRuleProvider` have a default cache live time of 1 day then you must refresh the cache with execute  `BuildAsync`;
+### Analyze domain
+Without a custom config the `WebTldRuleProvider` has a default cache live time of 1 day, then you must refresh the cache with execute `BuildAsync`;
 ```cs
 var domainParser = new DomainParser(new WebTldRuleProvider());
 
-var domainName = domainParser.Get("sub.test.co.uk");
-//domainName.Domain = "test";
-//domainName.Hostname = "sub.test.co.uk";
-//domainName.RegistrableDomain = "test.co.uk";
-//domainName.SubDomain = "sub";
-//domainName.TLD = "co.uk";
+var domainInfo = domainParser.Parse("sub.test.co.uk");
+//domainInfo.Domain = "test";
+//domainInfo.Hostname = "sub.test.co.uk";
+//domainInfo.RegistrableDomain = "test.co.uk";
+//domainInfo.SubDomain = "sub";
+//domainInfo.TLD = "co.uk";
 ```
 
-### Loading data from web change cache config
+### Check is a valid domain
+Without a custom config the `WebTldRuleProvider` has a default cache live time of 1 day, then you must refresh the cache with execute `BuildAsync`;
+```cs
+var domainParser = new DomainParser(new WebTldRuleProvider());
+
+var isValid = domainParser.IsValidDomain("sub.test.co.uk");
+```
+
+### Change the default cache time
 ```cs
 //cache data for 10 hours
 var cacheProvider = new FileCacheProvider(cacheTimeToLive: new TimeSpan(10, 0, 0));
@@ -55,18 +63,18 @@ for (var i = 0; i < 100; i++)
         webTldRuleProvider.BuildAsync().GetAwaiter().GetResult(); //Reload data
     }
 	
-    var domainInfo = domainParser.Get($"sub{i}.test.co.uk");
+    var domainInfo = domainParser.Parse($"sub{i}.test.co.uk");
 }
 ```
 
-### Loading data from file
+### Use a local publicsuffix data file
 ```cs
 var domainParser = new DomainParser(new FileTldRuleProvider("effective_tld_names.dat"));
 
-var domainName = domainParser.Get("sub.test.co.uk");
-//domainName.Domain = "test";
-//domainName.Hostname = "sub.test.co.uk";
-//domainName.RegistrableDomain = "test.co.uk";
-//domainName.SubDomain = "sub";
-//domainName.TLD = "co.uk";
+var domainInfo = domainParser.Parse("sub.test.co.uk");
+//domainInfo.Domain = "test";
+//domainInfo.Hostname = "sub.test.co.uk";
+//domainInfo.RegistrableDomain = "test.co.uk";
+//domainInfo.SubDomain = "sub";
+//domainInfo.TLD = "co.uk";
 ```

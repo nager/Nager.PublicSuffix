@@ -109,7 +109,7 @@ namespace Nager.PublicSuffix.UnitTest
 
         private void PerformParsingCheckUsingParser(string domain, string expectedRegistrableDomain, DomainParser parserToCheckWith, string parserDescription)
         {
-            var domainData = parserToCheckWith.Get(domain);
+            var domainData = parserToCheckWith.Parse(domain);
             if (domainData == null)
             {
                 Assert.IsNull(expectedRegistrableDomain, $"{parserDescription} produced null instead of {expectedRegistrableDomain} from {domain}");

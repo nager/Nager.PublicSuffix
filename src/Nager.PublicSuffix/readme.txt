@@ -1,4 +1,4 @@
-Thank you for using the Nager.PublicSuffix package (https://github.com/tinohager/Nager.PublicSuffix)
+Thank you for using the Nager.PublicSuffix package (https://github.com/nager/Nager.PublicSuffix)
 ----------------------------------------------------------------
 Please support this project with the award of a GitHub Star (★)
 
@@ -8,9 +8,12 @@ Examples:
 
 var domainParser = new DomainParser(new WebTldRuleProvider());
 
-var domainName = domainParser.Get("sub.test.co.uk");
-//domainName.Domain = "test";
-//domainName.Hostname = "sub.test.co.uk";
-//domainName.RegistrableDomain = "test.co.uk";
-//domainName.SubDomain = "sub";
-//domainName.TLD = "co.uk";
+var domainInfo = domainParser.Parse("sub.test.co.uk");
+//domainInfo.Domain = "test";
+//domainInfo.Hostname = "sub.test.co.uk";
+//domainInfo.RegistrableDomain = "test.co.uk";
+//domainInfo.SubDomain = "sub";
+//domainInfo.TLD = "co.uk";
+
+
+var isValid = domainParser.IsValidDomain("sub.test.co.uk");

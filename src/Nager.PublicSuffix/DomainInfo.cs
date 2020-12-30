@@ -2,20 +2,45 @@
 
 namespace Nager.PublicSuffix
 {
-    public class DomainName
+    /// <summary>
+    /// Domain Info
+    /// </summary>
+    public class DomainInfo
     {
+        /// <summary>
+        /// Domain Name without the TLD
+        /// </summary>
+        /// <example>microsoft, google</example>
         public string Domain { get; private set; }
+        /// <summary>
+        /// The TLD
+        /// </summary>
+        /// <example>com, net, de, co.uk</example>
         public string TLD { get; private set; }
+        /// <summary>
+        /// The sub domain
+        /// </summary>
+        /// <example>www, mail, </example>
         public string SubDomain { get; private set; }
+        /// <summary>
+        /// The Registrable Domain
+        /// </summary>
+        /// <example>microsoft.com, amazon.co.uk</example>
         public string RegistrableDomain { get; private set; }
+        /// <summary>
+        /// Fully qualified hostname (FQDN)
+        /// </summary>
         public string Hostname { get; private set; }
+        /// <summary>
+        /// The matching public suffix rule
+        /// </summary>
         public TldRule TLDRule { get; private set; }
 
-        public DomainName()
+        public DomainInfo()
         {
         }
 
-        public DomainName(string domain, TldRule tldRule)
+        public DomainInfo(string domain, TldRule tldRule)
         {
             if (string.IsNullOrEmpty(domain))
             {

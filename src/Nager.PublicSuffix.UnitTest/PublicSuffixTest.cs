@@ -13,7 +13,7 @@ namespace Nager.PublicSuffix.UnitTest
         {
             Assert.IsNotNull(this._domainParser, "_domainParser is null");
 
-            var domainData = this._domainParser.Get(domain);
+            var domainData = this._domainParser.Parse(domain);
             if (domainData == null)
             {
                 Assert.IsNull(expected);

@@ -6,12 +6,12 @@ using System.Linq;
 namespace Nager.PublicSuffix
 {
     /// <summary>
-    /// A TLD Domain parser
+    /// Domain parser
     /// </summary>
-    public class DomainParser
+    public class DomainParser : IDomainParser
     {
         private DomainDataStructure _domainDataStructure;
-        private IDomainNormalizer _domainNormalizer;
+        private readonly IDomainNormalizer _domainNormalizer;
         private readonly TldRule _rootTldRule = new TldRule("*");
 
         /// <summary>
@@ -58,12 +58,20 @@ namespace Nager.PublicSuffix
             this._domainNormalizer = domainNormalizer ?? new UriNormalizer();
         }
 
-        /// <summary>
-        /// Tries to get a Domain from <paramref name="domain"/>.
-        /// </summary>
-        /// <param name="domain">The domain to parse.</param>
-        /// <returns><strong>null</strong> if <paramref name="domain"/> it's invalid.</returns>
-        public DomainName Get(Uri domain)
+        [Obsolete("Get is deprecated, please use Parse instead.")]
+        public DomainInfo Get(Uri domain)
+        {
+            return this.Parse(domain);
+        }
+
+        [Obsolete("Get is deprecated, please use Parse instead.")]
+        public DomainInfo Get(string domain)
+        {
+            return this.Parse(domain);
+        }
+
+        ///<inheritdoc/>
+        public DomainInfo Parse(Uri domain)
         {
             var partlyNormalizedDomain = domain.Host;
             var normalizedHost = domain.GetComponents(UriComponents.NormalizedHost, UriFormat.UriEscaped); //Normalize punycode
@@ -76,22 +84,14 @@ namespace Nager.PublicSuffix
             return this.GetDomainFromParts(partlyNormalizedDomain, parts);
         }
 
-        /// <summary>
-        /// Tries to get a Domain from <paramref name="domain"/>.
-        /// </summary>
-        /// <param name="domain">The domain to parse.</param>
-        /// <returns><strong>null</strong> if <paramref name="domain"/> it's invalid.</returns>
-        public DomainName Get(string domain)
+        ///<inheritdoc/>
+        public DomainInfo Parse(string domain)
         {
             var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string partlyNormalizedDomain);
             return this.GetDomainFromParts(partlyNormalizedDomain, parts);
         }
 
-        /// <summary>
-        /// Return whether <paramref name="domain"/> is valid or not.
-        /// </summary>
-        /// <param name="domain">The domain to check.</param>
-        /// <returns><strong>true</strong> if <paramref name="domain"/> it's valid.</returns>
+        ///<inheritdoc/>
         public bool IsValidDomain(string domain)
         {
             var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string partlyNormalizedDomain);
@@ -111,7 +111,7 @@ namespace Nager.PublicSuffix
             this._domainDataStructure.AddRules(tldRules);
         }
 
-        private DomainName GetDomainFromParts(string domain, List<string> parts)
+        private DomainInfo GetDomainFromParts(string domain, List<string> parts)
         {
             if (parts == null || parts.Count == 0 || parts.Any(x => x.Equals(string.Empty)))
             {
@@ -153,7 +153,7 @@ namespace Nager.PublicSuffix
                 throw new ParseException($"Unknown domain {domain}");
             }
 
-            return new DomainName(domain, winningRule);
+            return new DomainInfo(domain, winningRule);
         }
 
         private void FindMatches(IEnumerable<string> parts, DomainDataStructure structure, List<TldRule> matches)
