@@ -8,17 +8,17 @@ namespace Nager.PublicSuffix
     public interface IDomainParser
     {
         /// <summary>
-        /// Tries to get a DomainInfo from <paramref name="domain"/>.
+        /// Parse the DomainInfo from <paramref name="domain"/>.
         /// </summary>
         /// <param name="domain">The domain to parse.</param>
-        /// <returns><strong>null</strong> if <paramref name="domain"/> it's invalid.</returns>
+        /// <returns>DomainInfo object</returns>
         DomainInfo Parse(string domain);
 
         /// <summary>
-        /// Tries to get a DomainInfo from <paramref name="domain"/>.
+        /// Parse the DomainInfo from <paramref name="domain"/>.
         /// </summary>
         /// <param name="domain">The domain to parse.</param>
-        /// <returns><strong>null</strong> if <paramref name="domain"/> it's invalid.</returns>
+        /// <returns>DomainInfo object</returns>
         DomainInfo Parse(Uri domain);
 
         /// <summary>
