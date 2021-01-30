@@ -4,15 +4,23 @@ using System.Threading.Tasks;
 
 namespace Nager.PublicSuffix
 {
+    /// <summary>
+    /// FileTldRuleProvider
+    /// </summary>
     public class FileTldRuleProvider : ITldRuleProvider
     {
         private readonly string _fileName;
 
+        /// <summary>
+        /// FileTldRuleProvider
+        /// </summary>
+        /// <param name="fileName"></param>
         public FileTldRuleProvider(string fileName)
         {
             this._fileName = fileName;
         }
 
+        ///<inheritdoc/>
         public async Task<IEnumerable<TldRule>> BuildAsync()
         {
             var ruleData = await this.LoadFromFile().ConfigureAwait(false);

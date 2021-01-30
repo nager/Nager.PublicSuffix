@@ -4,11 +4,20 @@ using System.Threading.Tasks;
 
 namespace Nager.PublicSuffix
 {
+    /// <summary>
+    /// FileCacheProvider
+    /// Write the data to a cache file in the temp directory
+    /// </summary>
     public class FileCacheProvider : ICacheProvider
     {
         private readonly string _cacheFilePath;
         private readonly TimeSpan _timeToLive;
 
+        /// <summary>
+        /// FileCacheProvider
+        /// </summary>
+        /// <param name="cacheFileName"></param>
+        /// <param name="cacheTimeToLive"></param>
         public FileCacheProvider(string cacheFileName = "publicsuffixcache.dat", TimeSpan? cacheTimeToLive = null)
         {
             if (cacheTimeToLive.HasValue)
@@ -24,6 +33,7 @@ namespace Nager.PublicSuffix
             this._cacheFilePath = Path.Combine(tempPath, cacheFileName);
         }
 
+        ///<inheritdoc/>
         public bool IsCacheValid()
         {
             var cacheInvalid = true;
@@ -40,6 +50,7 @@ namespace Nager.PublicSuffix
             return !cacheInvalid;
         }
 
+        ///<inheritdoc/>
         public async Task<string> GetAsync()
         {
             if (!this.IsCacheValid())
@@ -53,6 +64,7 @@ namespace Nager.PublicSuffix
             }
         }
 
+        ///<inheritdoc/>
         public async Task SetAsync(string data)
         {
             using (var streamWriter = File.CreateText(this._cacheFilePath))

@@ -2,14 +2,29 @@
 
 namespace Nager.PublicSuffix
 {
+    /// <summary>
+    /// TldRuleParser
+    /// </summary>
     public class TldRuleParser
     {
+        private readonly char[] _lineBreak = new char[] { '\n', '\r' };
+
+        /// <summary>
+        /// ParseRules
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public IEnumerable<TldRule> ParseRules(string data)
         {
-            var lines = data.Split(new char[] { '\n', '\r' });
+            var lines = data.Split(this._lineBreak);
             return this.ParseRules(lines);
         }
 
+        /// <summary>
+        /// ParseRules
+        /// </summary>
+        /// <param name="lines"></param>
+        /// <returns></returns>
         public IEnumerable<TldRule> ParseRules(IEnumerable<string> lines)
         {
             var items = new List<TldRule>();

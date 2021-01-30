@@ -3,13 +3,33 @@ using System.Linq;
 
 namespace Nager.PublicSuffix
 {
+    /// <summary>
+    /// TldRule
+    /// </summary>
     public class TldRule
     {
+        /// <summary>
+        /// Name
+        /// </summary>
         public string Name { get; private set; }
+        /// <summary>
+        /// Type
+        /// </summary>
         public TldRuleType Type { get; private set; }
+        /// <summary>
+        /// LabelCount
+        /// </summary>
         public int LabelCount { get; private set; }
+        /// <summary>
+        /// Division
+        /// </summary>
         public TldRuleDivision Division { get; private set; }
 
+        /// <summary>
+        /// TldRule
+        /// </summary>
+        /// <param name="ruleData"></param>
+        /// <param name="division"></param>
         public TldRule(string ruleData, TldRuleDivision division = TldRuleDivision.Unknown)
         {
             if (string.IsNullOrEmpty(ruleData))
@@ -53,6 +73,10 @@ namespace Nager.PublicSuffix
             }
         }
 
+        /// <summary>
+        /// ToString
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return this.Name;

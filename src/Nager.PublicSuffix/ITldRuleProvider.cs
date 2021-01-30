@@ -3,12 +3,15 @@ using System.Threading.Tasks;
 
 namespace Nager.PublicSuffix
 {
+    /// <summary>
+    /// ITldRuleProvider
+    /// </summary>
     public interface ITldRuleProvider
     {
         /// <summary>
-        /// Builds the list of TldRules
+        /// Loads the plain text data from a source and parse the public suffix rules
         /// </summary>
-        /// <returns>List of TldRules</returns>
+        /// <returns>Returns the TldRules</returns>
         Task<IEnumerable<TldRule>> BuildAsync();
     }
 }

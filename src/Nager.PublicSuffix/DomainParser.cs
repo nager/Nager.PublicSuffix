@@ -15,7 +15,7 @@ namespace Nager.PublicSuffix
         private readonly TldRule _rootTldRule = new TldRule("*");
 
         /// <summary>
-        /// Creates and Initializes a DomainParse.
+        /// Creates and initializes a DomainParser
         /// </summary>
         /// <param name="rules">The list of rules.</param>
         /// <param name="domainNormalizer">An <see cref="IDomainNormalizer"/>.</param>
@@ -31,9 +31,9 @@ namespace Nager.PublicSuffix
         }
 
         /// <summary>
-        /// Creates and initializes a DomainParser.
+        /// Creates and initializes a DomainParser
         /// </summary>
-        /// <param name="ruleProvider">A <see cref="TldRule"/> provider.</param>
+        /// <param name="ruleProvider">A rule provider from interface <see cref="ITldRuleProvider"/>.</param>
         /// <param name="domainNormalizer">An <see cref="IDomainNormalizer"/>.</param>
         public DomainParser(ITldRuleProvider ruleProvider, IDomainNormalizer domainNormalizer = null)
             : this(domainNormalizer)
@@ -58,13 +58,13 @@ namespace Nager.PublicSuffix
             this._domainNormalizer = domainNormalizer ?? new UriNormalizer();
         }
 
-        [Obsolete("Get is deprecated, please use Parse instead.")]
+        [Obsolete("Get is deprecated, please use Parse instead.", error: true)]
         public DomainInfo Get(Uri domain)
         {
             return this.Parse(domain);
         }
 
-        [Obsolete("Get is deprecated, please use Parse instead.")]
+        [Obsolete("Get is deprecated, please use Parse instead.", error: true)]
         public DomainInfo Get(string domain)
         {
             return this.Parse(domain);

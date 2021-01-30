@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Nager.PublicSuffix
 {
+    /// <summary>
+    /// IdnMappingNormalizer
+    /// </summary>
     public class IdnMappingNormalizer : IDomainNormalizer
     {
         private readonly IdnMapping _idnMapping = new IdnMapping();
