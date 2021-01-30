@@ -10,8 +10,11 @@ namespace Nager.PublicSuffix.UnitTest
         [TestMethod]
         public void CheckDomainName1()
         {
-            var rules = new List<TldRule>();
-            rules.Add(new TldRule("com"));
+            var rules = new List<TldRule>
+            {
+                new TldRule("com")
+            };
+
             var domainParser = this.GetParserForRules(rules);
 
             var domainName = domainParser.Parse("test.com");
@@ -26,9 +29,12 @@ namespace Nager.PublicSuffix.UnitTest
         [TestMethod]
         public void CheckDomainName2()
         {
-            var rules = new List<TldRule>();
-            rules.Add(new TldRule("uk"));
-            rules.Add(new TldRule("co.uk"));
+            var rules = new List<TldRule>
+            {
+                new TldRule("uk"),
+                new TldRule("co.uk")
+            };
+
             var domainParser = this.GetParserForRules(rules);
 
             var domainName = domainParser.Parse("test.co.uk");
@@ -43,9 +49,12 @@ namespace Nager.PublicSuffix.UnitTest
         [TestMethod]
         public void CheckDomainName3()
         {
-            var rules = new List<TldRule>();
-            rules.Add(new TldRule("uk"));
-            rules.Add(new TldRule("co.uk"));
+            var rules = new List<TldRule>
+            {
+                new TldRule("uk"),
+                new TldRule("co.uk")
+            };
+
             var domainParser = this.GetParserForRules(rules);
 
             var domainName = domainParser.Parse("sub.test.co.uk");
@@ -60,10 +69,13 @@ namespace Nager.PublicSuffix.UnitTest
         [TestMethod]
         public void CheckDomainName4()
         {
-            var rules = new List<TldRule>();
-            rules.Add(new TldRule("uk"));
-            rules.Add(new TldRule("co.uk"));
-            rules.Add(new TldRule("*.sch.uk"));
+            var rules = new List<TldRule>
+            {
+                new TldRule("uk"),
+                new TldRule("co.uk"),
+                new TldRule("*.sch.uk")
+            };
+
             var domainParser = this.GetParserForRules(rules);
 
             var domainName = domainParser.Parse("sub.test1.test2.sch.uk");
@@ -79,9 +91,12 @@ namespace Nager.PublicSuffix.UnitTest
         [ExpectedException(typeof(ParseException))]
         public void CheckDomainName5()
         {
-            var rules = new List<TldRule>();
-            rules.Add(new TldRule("uk"));
-            rules.Add(new TldRule("co.uk"));
+            var rules = new List<TldRule>
+            {
+                new TldRule("uk"),
+                new TldRule("co.uk")
+            };
+
             var domainParser = this.GetParserForRules(rules);
 
             domainParser.Parse("co.uk");
@@ -90,9 +105,12 @@ namespace Nager.PublicSuffix.UnitTest
         [TestMethod]
         public void CheckDomainNameForUnlistedTld()
         {
-            var rules = new List<TldRule>();
-            rules.Add(new TldRule("uk"));
-            rules.Add(new TldRule("co.uk"));
+            var rules = new List<TldRule>
+            {
+                new TldRule("uk"),
+                new TldRule("co.uk")
+            };
+
             var domainParser = this.GetParserForRules(rules);
 
             var domainName = domainParser.Parse("unlisted.domain.example");
