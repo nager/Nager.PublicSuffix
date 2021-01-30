@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace Nager.PublicSuffix.TestConsole
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -82,7 +82,7 @@ namespace Nager.PublicSuffix.TestConsole
             sw.Start();
             for (var i = 0; i< 100000; i++)
             {
-                var domainInfo = domainParser.Parse($"sub{i}.test.co.uk");
+                _ = domainParser.Parse($"sub{i}.test.co.uk");
             }
             sw.Stop();
 
