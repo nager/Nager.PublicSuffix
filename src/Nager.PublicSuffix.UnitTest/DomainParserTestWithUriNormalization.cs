@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace Nager.PublicSuffix.UnitTest
 {
     [TestClass]
-    public class DomainNameTestsWithUriNormalization : DomainNameTest
+    public class DomainParserTestWithUriNormalization : DomainParserTest
     {
-        protected override DomainParser GetParserForRules(List<TldRule> rules)
+        protected override IDomainParser GetDomainParser(List<TldRule> rules)
         {
             return new DomainParser(rules, new UriNormalizer());
         }

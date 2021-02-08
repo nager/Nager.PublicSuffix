@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net45;net461;netstandard2.0;net5</TargetFrameworks>
-    <Version>2.1.0</Version>
+    <Version>2.2.0</Version>
     <Authors>Tino Hager</Authors>
     <Company>nager.at</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -10,7 +10,7 @@
     <RepositoryUrl>https://github.com/nager/Nager.PublicSuffix</RepositoryUrl>
     <Description>Domain parsing and validating (TLD, domain, subdomain) provide easy and fast access to Public Suffix List</Description>
     <PackageTags>PublicSuffix publicsuffix.org public-suffix TLD DomainParser domain parser Registrable Domain DomainName Hostname Subdomain</PackageTags>
-    <PackageReleaseNotes>Add .net5 target, optimize code documentation</PackageReleaseNotes>
+    <PackageReleaseNotes>Optimize check IsValidDomain</PackageReleaseNotes>
     <PackageIcon>logo.png</PackageIcon>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>true</IncludeSymbols>

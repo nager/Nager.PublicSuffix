@@ -13,14 +13,17 @@ namespace Nager.PublicSuffix.UnitTest
     [TestClass]
     public class NormalizationVariationTests
     {
-        private DomainParser _parserUsingUriNormalization;
-        private DomainParser _parserUsingIdnNormalization;
+        private IDomainParser _parserUsingUriNormalization;
+        private IDomainParser _parserUsingIdnNormalization;
 
         [TestInitialize()]
         public void Initialize()
         {
-            var rules = new List<TldRule>();
-            rules.Add(new TldRule("com"));
+            var rules = new List<TldRule>
+            {
+                new TldRule("com")
+            };
+
             this._parserUsingUriNormalization = new DomainParser(rules, new UriNormalizer());
             this._parserUsingIdnNormalization = new DomainParser(rules, new IdnMappingNormalizer());
         }
@@ -107,9 +110,9 @@ namespace Nager.PublicSuffix.UnitTest
             this.PerformParsingCheckUsingParser(domain, expectedRegistrableDomain_IdnVersion, this._parserUsingIdnNormalization, "idn normalizing parser");
         }
 
-        private void PerformParsingCheckUsingParser(string domain, string expectedRegistrableDomain, DomainParser parserToCheckWith, string parserDescription)
+        private void PerformParsingCheckUsingParser(string domain, string expectedRegistrableDomain, IDomainParser domainParser, string parserDescription)
         {
-            var domainData = parserToCheckWith.Parse(domain);
+            var domainData = domainParser.Parse(domain);
             if (domainData == null)
             {
                 Assert.IsNull(expectedRegistrableDomain, $"{parserDescription} produced null instead of {expectedRegistrableDomain} from {domain}");

@@ -24,7 +24,7 @@ namespace Nager.PublicSuffix
         {
             if (rules == null)
             {
-                throw new ArgumentNullException("rules");
+                throw new ArgumentNullException(nameof(rules));
             }
 
             this.AddRules(rules);
@@ -94,14 +94,37 @@ namespace Nager.PublicSuffix
         ///<inheritdoc/>
         public bool IsValidDomain(string domain)
         {
-            var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string partlyNormalizedDomain);
-            var domainName = this.GetDomainFromParts(partlyNormalizedDomain, parts);
-            if (domainName == null)
+            if (string.IsNullOrEmpty(domain))
             {
                 return false;
             }
 
-            return !domainName.TLDRule.Equals(this._rootTldRule);
+            try
+            {
+                if (Uri.TryCreate(domain, UriKind.Absolute, out var uri))
+                {
+                    return false;
+                }
+
+                if (domain[0] == '*')
+                {
+                    return false;
+                }
+
+                var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string partlyNormalizedDomain);
+
+                var domainName = this.GetDomainFromParts(partlyNormalizedDomain, parts);
+                if (domainName == null)
+                {
+                    return false;
+                }
+
+                return !domainName.TLDRule.Equals(this._rootTldRule);
+            }
+            catch (ParseException)
+            {
+                return false;
+            }
         }
 
         private void AddRules(IEnumerable<TldRule> tldRules)

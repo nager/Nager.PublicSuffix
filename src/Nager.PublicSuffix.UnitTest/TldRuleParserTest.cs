@@ -4,7 +4,7 @@ using System.Linq;
 namespace Nager.PublicSuffix.UnitTest
 {
     [TestClass]
-    public class ParseTest
+    public class TldRuleParserTest
     {
         [TestMethod]
         public void ParseValidData1()

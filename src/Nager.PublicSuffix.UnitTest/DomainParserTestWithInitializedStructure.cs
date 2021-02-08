@@ -5,9 +5,9 @@ using System.Collections.Generic;
 namespace Nager.PublicSuffix.UnitTest
 {
     [TestClass]
-    public class DomainNameTestsWithInitializedStructure : DomainNameTest
+    public class DomainParserTestWithInitializedStructure : DomainParserTest
     {
-        protected override DomainParser GetParserForRules(List<TldRule> rules)
+        protected override IDomainParser GetDomainParser(List<TldRule> rules)
         {
             var structure = new DomainDataStructure("*", new TldRule("*"));
             structure.AddRules(rules);

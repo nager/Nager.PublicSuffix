@@ -22,10 +22,10 @@ namespace Nager.PublicSuffix
         DomainInfo Parse(Uri domain);
 
         /// <summary>
-        /// Checks if it is a valid domain <paramref name="domain"/>.
+        /// Checks if the <paramref name="domain"/> is valid.
         /// </summary>
         /// <param name="domain">The domain to check.</param>
-        /// <returns><strong>true</strong> if <paramref name="domain"/> it's valid.</returns>
+        /// <returns>Returns <strong>true</strong> if the <paramref name="domain"/> is valid.</returns>
         bool IsValidDomain(string domain);
     }
 }
