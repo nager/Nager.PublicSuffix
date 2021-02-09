@@ -169,6 +169,23 @@ namespace Nager.PublicSuffix.UnitTest
         }
 
         [TestMethod]
+        public void IsValidDomain_ValidDomain3()
+        {
+            var rules = new List<TldRule>
+            {
+                new TldRule("com"),
+                new TldRule("de"),
+                new TldRule("at")
+            };
+
+            var domainParser = this.GetDomainParser(rules);
+
+            var isValid = domainParser.IsValidDomain("österreich.at");
+
+            Assert.IsTrue(isValid);
+        }
+
+        [TestMethod]
         public void IsValidDomain_InvalidDomain1()
         {
             var rules = new List<TldRule>
@@ -283,6 +300,23 @@ namespace Nager.PublicSuffix.UnitTest
             var domainParser = this.GetDomainParser(rules);
 
             var isValid = domainParser.IsValidDomain("*.ripe.net");
+
+            Assert.IsFalse(isValid);
+        }
+
+        [TestMethod]
+        public void IsValidDomain_InvalidDomain8()
+        {
+            var rules = new List<TldRule>
+            {
+                new TldRule("com"),
+                new TldRule("de"),
+                new TldRule("net")
+            };
+
+            var domainParser = this.GetDomainParser(rules);
+
+            var isValid = domainParser.IsValidDomain(" ripe.net");
 
             Assert.IsFalse(isValid);
         }

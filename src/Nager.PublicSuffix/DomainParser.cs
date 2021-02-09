@@ -99,18 +99,23 @@ namespace Nager.PublicSuffix
                 return false;
             }
 
+            if (Uri.TryCreate(domain, UriKind.Absolute, out _))
+            {
+                return false;
+            }
+
+            if (!Uri.TryCreate($"http://{domain}", UriKind.Absolute, out _))
+            {
+                return false;
+            }
+
+            if (domain[0] == '*')
+            {
+                return false;
+            }
+
             try
             {
-                if (Uri.TryCreate(domain, UriKind.Absolute, out var uri))
-                {
-                    return false;
-                }
-
-                if (domain[0] == '*')
-                {
-                    return false;
-                }
-
                 var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string partlyNormalizedDomain);
 
                 var domainName = this.GetDomainFromParts(partlyNormalizedDomain, parts);
