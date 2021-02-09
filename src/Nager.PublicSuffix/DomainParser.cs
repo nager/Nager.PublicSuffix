@@ -104,7 +104,12 @@ namespace Nager.PublicSuffix
                 return false;
             }
 
-            if (!Uri.TryCreate($"http://{domain}", UriKind.Absolute, out _))
+            if (!Uri.TryCreate($"http://{domain}", UriKind.Absolute, out var uri))
+            {
+                return false;
+            }
+
+            if (!uri.DnsSafeHost.Equals(domain, StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
@@ -113,6 +118,8 @@ namespace Nager.PublicSuffix
             {
                 return false;
             }
+
+            //if (Uri.CheckHostName(domain))
 
             try
             {

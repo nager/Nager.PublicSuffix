@@ -320,5 +320,22 @@ namespace Nager.PublicSuffix.UnitTest
 
             Assert.IsFalse(isValid);
         }
+
+        [TestMethod]
+        public void IsValidDomain_InvalidDomain9()
+        {
+            var rules = new List<TldRule>
+            {
+                new TldRule("com"),
+                new TldRule("de"),
+                new TldRule("net")
+            };
+
+            var domainParser = this.GetDomainParser(rules);
+
+            var isValid = domainParser.IsValidDomain("test@ripe.net");
+
+            Assert.IsFalse(isValid);
+        }
     }
 }
