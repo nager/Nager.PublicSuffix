@@ -31,6 +31,15 @@ namespace Nager.PublicSuffix
 
             var tempPath = Path.GetTempPath();
             this._cacheFilePath = Path.Combine(tempPath, cacheFileName);
+
+            var poolId = Environment.GetEnvironmentVariable("APP_POOL_ID", EnvironmentVariableTarget.Process);
+
+            if (!string.IsNullOrEmpty(poolId))
+            {
+                Directory.CreateDirectory(Path.Combine(tempPath, poolId));
+
+                this._cacheFilePath = Path.Combine(tempPath, poolId, cacheFileName);
+            }
         }
 
         ///<inheritdoc/>
