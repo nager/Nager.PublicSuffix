@@ -16,8 +16,6 @@ The package is available on [nuget](https://www.nuget.org/packages/Nager.PublicS
 ```
 PM> install-package Nager.PublicSuffix
 ```
-## Online test tool
-You can try the logic right here [publicsuffix test tool](https://publicsuffix.nager.at)
 
 ## Benefits
 - High performance
