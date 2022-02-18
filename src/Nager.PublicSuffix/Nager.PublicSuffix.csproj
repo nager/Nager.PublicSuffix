@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;net461;netstandard2.0;net5</TargetFrameworks>
-    <Version>2.2.2</Version>
+    <TargetFrameworks>netstandard2.0;net6</TargetFrameworks>
+    <Version>2.3.0</Version>
     <Authors>Tino Hager</Authors>
     <Company>nager.at</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -16,11 +16,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
-
-  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-  </ItemGroup>
-  
+ 
   <ItemGroup>
     <None Include="..\..\LICENSE.md" Pack="true" PackagePath="LICENSE.md" />
   </ItemGroup>

@@ -1,5 +1,3 @@
-*.cmd
-*.nupkg
 **/wwwroot/lib*
 **/Nager.PublicSuffix.Website/publicsuffixcache.dat
 
