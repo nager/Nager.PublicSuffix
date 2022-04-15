@@ -81,5 +81,25 @@ namespace Nager.PublicSuffix
         {
             return this.Name;
         }
+        private bool Equals(TldRule other)
+        {
+            return Name == other.Name;
+        }
+
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((TldRule)obj);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return (Name != null ? Name.GetHashCode() : 0);
+        }
     }
 }
