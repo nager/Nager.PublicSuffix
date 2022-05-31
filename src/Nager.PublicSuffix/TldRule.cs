@@ -6,7 +6,7 @@ namespace Nager.PublicSuffix
     /// <summary>
     /// TldRule
     /// </summary>
-    public class TldRule
+    public class TldRule : IEquatable<TldRule>
     {
         /// <summary>
         /// Name
@@ -83,6 +83,44 @@ namespace Nager.PublicSuffix
         public override string ToString()
         {
             return this.Name;
+        }
+
+        /// <inheritdoc />
+        public bool Equals(TldRule other)
+        {
+            return this.Name == other.Name;
+        }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            if (obj is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            return this.Equals((TldRule)obj);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            if (this.Name == null)
+            {
+                return 0;
+            }
+
+            return this.Name.GetHashCode();
         }
     }
 }

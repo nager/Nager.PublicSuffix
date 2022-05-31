@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net6</TargetFrameworks>
-    <Version>2.3.0</Version>
+    <Version>2.4.0</Version>
     <Authors>Tino Hager</Authors>
     <Company>nager.at</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -10,7 +10,7 @@
     <RepositoryUrl>https://github.com/nager/Nager.PublicSuffix</RepositoryUrl>
     <Description>Domain parsing and validating (TLD, domain, subdomain) provide easy and fast access to Public Suffix List</Description>
     <PackageTags>PublicSuffix publicsuffix.org public-suffix TLD DomainParser domain-parser Registrable Domain DomainName Hostname Subdomain</PackageTags>
-    <PackageReleaseNotes>Optimize check IsValidDomain</PackageReleaseNotes>
+    <PackageReleaseNotes>Add IEquatable Interface to TldRule.cs</PackageReleaseNotes>
     <PackageIcon>logo.png</PackageIcon>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>true</IncludeSymbols>
