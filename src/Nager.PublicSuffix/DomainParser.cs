@@ -119,8 +119,6 @@ namespace Nager.PublicSuffix
                 return false;
             }
 
-            //if (Uri.CheckHostName(domain))
-
             try
             {
                 var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string partlyNormalizedDomain);

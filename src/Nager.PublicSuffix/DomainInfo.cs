@@ -12,25 +12,30 @@ namespace Nager.PublicSuffix
         /// e.g. microsoft, google
         /// </summary>
         public string Domain { get; private set; }
+
         /// <summary>
         /// The TLD<para />
         /// e.g. com, net, de, co.uk
         /// </summary>
         public string TLD { get; private set; }
+
         /// <summary>
         /// The Sub Domain<para />
         /// e.g. www, mail
         /// </summary>
         public string SubDomain { get; private set; }
+
         /// <summary>
         /// The Registrable Domain<para />
         /// e.g. microsoft.com, amazon.co.uk
         /// </summary>
         public string RegistrableDomain { get; private set; }
+
         /// <summary>
         /// Fully qualified hostname (FQDN)
         /// </summary>
         public string Hostname { get; private set; }
+
         /// <summary>
         /// The matching public suffix Rule
         /// </summary>

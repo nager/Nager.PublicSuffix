@@ -12,14 +12,17 @@ namespace Nager.PublicSuffix
         /// Name
         /// </summary>
         public string Name { get; private set; }
+
         /// <summary>
         /// Type
         /// </summary>
         public TldRuleType Type { get; private set; }
+
         /// <summary>
         /// LabelCount
         /// </summary>
         public int LabelCount { get; private set; }
+
         /// <summary>
         /// Division
         /// </summary>
