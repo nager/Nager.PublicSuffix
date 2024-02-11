@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Nager.PublicSuffix.DomainNormalizers;
+using Nager.PublicSuffix.Exceptions;
 using System.Collections.Generic;
 
 namespace Nager.PublicSuffix.UnitTest

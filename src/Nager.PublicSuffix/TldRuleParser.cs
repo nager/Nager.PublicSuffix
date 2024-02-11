@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Nager.PublicSuffix
 {
@@ -39,22 +40,22 @@ namespace Nager.PublicSuffix
                 }
 
                 //Ignore comments (and set Division)
-                if (line.StartsWith("//"))
+                if (line.StartsWith("//", StringComparison.OrdinalIgnoreCase))
                 {
                     //Detect Division
-                    if (line.StartsWith("// ===BEGIN ICANN DOMAINS==="))
+                    if (line.StartsWith("// ===BEGIN ICANN DOMAINS===", StringComparison.OrdinalIgnoreCase))
                     {
                         division = TldRuleDivision.ICANN;
                     }
-                    else if (line.StartsWith("// ===END ICANN DOMAINS==="))
+                    else if (line.StartsWith("// ===END ICANN DOMAINS===", StringComparison.OrdinalIgnoreCase))
                     {
                         division = TldRuleDivision.Unknown;
                     }
-                    else if (line.StartsWith("// ===BEGIN PRIVATE DOMAINS==="))
+                    else if (line.StartsWith("// ===BEGIN PRIVATE DOMAINS===", StringComparison.OrdinalIgnoreCase))
                     {
                         division = TldRuleDivision.Private;
                     }
-                    else if (line.StartsWith("// ===END PRIVATE DOMAINS==="))
+                    else if (line.StartsWith("// ===END PRIVATE DOMAINS===", StringComparison.OrdinalIgnoreCase))
                     {
                         division = TldRuleDivision.Unknown;
                     }

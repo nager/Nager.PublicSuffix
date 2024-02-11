@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Nager.PublicSuffix.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Nager.PublicSuffix
+namespace Nager.PublicSuffix.DomainNormalizers
 {
     public class UriNormalizer : IDomainNormalizer
     {

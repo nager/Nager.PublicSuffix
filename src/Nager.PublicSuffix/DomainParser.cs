@@ -1,4 +1,6 @@
-﻿using Nager.PublicSuffix.Extensions;
+﻿using Nager.PublicSuffix.DomainNormalizers;
+using Nager.PublicSuffix.Exceptions;
+using Nager.PublicSuffix.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,18 +58,6 @@ namespace Nager.PublicSuffix
         private DomainParser(IDomainNormalizer domainNormalizer)
         {
             this._domainNormalizer = domainNormalizer ?? new UriNormalizer();
-        }
-
-        [Obsolete("Get is deprecated, please use Parse instead.", error: true)]
-        public DomainInfo Get(Uri domain)
-        {
-            return this.Parse(domain);
-        }
-
-        [Obsolete("Get is deprecated, please use Parse instead.", error: true)]
-        public DomainInfo Get(string domain)
-        {
-            return this.Parse(domain);
         }
 
         ///<inheritdoc/>

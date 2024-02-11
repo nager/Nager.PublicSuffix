@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 namespace Nager.PublicSuffix
 {
     /// <summary>
-    /// WebTldRuleProvider
+    /// Web2TldRuleProvider
     /// </summary>
-    public class WebTldRuleProvider : ITldRuleProvider
+    public class Web2TldRuleProvider : ITldRuleProvider
     {
         private readonly string _fileUrl;
         private readonly ICacheProvider _cacheProvider;
+        private readonly HttpClient _httpClient;
 
         /// <summary>
         /// Returns the cache provider
@@ -19,15 +20,18 @@ namespace Nager.PublicSuffix
         public ICacheProvider CacheProvider { get { return this._cacheProvider; } }
 
         /// <summary>
-        /// WebTldRuleProvider<br/>
+        /// Web2TldRuleProvider<br/>
         /// Loads the public suffix definition file from a given url
         /// </summary>
+        /// <param name="httpClient"></param>
         /// <param name="url"></param>
         /// <param name="cacheProvider">default is <see cref="FileCacheProvider"/></param>
-        public WebTldRuleProvider(
+        public Web2TldRuleProvider(
+            HttpClient httpClient,
             string url = "https://publicsuffix.org/list/public_suffix_list.dat",
             ICacheProvider cacheProvider = null)
         {
+            this._httpClient = httpClient;
             this._fileUrl = url;
 
             if (cacheProvider == null)
@@ -45,14 +49,14 @@ namespace Nager.PublicSuffix
             var ruleParser = new TldRuleParser();
 
             string ruleData;
-            if (!this._cacheProvider.IsCacheValid())
+            if (this._cacheProvider.IsCacheValid())
             {
-                ruleData = await this.LoadFromUrlAsync(this._fileUrl).ConfigureAwait(false);
-                await this._cacheProvider.SetAsync(ruleData).ConfigureAwait(false);
+                ruleData = await this._cacheProvider.GetAsync().ConfigureAwait(false);
             }
             else
             {
-                ruleData = await this._cacheProvider.GetAsync().ConfigureAwait(false);
+                ruleData = await this.LoadFromUrlAsync(this._fileUrl).ConfigureAwait(false);
+                await this._cacheProvider.SetAsync(ruleData).ConfigureAwait(false);
             }
 
             var rules = ruleParser.ParseRules(ruleData);
@@ -66,8 +70,8 @@ namespace Nager.PublicSuffix
         /// <returns></returns>
         public async Task<string> LoadFromUrlAsync(string url)
         {
-            using var httpClient = new HttpClient();
-            using var response = await httpClient.GetAsync(url).ConfigureAwait(false);
+            using var response = await this._httpClient.GetAsync(url).ConfigureAwait(false);
+
             if (!response.IsSuccessStatusCode)
             {
                 throw new RuleLoadException($"Cannot load from {url} {response.StatusCode}");

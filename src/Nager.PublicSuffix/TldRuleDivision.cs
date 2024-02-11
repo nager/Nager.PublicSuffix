@@ -5,8 +5,19 @@
     /// </summary>
     public enum TldRuleDivision
     {
+        /// <summary>
+        /// Unknown
+        /// </summary>
         Unknown,
+
+        /// <summary>
+        /// ICANN
+        /// </summary>
         ICANN,
+
+        /// <summary>
+        /// Private
+        /// </summary>
         Private
     }
 }

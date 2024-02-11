@@ -18,7 +18,9 @@ namespace Nager.PublicSuffix
         /// </summary>
         /// <param name="cacheFileName"></param>
         /// <param name="cacheTimeToLive"></param>
-        public FileCacheProvider(string cacheFileName = "publicsuffixcache.dat", TimeSpan? cacheTimeToLive = null)
+        public FileCacheProvider(
+            string cacheFileName = "publicsuffixcache.dat",
+            TimeSpan? cacheTimeToLive = null)
         {
             if (cacheTimeToLive.HasValue)
             {
@@ -58,19 +60,15 @@ namespace Nager.PublicSuffix
                 return null;
             }
 
-            using (var reader = File.OpenText(this._cacheFilePath))
-            {
-                return await reader.ReadToEndAsync().ConfigureAwait(false);
-            }
+            using var reader = File.OpenText(this._cacheFilePath);
+            return await reader.ReadToEndAsync().ConfigureAwait(false);
         }
 
         ///<inheritdoc/>
         public async Task SetAsync(string data)
         {
-            using (var streamWriter = File.CreateText(this._cacheFilePath))
-            {
-                await streamWriter.WriteAsync(data).ConfigureAwait(false);
-            }
+            using var streamWriter = File.CreateText(this._cacheFilePath);
+            await streamWriter.WriteAsync(data).ConfigureAwait(false);
         }
     }
 }

@@ -50,7 +50,7 @@ namespace Nager.PublicSuffix
                     throw new FormatException("Rule contains empty part");
                 }
 
-                if (part.Contains("*") && part != "*")
+                if (part.Contains('*') && part != "*")
                 {
                     throw new FormatException("Wildcard syntax not correct");
                 }
@@ -62,7 +62,7 @@ namespace Nager.PublicSuffix
                 this.Name = ruleData.Substring(1).ToLower();
                 this.LabelCount = parts.Count - 1; //Left-most label is removed for Wildcard Exceptions
             }
-            else if (ruleData.Contains("*"))
+            else if (ruleData.Contains('*'))
             {
                 this.Type = TldRuleType.Wildcard;
                 this.Name = ruleData.ToLower();

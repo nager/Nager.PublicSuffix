@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Nager.PublicSuffix.Exceptions;
 
 namespace Nager.PublicSuffix.UnitTest
 {

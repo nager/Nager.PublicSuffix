@@ -18,9 +18,9 @@ namespace Nager.PublicSuffix.UnitTest
         [TestMethod]
         public async Task FileTldRuleProviderTest()
         {
-            var tldRuleProvider = new FileTldRuleProvider("effective_tld_names.dat");
+            var tldRuleProvider = new FileTldRuleProvider("public_suffix_list.dat");
             var rules = await tldRuleProvider.BuildAsync();
-            Assert.AreEqual(8818, rules.Count());
+            Assert.AreEqual(9609, rules.Count());
             Assert.IsNotNull(rules);
         }
     }

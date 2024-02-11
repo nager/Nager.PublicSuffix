@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace Nager.PublicSuffix
+namespace Nager.PublicSuffix.DomainNormalizers
 {
     /// <summary>
     /// IdnMappingNormalizer
@@ -23,7 +24,7 @@ namespace Nager.PublicSuffix
             partlyNormalizedDomain = domain.ToLowerInvariant();
 
             string punycodeConvertedDomain = partlyNormalizedDomain;
-            if (partlyNormalizedDomain.Contains("xn--"))
+            if (partlyNormalizedDomain.Contains("xn--", StringComparison.OrdinalIgnoreCase))
             {
                 punycodeConvertedDomain = this._idnMapping.GetUnicode(partlyNormalizedDomain);
             }

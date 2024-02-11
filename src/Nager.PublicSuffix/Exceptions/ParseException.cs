@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nager.PublicSuffix
+namespace Nager.PublicSuffix.Exceptions
 {
     /// <summary>
     /// Parse Exception
@@ -31,6 +31,6 @@ namespace Nager.PublicSuffix
         /// <summary>
         /// Message
         /// </summary>
-        public override string Message => this.ErrorMessage;
+        public override string Message => ErrorMessage;
     }
 }

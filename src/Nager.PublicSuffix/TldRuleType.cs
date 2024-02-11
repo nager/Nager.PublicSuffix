@@ -5,8 +5,19 @@
     /// </summary>
     public enum TldRuleType
     {
+        /// <summary>
+        /// Normal
+        /// </summary>
         Normal,
+
+        /// <summary>
+        /// Wildcard
+        /// </summary>
         Wildcard,
+
+        /// <summary>
+        /// WildcardException
+        /// </summary>
         WildcardException,
     }
 }

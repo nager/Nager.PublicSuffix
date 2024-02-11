@@ -37,10 +37,8 @@ namespace Nager.PublicSuffix
                 throw new FileNotFoundException("Rule file does not exist");
             }
 
-            using (var reader = File.OpenText(this._fileName))
-            {
-                return await reader.ReadToEndAsync().ConfigureAwait(false);
-            }
+            using var reader = File.OpenText(this._fileName);
+            return await reader.ReadToEndAsync().ConfigureAwait(false);
         }
     }
 }

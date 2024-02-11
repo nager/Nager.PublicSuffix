@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nager.PublicSuffix
+namespace Nager.PublicSuffix.Exceptions
 {
     /// <summary>
     /// Rule Load Exception
