@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Nager.PublicSuffix.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Nager.PublicSuffix
+namespace Nager.PublicSuffix.RuleProviders
 {
     /// <summary>
-    /// ITldRuleProvider
+    /// ITopLevelDomainRuleProvider
     /// </summary>
-    public interface ITldRuleProvider
+    public interface ITopLevelDomainRuleProvider
     {
         /// <summary>
         /// Loads the plain text data from a source and parse the public suffix rules

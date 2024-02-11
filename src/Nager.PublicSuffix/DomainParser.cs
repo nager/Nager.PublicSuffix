@@ -1,6 +1,8 @@
 ﻿using Nager.PublicSuffix.DomainNormalizers;
 using Nager.PublicSuffix.Exceptions;
 using Nager.PublicSuffix.Extensions;
+using Nager.PublicSuffix.Models;
+using Nager.PublicSuffix.RuleProviders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Linq;
 namespace Nager.PublicSuffix
 {
     /// <summary>
-    /// Domain parser
+    /// Domain Parser
     /// </summary>
     public class DomainParser : IDomainParser
     {
@@ -35,9 +37,9 @@ namespace Nager.PublicSuffix
         /// <summary>
         /// Creates and initializes a DomainParser
         /// </summary>
-        /// <param name="ruleProvider">A rule provider from interface <see cref="ITldRuleProvider"/>.</param>
+        /// <param name="ruleProvider">A rule provider from interface <see cref="ITopLevelDomainRuleProvider"/>.</param>
         /// <param name="domainNormalizer">An <see cref="IDomainNormalizer"/>.</param>
-        public DomainParser(ITldRuleProvider ruleProvider, IDomainNormalizer domainNormalizer = null)
+        public DomainParser(ITopLevelDomainRuleProvider ruleProvider, IDomainNormalizer domainNormalizer = null)
             : this(domainNormalizer)
         {
             var rules = ruleProvider.BuildAsync().GetAwaiter().GetResult();
@@ -57,7 +59,7 @@ namespace Nager.PublicSuffix
 
         private DomainParser(IDomainNormalizer domainNormalizer)
         {
-            this._domainNormalizer = domainNormalizer ?? new UriNormalizer();
+            this._domainNormalizer = domainNormalizer ?? new UriDomainNormalizer();
         }
 
         ///<inheritdoc/>
@@ -119,7 +121,7 @@ namespace Nager.PublicSuffix
                     return false;
                 }
 
-                return !domainName.TLDRule.Equals(this._rootTldRule);
+                return !domainName.TopLevelDomainRule.Equals(this._rootTldRule);
             }
             catch (ParseException)
             {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Nager.PublicSuffix
+namespace Nager.PublicSuffix.Models
 {
     /// <summary>
     /// Represents a tree of TLD domains

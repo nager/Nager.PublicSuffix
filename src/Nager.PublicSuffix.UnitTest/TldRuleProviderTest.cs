@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Nager.PublicSuffix.RuleProviders;
 using System.Linq;
 using System.Threading.Tasks;
 

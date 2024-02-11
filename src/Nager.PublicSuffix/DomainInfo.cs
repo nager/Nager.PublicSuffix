@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Nager.PublicSuffix.Models;
+using System.Linq;
 
 namespace Nager.PublicSuffix
 {
@@ -14,16 +15,16 @@ namespace Nager.PublicSuffix
         public string Domain { get; private set; }
 
         /// <summary>
-        /// The TLD<para />
+        /// The Top Level Domain<para />
         /// e.g. com, net, de, co.uk
         /// </summary>
-        public string TLD { get; private set; }
+        public string TopLevelDomain { get; private set; }
 
         /// <summary>
-        /// The Sub Domain<para />
+        /// The Subdomain<para />
         /// e.g. www, mail
         /// </summary>
-        public string SubDomain { get; private set; }
+        public string Subdomain { get; private set; }
 
         /// <summary>
         /// The Registrable Domain<para />
@@ -39,7 +40,7 @@ namespace Nager.PublicSuffix
         /// <summary>
         /// The matching public suffix Rule
         /// </summary>
-        public TldRule TLDRule { get; private set; }
+        public TldRule TopLevelDomainRule { get; private set; }
 
         /// <summary>
         /// Domain Info
@@ -75,14 +76,14 @@ namespace Nager.PublicSuffix
                 return;
             }
 
-            this.TLDRule = tldRule;
+            this.TopLevelDomainRule = tldRule;
             this.Hostname = domain;
-            this.TLD = tld;
+            this.TopLevelDomain = tld;
             this.RegistrableDomain = registrableDomain;
 
             this.Domain = domainParts.Skip(ruleParts.Count).FirstOrDefault();
             var subDomain = string.Join(".", domainParts.Skip(ruleParts.Count + 1).Reverse());
-            this.SubDomain = string.IsNullOrEmpty(subDomain) ? null : subDomain;
+            this.Subdomain = string.IsNullOrEmpty(subDomain) ? null : subDomain;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Nager.PublicSuffix.DomainNormalizers
     /// <summary>
     /// IdnMappingNormalizer
     /// </summary>
-    public class IdnMappingNormalizer : IDomainNormalizer
+    public class IdnMappingDomainNormalizer : IDomainNormalizer
     {
         private readonly IdnMapping _idnMapping = new IdnMapping();
 

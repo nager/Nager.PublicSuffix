@@ -3,7 +3,7 @@
 namespace Nager.PublicSuffix
 {
     /// <summary>
-    /// Domain parser
+    /// Interface Domain Parser
     /// </summary>
     public interface IDomainParser
     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nager.PublicSuffix.Models;
+using System;
 
 namespace Nager.PublicSuffix.Exceptions
 {

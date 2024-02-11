@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Nager.PublicSuffix.Models;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Nager.PublicSuffix.Extensions

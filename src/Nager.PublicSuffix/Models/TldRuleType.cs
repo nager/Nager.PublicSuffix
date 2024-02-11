@@ -1,4 +1,4 @@
-﻿namespace Nager.PublicSuffix
+﻿namespace Nager.PublicSuffix.Models
 {
     /// <summary>
     /// TLD Rule type, defined by www.publicsuffix.org

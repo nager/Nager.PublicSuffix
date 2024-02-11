@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Nager.PublicSuffix.DomainNormalizers;
 using Nager.PublicSuffix.Exceptions;
+using Nager.PublicSuffix.Models;
 using System.Collections.Generic;
 
 namespace Nager.PublicSuffix.UnitTest
@@ -26,8 +27,8 @@ namespace Nager.PublicSuffix.UnitTest
                 new TldRule("com")
             };
 
-            this._parserUsingUriNormalization = new DomainParser(rules, new UriNormalizer());
-            this._parserUsingIdnNormalization = new DomainParser(rules, new IdnMappingNormalizer());
+            this._parserUsingUriNormalization = new DomainParser(rules, new UriDomainNormalizer());
+            this._parserUsingIdnNormalization = new DomainParser(rules, new IdnMappingDomainNormalizer());
         }
 
         [TestMethod]

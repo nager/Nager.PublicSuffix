@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Nager.PublicSuffix.Models;
+using Nager.PublicSuffix.RuleParsers;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Nager.PublicSuffix
+namespace Nager.PublicSuffix.RuleProviders
 {
     /// <summary>
     /// FileTldRuleProvider
     /// </summary>
-    public class FileTldRuleProvider : ITldRuleProvider
+    public class FileTldRuleProvider : ITopLevelDomainRuleProvider
     {
         private readonly string _fileName;
 

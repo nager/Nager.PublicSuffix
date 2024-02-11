@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Nager.PublicSuffix.Models;
+using System;
 using System.Collections.Generic;
 
-namespace Nager.PublicSuffix
+namespace Nager.PublicSuffix.RuleParsers
 {
     /// <summary>
     /// TldRuleParser

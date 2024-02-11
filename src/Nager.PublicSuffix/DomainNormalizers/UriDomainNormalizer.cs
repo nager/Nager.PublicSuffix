@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Nager.PublicSuffix.DomainNormalizers
 {
-    public class UriNormalizer : IDomainNormalizer
+    public class UriDomainNormalizer : IDomainNormalizer
     {
         public List<string> PartlyNormalizeDomainAndExtractFullyNormalizedParts(string domain, out string partlyNormalizedDomain)
         {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Nager.PublicSuffix
+namespace Nager.PublicSuffix.Models
 {
     /// <summary>
     /// TldRule

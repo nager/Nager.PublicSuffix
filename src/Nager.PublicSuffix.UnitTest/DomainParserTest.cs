@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Nager.PublicSuffix.Exceptions;
+using Nager.PublicSuffix.Models;
 using System.Collections.Generic;
 
 namespace Nager.PublicSuffix.UnitTest
@@ -21,10 +22,10 @@ namespace Nager.PublicSuffix.UnitTest
             var domainName = domainParser.Parse("test.com");
 
             Assert.AreEqual("test", domainName.Domain);
-            Assert.AreEqual("com", domainName.TLD);
+            Assert.AreEqual("com", domainName.TopLevelDomain);
             Assert.AreEqual("test.com", domainName.RegistrableDomain);
-            Assert.AreEqual(null, domainName.SubDomain);
-            Assert.AreEqual("com", domainName.TLDRule.Name);
+            Assert.AreEqual(null, domainName.Subdomain);
+            Assert.AreEqual("com", domainName.TopLevelDomainRule.Name);
         }
 
         [TestMethod]
@@ -41,10 +42,10 @@ namespace Nager.PublicSuffix.UnitTest
             var domainName = domainParser.Parse("test.co.uk");
 
             Assert.AreEqual("test", domainName.Domain);
-            Assert.AreEqual("co.uk", domainName.TLD);
+            Assert.AreEqual("co.uk", domainName.TopLevelDomain);
             Assert.AreEqual("test.co.uk", domainName.RegistrableDomain);
-            Assert.AreEqual(null, domainName.SubDomain);
-            Assert.AreEqual("co.uk", domainName.TLDRule.Name);
+            Assert.AreEqual(null, domainName.Subdomain);
+            Assert.AreEqual("co.uk", domainName.TopLevelDomainRule.Name);
         }
 
         [TestMethod]
@@ -61,10 +62,10 @@ namespace Nager.PublicSuffix.UnitTest
             var domainName = domainParser.Parse("sub.test.co.uk");
 
             Assert.AreEqual("test", domainName.Domain);
-            Assert.AreEqual("co.uk", domainName.TLD);
+            Assert.AreEqual("co.uk", domainName.TopLevelDomain);
             Assert.AreEqual("test.co.uk", domainName.RegistrableDomain);
-            Assert.AreEqual("sub", domainName.SubDomain);
-            Assert.AreEqual("co.uk", domainName.TLDRule.Name);
+            Assert.AreEqual("sub", domainName.Subdomain);
+            Assert.AreEqual("co.uk", domainName.TopLevelDomainRule.Name);
         }
 
         [TestMethod]
@@ -82,10 +83,10 @@ namespace Nager.PublicSuffix.UnitTest
             var domainName = domainParser.Parse("sub.test1.test2.sch.uk");
 
             Assert.AreEqual("test1", domainName.Domain);
-            Assert.AreEqual("test2.sch.uk", domainName.TLD);
+            Assert.AreEqual("test2.sch.uk", domainName.TopLevelDomain);
             Assert.AreEqual("test1.test2.sch.uk", domainName.RegistrableDomain);
-            Assert.AreEqual("sub", domainName.SubDomain);
-            Assert.AreEqual("*.sch.uk", domainName.TLDRule.Name);
+            Assert.AreEqual("sub", domainName.Subdomain);
+            Assert.AreEqual("*.sch.uk", domainName.TopLevelDomainRule.Name);
         }
 
         [TestMethod]
@@ -131,10 +132,10 @@ namespace Nager.PublicSuffix.UnitTest
             var domainName = domainParser.Parse("unlisted.domain.example");
 
             Assert.AreEqual("domain", domainName.Domain);
-            Assert.AreEqual("example", domainName.TLD);
+            Assert.AreEqual("example", domainName.TopLevelDomain);
             Assert.AreEqual("domain.example", domainName.RegistrableDomain);
-            Assert.AreEqual("unlisted", domainName.SubDomain);
-            Assert.AreEqual("*", domainName.TLDRule.Name);
+            Assert.AreEqual("unlisted", domainName.Subdomain);
+            Assert.AreEqual("*", domainName.TopLevelDomainRule.Name);
         }
 
         [TestMethod]
