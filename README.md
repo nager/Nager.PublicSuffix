@@ -1,6 +1,8 @@
 Nager.PublicSuffix
 ==========
-The TLD proliferation makes it difficult to check whether domain names are valid. This project uses the rules of publicsuffix.org, a list of known public domain suffixes (TLD) to validate and split domains into three the parts (TLD, domain, subdomain). The validation rules are loaded directly from https://publicsuffix.org.
+The TLD proliferation makes it difficult to check whether domain names are valid. This project uses the rules of publicsuffix.org, a list of known public domain suffixes (TLD) to validate and split domains into three the parts (TLD, domain, subdomain). The validation rules are loaded directly from https://publicsuffix.org. The List is maintained here [publicsuffix list - GitHub](https://github.com/publicsuffix/list)
+
+For example, if you use Dmarc for e-mail security, it is very important to know what the main domain is.
 
 A domain name has 3 major parts:
 
@@ -17,7 +19,7 @@ The package is available on [nuget](https://www.nuget.org/packages/Nager.PublicS
 PM> install-package Nager.PublicSuffix
 ```
 
-## Benefits
+## Features
 - High performance
 - FileTldRuleProvider or WebTldRuleProvider
 - CacheProvider
