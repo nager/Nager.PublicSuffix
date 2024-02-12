@@ -4,14 +4,15 @@ using Nager.PublicSuffix.Models;
 using Nager.PublicSuffix.RuleParsers;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nager.PublicSuffix.RuleProviders
 {
     /// <summary>
-    /// Web2TldRuleProvider
+    /// WebRuleProvider
     /// </summary>
-    public class Web2TldRuleProvider : ITopLevelDomainRuleProvider
+    public class WebRuleProvider : IRuleProvider
     {
         private readonly string _fileUrl;
         private readonly ICacheProvider _cacheProvider;
@@ -23,13 +24,13 @@ namespace Nager.PublicSuffix.RuleProviders
         public ICacheProvider CacheProvider { get { return this._cacheProvider; } }
 
         /// <summary>
-        /// Web2TldRuleProvider<br/>
+        /// WebRuleProvider<br/>
         /// Loads the public suffix definition file from a given url
         /// </summary>
         /// <param name="httpClient"></param>
         /// <param name="url"></param>
         /// <param name="cacheProvider">default is <see cref="FileCacheProvider"/></param>
-        public Web2TldRuleProvider(
+        public WebRuleProvider(
             HttpClient httpClient,
             string url = "https://publicsuffix.org/list/public_suffix_list.dat",
             ICacheProvider cacheProvider = null)
@@ -47,7 +48,7 @@ namespace Nager.PublicSuffix.RuleProviders
         }
 
         ///<inheritdoc/>
-        public async Task<IEnumerable<TldRule>> BuildAsync()
+        public async Task<IEnumerable<TldRule>> BuildAsync(CancellationToken cancellationToken = default)
         {
             var ruleParser = new TldRuleParser();
 
@@ -58,7 +59,7 @@ namespace Nager.PublicSuffix.RuleProviders
             }
             else
             {
-                ruleData = await this.LoadFromUrlAsync(this._fileUrl).ConfigureAwait(false);
+                ruleData = await this.LoadFromUrlAsync(this._fileUrl, cancellationToken).ConfigureAwait(false);
                 await this._cacheProvider.SetAsync(ruleData).ConfigureAwait(false);
             }
 
@@ -70,10 +71,13 @@ namespace Nager.PublicSuffix.RuleProviders
         /// Load the public suffix data from the given url
         /// </summary>
         /// <param name="url"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<string> LoadFromUrlAsync(string url)
+        public async Task<string> LoadFromUrlAsync(
+            string url,
+            CancellationToken cancellationToken)
         {
-            using var response = await this._httpClient.GetAsync(url).ConfigureAwait(false);
+            using var response = await this._httpClient.GetAsync(url, cancellationToken).ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
             {

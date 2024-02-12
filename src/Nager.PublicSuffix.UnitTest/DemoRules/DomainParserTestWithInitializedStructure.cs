@@ -3,7 +3,7 @@ using Nager.PublicSuffix.Extensions;
 using Nager.PublicSuffix.Models;
 using System.Collections.Generic;
 
-namespace Nager.PublicSuffix.UnitTest
+namespace Nager.PublicSuffix.UnitTest.DemoRules
 {
     [TestClass]
     public class DomainParserTestWithInitializedStructure : DomainParserTest
@@ -12,6 +12,7 @@ namespace Nager.PublicSuffix.UnitTest
         {
             var structure = new DomainDataStructure("*", new TldRule("*"));
             structure.AddRules(rules);
+
             return new DomainParser(structure);
         }
     }

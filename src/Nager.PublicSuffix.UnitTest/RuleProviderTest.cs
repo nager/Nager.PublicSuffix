@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 namespace Nager.PublicSuffix.UnitTest
 {
     [TestClass]
-    public class TldRuleProviderTest
+    public class RuleProviderTest
     {
         [TestMethod]
         public async Task WebTldRuleProviderTest()
         {
-            var tldRuleProvider = new WebTldRuleProvider();
-            var rules = await tldRuleProvider.BuildAsync();
+            var webRuleProvider = new WebRuleProvider();
+            var rules = await webRuleProvider.BuildAsync();
             Assert.IsNotNull(rules);
         }
 
         [TestMethod]
         public async Task FileTldRuleProviderTest()
         {
-            var tldRuleProvider = new FileTldRuleProvider("public_suffix_list.dat");
-            var rules = await tldRuleProvider.BuildAsync();
+            var localFileRuleProvider = new LocalFileRuleProvider("public_suffix_list.dat");
+            var rules = await localFileRuleProvider.BuildAsync();
             Assert.AreEqual(9609, rules.Count());
             Assert.IsNotNull(rules);
         }

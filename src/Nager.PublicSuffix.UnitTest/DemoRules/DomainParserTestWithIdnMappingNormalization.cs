@@ -3,14 +3,15 @@ using Nager.PublicSuffix.DomainNormalizers;
 using Nager.PublicSuffix.Models;
 using System.Collections.Generic;
 
-namespace Nager.PublicSuffix.UnitTest
+namespace Nager.PublicSuffix.UnitTest.DemoRules
 {
     [TestClass]
-    public class DomainParserTestWithUriNormalization : DomainParserTest
+    public class DomainParserTestWithIdnMappingNormalization : DomainParserTest
     {
         protected override IDomainParser GetDomainParser(List<TldRule> rules)
         {
-            return new DomainParser(rules, new UriDomainNormalizer());
+            var domainNormalizer = new IdnMappingDomainNormalizer();
+            return new DomainParser(rules, domainNormalizer);
         }
     }
 }

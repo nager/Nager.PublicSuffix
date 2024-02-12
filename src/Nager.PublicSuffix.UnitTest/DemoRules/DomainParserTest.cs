@@ -3,7 +3,7 @@ using Nager.PublicSuffix.Exceptions;
 using Nager.PublicSuffix.Models;
 using System.Collections.Generic;
 
-namespace Nager.PublicSuffix.UnitTest
+namespace Nager.PublicSuffix.UnitTest.DemoRules
 {
     public abstract class DomainParserTest
     {

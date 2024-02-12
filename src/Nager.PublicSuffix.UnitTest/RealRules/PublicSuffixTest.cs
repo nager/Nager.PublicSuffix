@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Nager.PublicSuffix.Exceptions;
 
-namespace Nager.PublicSuffix.UnitTest
+namespace Nager.PublicSuffix.UnitTest.RealRules
 {
     public abstract class PublicSuffixTest
     {

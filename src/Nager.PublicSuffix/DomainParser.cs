@@ -37,9 +37,9 @@ namespace Nager.PublicSuffix
         /// <summary>
         /// Creates and initializes a DomainParser
         /// </summary>
-        /// <param name="ruleProvider">A rule provider from interface <see cref="ITopLevelDomainRuleProvider"/>.</param>
+        /// <param name="ruleProvider">A rule provider from interface <see cref="IRuleProvider"/>.</param>
         /// <param name="domainNormalizer">An <see cref="IDomainNormalizer"/>.</param>
-        public DomainParser(ITopLevelDomainRuleProvider ruleProvider, IDomainNormalizer domainNormalizer = null)
+        public DomainParser(IRuleProvider ruleProvider, IDomainNormalizer domainNormalizer = null)
             : this(domainNormalizer)
         {
             var rules = ruleProvider.BuildAsync().GetAwaiter().GetResult();

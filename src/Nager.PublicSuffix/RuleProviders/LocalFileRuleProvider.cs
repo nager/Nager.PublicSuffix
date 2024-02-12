@@ -2,28 +2,29 @@
 using Nager.PublicSuffix.RuleParsers;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nager.PublicSuffix.RuleProviders
 {
     /// <summary>
-    /// FileTldRuleProvider
+    /// LocalFileRuleProvider
     /// </summary>
-    public class FileTldRuleProvider : ITopLevelDomainRuleProvider
+    public class LocalFileRuleProvider : IRuleProvider
     {
-        private readonly string _fileName;
+        private readonly string _filePath;
 
         /// <summary>
-        /// FileTldRuleProvider
+        /// LocalFileRuleProvider
         /// </summary>
-        /// <param name="fileName"></param>
-        public FileTldRuleProvider(string fileName)
+        /// <param name="filePath"></param>
+        public LocalFileRuleProvider(string filePath)
         {
-            this._fileName = fileName;
+            this._filePath = filePath;
         }
 
         ///<inheritdoc/>
-        public async Task<IEnumerable<TldRule>> BuildAsync()
+        public async Task<IEnumerable<TldRule>> BuildAsync(CancellationToken cancellationToken = default)
         {
             var ruleData = await this.LoadFromFile().ConfigureAwait(false);
 
@@ -34,12 +35,12 @@ namespace Nager.PublicSuffix.RuleProviders
 
         private async Task<string> LoadFromFile()
         {
-            if (!File.Exists(this._fileName))
+            if (!File.Exists(this._filePath))
             {
-                throw new FileNotFoundException("Rule file does not exist");
+                throw new FileNotFoundException($"Rule file does not exist {this._filePath}");
             }
 
-            using var reader = File.OpenText(this._fileName);
+            using var reader = File.OpenText(this._filePath);
             return await reader.ReadToEndAsync().ConfigureAwait(false);
         }
     }
