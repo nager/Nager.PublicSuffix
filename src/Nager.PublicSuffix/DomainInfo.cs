@@ -15,7 +15,7 @@ namespace Nager.PublicSuffix
         public string Domain { get; private set; }
 
         /// <summary>
-        /// The Top Level Domain<para />
+        /// The Top Level Domain (TLD)<para />
         /// e.g. com, net, de, co.uk
         /// </summary>
         public string TopLevelDomain { get; private set; }
@@ -54,7 +54,9 @@ namespace Nager.PublicSuffix
         /// </summary>
         /// <param name="domain"></param>
         /// <param name="tldRule"></param>
-        public DomainInfo(string domain, TldRule tldRule)
+        public DomainInfo(
+            string domain,
+            TldRule tldRule)
         {
             if (string.IsNullOrEmpty(domain))
             {
@@ -66,10 +68,10 @@ namespace Nager.PublicSuffix
                 return;
             }
 
-            var domainParts = domain.Split('.').Reverse().ToList();
-            var ruleParts = tldRule.Name.Split('.').Skip(tldRule.Type == TldRuleType.WildcardException ? 1 : 0).Reverse().ToList();
-            var tld = string.Join(".", domainParts.Take(ruleParts.Count).Reverse());
-            var registrableDomain = string.Join(".", domainParts.Take(ruleParts.Count + 1).Reverse());
+            var domainParts = domain.Split('.').Reverse();
+            var ruleParts = tldRule.Name.Split('.').Skip(tldRule.Type == TldRuleType.WildcardException ? 1 : 0).Count();
+            var tld = string.Join(".", domainParts.Take(ruleParts).Reverse());
+            var registrableDomain = string.Join(".", domainParts.Take(ruleParts + 1).Reverse());
 
             if (domain.Equals(tld))
             {
@@ -81,9 +83,10 @@ namespace Nager.PublicSuffix
             this.TopLevelDomain = tld;
             this.RegistrableDomain = registrableDomain;
 
-            this.Domain = domainParts.Skip(ruleParts.Count).FirstOrDefault();
-            var subDomain = string.Join(".", domainParts.Skip(ruleParts.Count + 1).Reverse());
-            this.Subdomain = string.IsNullOrEmpty(subDomain) ? null : subDomain;
+            this.Domain = domainParts.Skip(ruleParts).FirstOrDefault();
+
+            var subdomain = string.Join(".", domainParts.Skip(ruleParts + 1).Reverse());
+            this.Subdomain = string.IsNullOrEmpty(subdomain) ? null : subdomain;
         }
     }
 }
