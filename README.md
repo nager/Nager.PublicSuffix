@@ -6,7 +6,7 @@ For example, if you use Dmarc for e-mail security, it is very important to know 
 
 A domain name has 3 major parts:
 
-Example | TLD | Domain | Subdomain |
+Example | Top Level Domain (TLD) | Domain | Subdomain |
 --- | --- | --- | --- |
 blog.google.com | com | google | blog |
 www.wikipedia.org | org | wikipedia | www |
