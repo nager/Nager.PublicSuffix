@@ -24,7 +24,8 @@ namespace Nager.PublicSuffix.RuleProviders
         }
 
         ///<inheritdoc/>
-        public async Task<IEnumerable<TldRule>> BuildAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<TldRule>> BuildAsync(
+            CancellationToken cancellationToken = default)
         {
             var ruleData = await this.LoadFromFile().ConfigureAwait(false);
 

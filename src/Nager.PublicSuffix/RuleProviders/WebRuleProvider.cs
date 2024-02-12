@@ -1,4 +1,5 @@
-﻿using Nager.PublicSuffix.CacheProviders;
+﻿using Microsoft.Extensions.Configuration;
+using Nager.PublicSuffix.CacheProviders;
 using Nager.PublicSuffix.Exceptions;
 using Nager.PublicSuffix.Models;
 using Nager.PublicSuffix.RuleParsers;
@@ -14,7 +15,7 @@ namespace Nager.PublicSuffix.RuleProviders
     /// </summary>
     public class WebRuleProvider : IRuleProvider
     {
-        private readonly string _fileUrl;
+        private readonly string _dataFileUrl;
         private readonly ICacheProvider _cacheProvider;
         private readonly HttpClient _httpClient;
 
@@ -25,18 +26,26 @@ namespace Nager.PublicSuffix.RuleProviders
 
         /// <summary>
         /// WebRuleProvider<br/>
-        /// Loads the public suffix definition file from a given url
+        /// Loads the public suffix definition file from the official website
         /// </summary>
+        /// <remarks>It is possible to overwrite the url via configuration parameters <c>Nager:PublicSuffix:DataUrl</c></remarks>
+        /// <param name="configuration"></param>
         /// <param name="httpClient"></param>
-        /// <param name="url"></param>
         /// <param name="cacheProvider">default is <see cref="FileCacheProvider"/></param>
         public WebRuleProvider(
+            IConfiguration configuration,
             HttpClient httpClient,
-            string url = "https://publicsuffix.org/list/public_suffix_list.dat",
             ICacheProvider cacheProvider = null)
         {
             this._httpClient = httpClient;
-            this._fileUrl = url;
+
+            var url = configuration["Nager:PublicSuffix:DataUrl"];
+            if (string.IsNullOrEmpty(url))
+            {
+                url = "https://publicsuffix.org/list/public_suffix_list.dat";
+            }
+
+            this._dataFileUrl = url;
 
             if (cacheProvider == null)
             {
@@ -48,7 +57,8 @@ namespace Nager.PublicSuffix.RuleProviders
         }
 
         ///<inheritdoc/>
-        public async Task<IEnumerable<TldRule>> BuildAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<TldRule>> BuildAsync(
+            CancellationToken cancellationToken = default)
         {
             var ruleParser = new TldRuleParser();
 
@@ -59,7 +69,7 @@ namespace Nager.PublicSuffix.RuleProviders
             }
             else
             {
-                ruleData = await this.LoadFromUrlAsync(this._fileUrl, cancellationToken).ConfigureAwait(false);
+                ruleData = await this.LoadFromUrlAsync(this._dataFileUrl, cancellationToken).ConfigureAwait(false);
                 await this._cacheProvider.SetAsync(ruleData).ConfigureAwait(false);
             }
 
