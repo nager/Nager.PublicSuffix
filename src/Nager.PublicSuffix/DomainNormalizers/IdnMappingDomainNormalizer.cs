@@ -6,7 +6,7 @@ using System.Linq;
 namespace Nager.PublicSuffix.DomainNormalizers
 {
     /// <summary>
-    /// IdnMappingNormalizer
+    /// IdnMapping DomainNormalizer
     /// </summary>
     public class IdnMappingDomainNormalizer : IDomainNormalizer
     {

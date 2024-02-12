@@ -1,6 +1,6 @@
-﻿using Nager.PublicSuffix.Models;
+﻿using Nager.PublicSuffix.Extensions;
+using Nager.PublicSuffix.Models;
 using Nager.PublicSuffix.RuleParsers;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,15 +23,19 @@ namespace Nager.PublicSuffix.RuleProviders
             this._filePath = filePath;
         }
 
-        ///<inheritdoc/>
-        public async Task<IEnumerable<TldRule>> BuildAsync(
+        /// <inheritdoc/>
+        public async Task<DomainDataStructure> BuildAsync(
             CancellationToken cancellationToken = default)
         {
             var ruleData = await this.LoadFromFile().ConfigureAwait(false);
 
             var ruleParser = new TldRuleParser();
             var rules = ruleParser.ParseRules(ruleData);
-            return rules;
+
+            var domainDataStructure = new DomainDataStructure("*", new TldRule("*"));
+            domainDataStructure.AddRules(rules);
+
+            return domainDataStructure;
         }
 
         private async Task<string> LoadFromFile()

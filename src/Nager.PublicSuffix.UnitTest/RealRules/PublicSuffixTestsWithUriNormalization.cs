@@ -10,7 +10,7 @@ namespace Nager.PublicSuffix.UnitTest.RealRules
         [TestInitialize()]
         public void Initialize()
         {
-            var domainParser = new DomainParser(new FileTldRuleProvider("public_suffix_list.dat"), new UriDomainNormalizer());
+            var domainParser = new DomainParser(new LocalFileRuleProvider("public_suffix_list.dat"), new UriDomainNormalizer());
             this._domainParser = domainParser;
         }
     }

@@ -2,6 +2,7 @@
 using Nager.PublicSuffix.DomainNormalizers;
 using Nager.PublicSuffix.Exceptions;
 using Nager.PublicSuffix.Models;
+using Nager.PublicSuffix.RuleProviders;
 using System.Collections.Generic;
 
 namespace Nager.PublicSuffix.UnitTest
@@ -27,8 +28,10 @@ namespace Nager.PublicSuffix.UnitTest
                 new TldRule("com")
             };
 
-            this._parserUsingUriNormalization = new DomainParser(rules, new UriDomainNormalizer());
-            this._parserUsingIdnNormalization = new DomainParser(rules, new IdnMappingDomainNormalizer());
+            var ruleProvider = new StaticRuleProvider(rules);
+
+            this._parserUsingUriNormalization = new DomainParser(ruleProvider, new UriDomainNormalizer());
+            this._parserUsingIdnNormalization = new DomainParser(ruleProvider, new IdnMappingDomainNormalizer());
         }
 
         [TestMethod]

@@ -1,6 +1,5 @@
 ﻿using Nager.PublicSuffix.DomainNormalizers;
 using Nager.PublicSuffix.Exceptions;
-using Nager.PublicSuffix.Extensions;
 using Nager.PublicSuffix.Models;
 using Nager.PublicSuffix.RuleProviders;
 using System;
@@ -14,47 +13,22 @@ namespace Nager.PublicSuffix
     /// </summary>
     public class DomainParser : IDomainParser
     {
-        private DomainDataStructure _domainDataStructure;
+        private readonly DomainDataStructure _domainDataStructure;
         private readonly IDomainNormalizer _domainNormalizer;
         private readonly TldRule _rootTldRule = new TldRule("*");
 
         /// <summary>
         /// Creates and initializes a DomainParser
         /// </summary>
-        /// <param name="rules">The list of rules.</param>
-        /// <param name="domainNormalizer">An <see cref="IDomainNormalizer"/>.</param>
-        public DomainParser(IEnumerable<TldRule> rules, IDomainNormalizer domainNormalizer = null)
-            : this(domainNormalizer)
-        {
-            if (rules == null)
-            {
-                throw new ArgumentNullException(nameof(rules));
-            }
-
-            this.AddRules(rules);
-        }
-
-        /// <summary>
-        /// Creates and initializes a DomainParser
-        /// </summary>
         /// <param name="ruleProvider">A rule provider from interface <see cref="IRuleProvider"/>.</param>
         /// <param name="domainNormalizer">An <see cref="IDomainNormalizer"/>.</param>
-        public DomainParser(IRuleProvider ruleProvider, IDomainNormalizer domainNormalizer = null)
+        public DomainParser(
+            IRuleProvider ruleProvider,
+            IDomainNormalizer domainNormalizer = default)
             : this(domainNormalizer)
         {
-            var rules = ruleProvider.BuildAsync().GetAwaiter().GetResult();
-            this.AddRules(rules);
-        }
-
-        /// <summary>
-        /// Creates a DomainParser based on an already initialzed tree.
-        /// </summary>
-        /// <param name="initializedDataStructure">An already initialized tree.</param>
-        /// <param name="domainNormalizer">An <see cref="IDomainNormalizer"/>.</param>
-        public DomainParser(DomainDataStructure initializedDataStructure, IDomainNormalizer domainNormalizer = null)
-            : this(domainNormalizer)
-        {
-            this._domainDataStructure = initializedDataStructure;
+            var domainDataStructure = ruleProvider.BuildAsync().GetAwaiter().GetResult();
+            this._domainDataStructure = domainDataStructure;
         }
 
         private DomainParser(IDomainNormalizer domainNormalizer)
@@ -62,7 +36,7 @@ namespace Nager.PublicSuffix
             this._domainNormalizer = domainNormalizer ?? new UriDomainNormalizer();
         }
 
-        ///<inheritdoc/>
+        /// <inheritdoc/>
         public DomainInfo Parse(Uri domain)
         {
             var partlyNormalizedDomain = domain.Host;
@@ -76,14 +50,14 @@ namespace Nager.PublicSuffix
             return this.GetDomainFromParts(partlyNormalizedDomain, parts);
         }
 
-        ///<inheritdoc/>
+        /// <inheritdoc/>
         public DomainInfo Parse(string domain)
         {
             var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string partlyNormalizedDomain);
             return this.GetDomainFromParts(partlyNormalizedDomain, parts);
         }
 
-        ///<inheritdoc/>
+        /// <inheritdoc/>
         public bool IsValidDomain(string domain)
         {
             if (string.IsNullOrEmpty(domain))
@@ -127,13 +101,6 @@ namespace Nager.PublicSuffix
             {
                 return false;
             }
-        }
-
-        private void AddRules(IEnumerable<TldRule> tldRules)
-        {
-            this._domainDataStructure = this._domainDataStructure ?? new DomainDataStructure("*", this._rootTldRule);
-
-            this._domainDataStructure.AddRules(tldRules);
         }
 
         private DomainInfo GetDomainFromParts(string domain, List<string> parts)

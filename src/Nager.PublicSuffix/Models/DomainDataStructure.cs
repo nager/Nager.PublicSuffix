@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Nager.PublicSuffix.Models
 {
     /// <summary>
-    /// Represents a tree of TLD domains
+    /// Represents a tree of Top Level Domains (TLD)
     /// </summary>
     public class DomainDataStructure
     {

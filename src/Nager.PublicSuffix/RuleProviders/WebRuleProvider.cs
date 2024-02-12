@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Nager.PublicSuffix.CacheProviders;
 using Nager.PublicSuffix.Exceptions;
+using Nager.PublicSuffix.Extensions;
 using Nager.PublicSuffix.Models;
 using Nager.PublicSuffix.RuleParsers;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -56,8 +56,8 @@ namespace Nager.PublicSuffix.RuleProviders
             this._cacheProvider = cacheProvider;
         }
 
-        ///<inheritdoc/>
-        public async Task<IEnumerable<TldRule>> BuildAsync(
+        /// <inheritdoc/>
+        public async Task<DomainDataStructure> BuildAsync(
             CancellationToken cancellationToken = default)
         {
             var ruleParser = new TldRuleParser();
@@ -74,7 +74,11 @@ namespace Nager.PublicSuffix.RuleProviders
             }
 
             var rules = ruleParser.ParseRules(ruleData);
-            return rules;
+
+            var domainDataStructure = new DomainDataStructure("*", new TldRule("*"));
+            domainDataStructure.AddRules(rules);
+
+            return domainDataStructure;
         }
 
         /// <summary>

@@ -1,5 +1,4 @@
 ﻿using Nager.PublicSuffix.Models;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,6 +14,6 @@ namespace Nager.PublicSuffix.RuleProviders
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns>Returns the TldRules</returns>
-        Task<IEnumerable<TldRule>> BuildAsync(CancellationToken cancellationToken = default);
+        Task<DomainDataStructure> BuildAsync(CancellationToken cancellationToken = default);
     }
 }
