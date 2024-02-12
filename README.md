@@ -1,3 +1,7 @@
+> [!IMPORTANT]
+> The current stable development branch **V2** can be found [here](https://github.com/nager/Nager.PublicSuffix/tree/v2)
+
+
 Nager.PublicSuffix
 ==========
 The TLD proliferation makes it difficult to check whether domain names are valid. This project uses the rules of publicsuffix.org, a list of known public domain suffixes (TLD) to validate and split domains into three the parts (TLD, domain, subdomain). The validation rules are loaded directly from https://publicsuffix.org. The List is maintained here [publicsuffix list - GitHub](https://github.com/publicsuffix/list)
