@@ -111,6 +111,7 @@ namespace Nager.PublicSuffix
             }
 
             var structure = this._domainDataStructure;
+
             var matches = new List<TldRule>();
             this.FindMatches(parts, structure, matches);
 
