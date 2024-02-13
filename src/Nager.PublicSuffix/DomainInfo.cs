@@ -33,12 +33,12 @@ namespace Nager.PublicSuffix
         public string? RegistrableDomain { get; private set; }
 
         /// <summary>
-        /// Fully qualified hostname (FQDN)
+        /// Fully qualified domain name (FQDN)
         /// </summary>
-        public string? Hostname { get; private set; }
+        public string? FullyQualifiedDomainName { get; private set; }
 
         /// <summary>
-        /// The matching public suffix Rule
+        /// The matching Rule of the PublicSuffixList
         /// </summary>
         public TldRule? TopLevelDomainRule { get; private set; }
 
@@ -63,13 +63,13 @@ namespace Nager.PublicSuffix
         /// <summary>
         /// Domain Info
         /// </summary>
-        /// <param name="domain"></param>
+        /// <param name="fullyQualifiedDomainName"></param>
         /// <param name="tldRule"></param>
         public DomainInfo(
-            string domain,
+            string fullyQualifiedDomainName,
             TldRule tldRule)
         {
-            if (string.IsNullOrEmpty(domain))
+            if (string.IsNullOrEmpty(fullyQualifiedDomainName))
             {
                 return;
             }
@@ -79,19 +79,19 @@ namespace Nager.PublicSuffix
                 return;
             }
 
-            var domainParts = domain.Split('.').Reverse();
+            var domainParts = fullyQualifiedDomainName.Split('.').Reverse();
             var ruleParts = tldRule.Name.Split('.').Skip(tldRule.Type == TldRuleType.WildcardException ? 1 : 0).Count();
 
             var topLevelDomain = string.Join(".", domainParts.Take(ruleParts).Reverse());
             var registrableDomain = string.Join(".", domainParts.Take(ruleParts + 1).Reverse());
 
-            if (domain.Equals(topLevelDomain))
+            if (fullyQualifiedDomainName.Equals(topLevelDomain))
             {
                 return;
             }
 
             this.TopLevelDomainRule = tldRule;
-            this.Hostname = domain;
+            this.FullyQualifiedDomainName = fullyQualifiedDomainName;
             this.TopLevelDomain = topLevelDomain;
             this.RegistrableDomain = registrableDomain;
 

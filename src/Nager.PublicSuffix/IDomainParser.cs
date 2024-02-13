@@ -8,24 +8,24 @@ namespace Nager.PublicSuffix
     public interface IDomainParser
     {
         /// <summary>
-        /// Parse the DomainInfo from <paramref name="domain"/>.
+        /// Parse the DomainInfo from <paramref name="fullyQualifiedDomainName"/>.
         /// </summary>
-        /// <param name="domain">The domain to parse.</param>
+        /// <param name="fullyQualifiedDomainName">The fully qualified domain name (FQDN) to parse</param>
         /// <returns>DomainInfo object</returns>
-        DomainInfo? Parse(string domain);
+        DomainInfo? Parse(string fullyQualifiedDomainName);
 
         /// <summary>
-        /// Parse the DomainInfo from <paramref name="domain"/>.
+        /// Parse the DomainInfo from <paramref name="fullyQualifiedDomainName"/>.
         /// </summary>
-        /// <param name="domain">The domain to parse.</param>
+        /// <param name="fullyQualifiedDomainName">The fully qualified domain name (FQDN) to parse</param>
         /// <returns>DomainInfo object</returns>
-        DomainInfo? Parse(Uri domain);
+        DomainInfo? Parse(Uri fullyQualifiedDomainName);
 
         /// <summary>
-        /// Checks if the <paramref name="domain"/> is valid.
+        /// Checks if the <paramref name="fullyQualifiedDomainName"/> is valid.
         /// </summary>
-        /// <param name="domain">The domain to check.</param>
-        /// <returns>Returns <strong>true</strong> if the <paramref name="domain"/> is valid.</returns>
-        bool IsValidDomain(string domain);
+        /// <param name="fullyQualifiedDomainName">The fully qualified domain name (FQDN) to check</param>
+        /// <returns>Returns <strong>true</strong> if the <paramref name="fullyQualifiedDomainName"/> is valid.</returns>
+        bool IsValidDomain(string fullyQualifiedDomainName);
     }
 }

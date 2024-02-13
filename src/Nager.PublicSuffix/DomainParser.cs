@@ -30,10 +30,10 @@ namespace Nager.PublicSuffix
         }
 
         /// <inheritdoc/>
-        public DomainInfo? Parse(Uri domain)
+        public DomainInfo? Parse(Uri fullyQualifiedDomainName)
         {
-            var partlyNormalizedDomain = domain.Host;
-            var normalizedHost = domain.GetComponents(UriComponents.NormalizedHost, UriFormat.UriEscaped); //Normalize punycode
+            var partlyNormalizedDomain = fullyQualifiedDomainName.Host;
+            var normalizedHost = fullyQualifiedDomainName.GetComponents(UriComponents.NormalizedHost, UriFormat.UriEscaped); //Normalize punycode
 
             var parts = normalizedHost
                 .Split('.')
@@ -44,9 +44,9 @@ namespace Nager.PublicSuffix
         }
 
         /// <inheritdoc/>
-        public DomainInfo? Parse(string domain)
+        public DomainInfo? Parse(string fullyQualifiedDomainName)
         {
-            var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string? partlyNormalizedDomain);
+            var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(fullyQualifiedDomainName, out string? partlyNormalizedDomain);
             if (parts == null)
             {
                 return null;
@@ -56,36 +56,36 @@ namespace Nager.PublicSuffix
         }
 
         /// <inheritdoc/>
-        public bool IsValidDomain(string domain)
+        public bool IsValidDomain(string fullyQualifiedDomainName)
         {
-            if (string.IsNullOrEmpty(domain))
+            if (string.IsNullOrEmpty(fullyQualifiedDomainName))
             {
                 return false;
             }
 
-            if (Uri.TryCreate(domain, UriKind.Absolute, out _))
+            if (Uri.TryCreate(fullyQualifiedDomainName, UriKind.Absolute, out _))
             {
                 return false;
             }
 
-            if (!Uri.TryCreate($"http://{domain}", UriKind.Absolute, out var uri))
+            if (!Uri.TryCreate($"http://{fullyQualifiedDomainName}", UriKind.Absolute, out var uri))
             {
                 return false;
             }
 
-            if (!uri.DnsSafeHost.Equals(domain, StringComparison.OrdinalIgnoreCase))
+            if (!uri.DnsSafeHost.Equals(fullyQualifiedDomainName, StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
 
-            if (domain[0] == '*')
+            if (fullyQualifiedDomainName[0] == '*')
             {
                 return false;
             }
 
             try
             {
-                var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string? partlyNormalizedDomain);
+                var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(fullyQualifiedDomainName, out string? partlyNormalizedDomain);
                 if (parts == null)
                 {
                     return false;
