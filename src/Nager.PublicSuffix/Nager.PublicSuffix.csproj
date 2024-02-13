@@ -11,7 +11,7 @@
     <RepositoryUrl>https://github.com/nager/Nager.PublicSuffix</RepositoryUrl>
     <Description>Domain parsing and validating (TLD, domain, subdomain) provide easy and fast access to Public Suffix List</Description>
     <PackageTags>PublicSuffix publicsuffix.org public-suffix TLD DomainParser domain-parser Registrable Domain DomainName Hostname Subdomain</PackageTags>
-    <PackageReleaseNotes>Add IEquatable Interface to TldRule.cs</PackageReleaseNotes>
+    <PackageReleaseNotes></PackageReleaseNotes>
     <PackageIcon>logo.png</PackageIcon>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>true</IncludeSymbols>
