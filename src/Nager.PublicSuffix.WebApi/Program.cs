@@ -21,8 +21,11 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(opt =>
 
 var app = builder.Build();
 
-//var ruleProvider = app.Services.GetService<IRuleProvider>();
-//await ruleProvider.BuildAsync();
+var ruleProvider = app.Services.GetService<IRuleProvider>();
+if (ruleProvider != null)
+{
+    await ruleProvider.BuildAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

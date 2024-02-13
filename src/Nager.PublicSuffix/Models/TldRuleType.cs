@@ -18,6 +18,6 @@
         /// <summary>
         /// WildcardException
         /// </summary>
-        WildcardException,
+        WildcardException
     }
 }

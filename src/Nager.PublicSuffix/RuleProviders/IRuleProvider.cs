@@ -14,6 +14,12 @@ namespace Nager.PublicSuffix.RuleProviders
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns>Returns the TldRules</returns>
-        Task<DomainDataStructure> BuildAsync(CancellationToken cancellationToken = default);
+        Task<bool> BuildAsync(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Get the DomainDataStructure
+        /// </summary>
+        /// <returns></returns>
+        DomainDataStructure GetDomainDataStructure();
     }
 }

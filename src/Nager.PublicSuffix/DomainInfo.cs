@@ -70,17 +70,18 @@ namespace Nager.PublicSuffix
 
             var domainParts = domain.Split('.').Reverse();
             var ruleParts = tldRule.Name.Split('.').Skip(tldRule.Type == TldRuleType.WildcardException ? 1 : 0).Count();
-            var tld = string.Join(".", domainParts.Take(ruleParts).Reverse());
+
+            var topLevelDomain = string.Join(".", domainParts.Take(ruleParts).Reverse());
             var registrableDomain = string.Join(".", domainParts.Take(ruleParts + 1).Reverse());
 
-            if (domain.Equals(tld))
+            if (domain.Equals(topLevelDomain))
             {
                 return;
             }
 
             this.TopLevelDomainRule = tldRule;
             this.Hostname = domain;
-            this.TopLevelDomain = tld;
+            this.TopLevelDomain = topLevelDomain;
             this.RegistrableDomain = registrableDomain;
 
             this.Domain = domainParts.Skip(ruleParts).FirstOrDefault();

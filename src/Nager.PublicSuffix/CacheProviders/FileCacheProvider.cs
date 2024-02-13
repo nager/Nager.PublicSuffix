@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 namespace Nager.PublicSuffix.CacheProviders
 {
     /// <summary>
-    /// FileCacheProvider
-    /// Write the data to a cache file in the temp directory
+    /// FileCacheProvider, write the data to a cache file in the temp directory
     /// </summary>
     public class FileCacheProvider : ICacheProvider
     {

@@ -27,9 +27,12 @@ namespace Nager.PublicSuffix.UnitTest
         public async Task FileTldRuleProviderTest()
         {
             var localFileRuleProvider = new LocalFileRuleProvider("public_suffix_list.dat");
-            var domainDataStructure = await localFileRuleProvider.BuildAsync();
 
-            Assert.IsNotNull(domainDataStructure);
+            var buildSuccessful = await localFileRuleProvider.BuildAsync();
+            Assert.IsTrue(buildSuccessful);
+
+            var domainDataStructure = localFileRuleProvider.GetDomainDataStructure();
+
             Assert.AreEqual(1460, domainDataStructure.Nested.Count);
         }
     }

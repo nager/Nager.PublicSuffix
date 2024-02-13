@@ -35,10 +35,16 @@ namespace Nager.PublicSuffix.RuleProviders
         }
 
         /// <inheritdoc/>
-        public Task<DomainDataStructure> BuildAsync(
+        public Task<bool> BuildAsync(
             CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(this._domainDataStructure);
+            return Task.FromResult(true);
+        }
+
+        /// <inheritdoc/>
+        public DomainDataStructure GetDomainDataStructure()
+        {
+            return this._domainDataStructure;
         }
     }
 }

@@ -13,6 +13,7 @@ namespace Nager.PublicSuffix.RuleProviders
     public class LocalFileRuleProvider : IRuleProvider
     {
         private readonly string _filePath;
+        private DomainDataStructure _domainDataStructure;
 
         /// <summary>
         /// LocalFileRuleProvider
@@ -24,7 +25,7 @@ namespace Nager.PublicSuffix.RuleProviders
         }
 
         /// <inheritdoc/>
-        public async Task<DomainDataStructure> BuildAsync(
+        public async Task<bool> BuildAsync(
             CancellationToken cancellationToken = default)
         {
             var ruleData = await this.LoadFromFile().ConfigureAwait(false);
@@ -35,7 +36,15 @@ namespace Nager.PublicSuffix.RuleProviders
             var domainDataStructure = new DomainDataStructure("*", new TldRule("*"));
             domainDataStructure.AddRules(rules);
 
-            return domainDataStructure;
+            this._domainDataStructure = domainDataStructure;
+
+            return true;
+        }
+
+        /// <inheritdoc/>
+        public DomainDataStructure GetDomainDataStructure()
+        {
+            return this._domainDataStructure;
         }
 
         private async Task<string> LoadFromFile()

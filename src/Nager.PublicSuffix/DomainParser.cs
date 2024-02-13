@@ -13,7 +13,7 @@ namespace Nager.PublicSuffix
     /// </summary>
     public class DomainParser : IDomainParser
     {
-        private readonly DomainDataStructure _domainDataStructure;
+        private readonly IRuleProvider _ruleProvider;
         private readonly IDomainNormalizer _domainNormalizer;
         private readonly TldRule _rootTldRule = new TldRule("*");
 
@@ -27,8 +27,7 @@ namespace Nager.PublicSuffix
             IDomainNormalizer domainNormalizer = default)
             : this(domainNormalizer)
         {
-            var domainDataStructure = ruleProvider.BuildAsync().GetAwaiter().GetResult();
-            this._domainDataStructure = domainDataStructure;
+            this._ruleProvider = ruleProvider;
         }
 
         private DomainParser(IDomainNormalizer domainNormalizer)
@@ -110,10 +109,14 @@ namespace Nager.PublicSuffix
                 throw new ParseException("Invalid domain part detected");
             }
 
-            var structure = this._domainDataStructure;
+            var domainDataStructure = this._ruleProvider.GetDomainDataStructure();
+            if (domainDataStructure == null)
+            {
+                throw new NullReferenceException("DomainDataStructure is not available");
+            }
 
             var matches = new List<TldRule>();
-            this.FindMatches(parts, structure, matches);
+            this.FindMatches(parts, domainDataStructure, matches);
 
             //Sort so exceptions are first, then by biggest label count (with wildcards at bottom) 
             var sortedMatches = matches.OrderByDescending(x => x.Type == TldRuleType.WildcardException ? 1 : 0)
@@ -149,11 +152,14 @@ namespace Nager.PublicSuffix
             return new DomainInfo(domain, winningRule);
         }
 
-        private void FindMatches(IEnumerable<string> parts, DomainDataStructure structure, List<TldRule> matches)
+        private void FindMatches(
+            IEnumerable<string> parts,
+            DomainDataStructure domainDataStructure,
+            List<TldRule> matches)
         {
-            if (structure.TldRule != null)
+            if (domainDataStructure.TldRule != null)
             {
-                matches.Add(structure.TldRule);
+                matches.Add(domainDataStructure.TldRule);
             }
 
             var part = parts.FirstOrDefault();
@@ -162,14 +168,14 @@ namespace Nager.PublicSuffix
                 return;
             }
 
-            if (structure.Nested.TryGetValue(part, out DomainDataStructure foundStructure))
+            if (domainDataStructure.Nested.TryGetValue(part, out DomainDataStructure nestedDomainDataStructure))
             {
-                this.FindMatches(parts.Skip(1), foundStructure, matches);
+                this.FindMatches(parts.Skip(1), nestedDomainDataStructure, matches);
             }
 
-            if (structure.Nested.TryGetValue("*", out foundStructure))
+            if (domainDataStructure.Nested.TryGetValue("*", out nestedDomainDataStructure))
             {
-                this.FindMatches(parts.Skip(1), foundStructure, matches);
+                this.FindMatches(parts.Skip(1), nestedDomainDataStructure, matches);
             }
         }
     }

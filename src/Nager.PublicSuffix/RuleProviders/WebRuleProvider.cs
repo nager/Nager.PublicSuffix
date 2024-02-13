@@ -18,6 +18,7 @@ namespace Nager.PublicSuffix.RuleProviders
         private readonly string _dataFileUrl;
         private readonly ICacheProvider _cacheProvider;
         private readonly HttpClient _httpClient;
+        private DomainDataStructure _domainDataStructure;
 
         /// <summary>
         /// Returns the cache provider
@@ -57,7 +58,7 @@ namespace Nager.PublicSuffix.RuleProviders
         }
 
         /// <inheritdoc/>
-        public async Task<DomainDataStructure> BuildAsync(
+        public async Task<bool> BuildAsync(
             CancellationToken cancellationToken = default)
         {
             var ruleParser = new TldRuleParser();
@@ -78,7 +79,15 @@ namespace Nager.PublicSuffix.RuleProviders
             var domainDataStructure = new DomainDataStructure("*", new TldRule("*"));
             domainDataStructure.AddRules(rules);
 
-            return domainDataStructure;
+            this._domainDataStructure  = domainDataStructure;
+
+            return true;
+        }
+
+        /// <inheritdoc/>
+        public DomainDataStructure GetDomainDataStructure()
+        {
+            return this._domainDataStructure;
         }
 
         /// <summary>

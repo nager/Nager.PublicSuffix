@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Nager.PublicSuffix.DomainNormalizers;
 using Nager.PublicSuffix.RuleProviders;
+using System.Threading.Tasks;
 
 namespace Nager.PublicSuffix.UnitTest.RealRules
 {
@@ -8,9 +9,12 @@ namespace Nager.PublicSuffix.UnitTest.RealRules
     public class PublicSuffixTestsWithUriNormalization : PublicSuffixTest
     {
         [TestInitialize()]
-        public void Initialize()
+        public async Task Initialize()
         {
-            var domainParser = new DomainParser(new LocalFileRuleProvider("public_suffix_list.dat"), new UriDomainNormalizer());
+            var ruleProvider = new LocalFileRuleProvider("public_suffix_list.dat");
+            await ruleProvider.BuildAsync();
+
+            var domainParser = new DomainParser(ruleProvider, new UriDomainNormalizer());
             this._domainParser = domainParser;
         }
     }
