@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Nager.PublicSuffix.RuleProviders
 {
     /// <summary>
-    /// WebRuleProvider
+    /// Web RuleProvider
     /// </summary>
     public class WebRuleProvider : IRuleProvider
     {
@@ -29,7 +29,7 @@ namespace Nager.PublicSuffix.RuleProviders
         public ICacheProvider CacheProvider { get { return this._cacheProvider; } }
 
         /// <summary>
-        /// WebRuleProvider<br/>
+        /// Web RuleProvider<br/>
         /// Loads the public suffix definition file from the official website
         /// </summary>
         /// <remarks>It is possible to overwrite the url via configuration parameters <c>Nager:PublicSuffix:DataUrl</c></remarks>
@@ -59,12 +59,13 @@ namespace Nager.PublicSuffix.RuleProviders
 
         /// <inheritdoc/>
         public async Task<bool> BuildAsync(
+            bool ignoreCache = false,
             CancellationToken cancellationToken = default)
         {
             var ruleParser = new TldRuleParser();
 
             string? ruleData;
-            if (this._cacheProvider.IsCacheValid())
+            if (this._cacheProvider.IsCacheValid() && ignoreCache == false)
             {
                 this._logger.LogInformation($"{nameof(BuildAsync)} - Use data from cache");
                 ruleData = await this._cacheProvider.GetAsync().ConfigureAwait(false);

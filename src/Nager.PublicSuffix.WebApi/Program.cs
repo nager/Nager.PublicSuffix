@@ -1,6 +1,7 @@
 using Nager.PublicSuffix;
 using Nager.PublicSuffix.CacheProviders;
 using Nager.PublicSuffix.RuleProviders;
+using Nager.PublicSuffix.WebApi.Models;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,4 +45,23 @@ app.MapGet("/DomainInfo/{domain}", (string domain, IDomainParser domainParser) =
 .WithName("DomainInfo")
 .WithOpenApi();
 
+app.MapPost("/CheckLastCommit", async (HttpClient httpClient) =>
+{
+    httpClient.DefaultRequestHeaders.Add("User-Agent", "Nager.PublicSuffix");
+    var lastGitHubCommit = await httpClient.GetFromJsonAsync<GitHubCommit>("https://api.github.com/repos/publicsuffix/list/commits/master");
+
+    return lastGitHubCommit.Commit.Committer.Date;
+})
+.WithName("CheckLastCommit")
+.WithOpenApi();
+
+app.MapPost("/UpdateRules", async (IRuleProvider ruleProvider) =>
+{
+    await ruleProvider.BuildAsync(ignoreCache: true);
+    return Results.NoContent();
+})
+.WithName("UpdateRules")
+.WithOpenApi();
+
 app.Run();
+

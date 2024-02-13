@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Nager.PublicSuffix.RuleProviders
 {
     /// <summary>
-    /// LocalFileRuleProvider
+    /// LocalFile RuleProvider
     /// </summary>
     public class LocalFileRuleProvider : IRuleProvider
     {
@@ -16,7 +16,7 @@ namespace Nager.PublicSuffix.RuleProviders
         private DomainDataStructure? _domainDataStructure;
 
         /// <summary>
-        /// LocalFileRuleProvider
+        /// LocalFile RuleProvider
         /// </summary>
         /// <param name="filePath"></param>
         public LocalFileRuleProvider(string filePath)
@@ -26,6 +26,7 @@ namespace Nager.PublicSuffix.RuleProviders
 
         /// <inheritdoc/>
         public async Task<bool> BuildAsync(
+            bool ignoreCache = false,
             CancellationToken cancellationToken = default)
         {
             var ruleData = await this.LoadFromFile().ConfigureAwait(false);

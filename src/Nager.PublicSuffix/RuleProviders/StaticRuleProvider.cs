@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace Nager.PublicSuffix.RuleProviders
 {
     /// <summary>
-    /// StaticRuleProvider
+    /// Static RuleProvider
     /// </summary>
     public class StaticRuleProvider : IRuleProvider
     {
         private readonly DomainDataStructure _domainDataStructure;
 
         /// <summary>
-        /// StaticRuleProvider
+        /// Static RuleProvider
         /// </summary>
         /// <param name="domainDataStructure"></param>
         public StaticRuleProvider(DomainDataStructure domainDataStructure)
@@ -23,7 +23,7 @@ namespace Nager.PublicSuffix.RuleProviders
         }
 
         /// <summary>
-        /// StaticRuleProvider
+        /// Static RuleProvider
         /// </summary>
         /// <param name="tldRules"></param>
         public StaticRuleProvider(IEnumerable<TldRule> tldRules)
@@ -36,6 +36,7 @@ namespace Nager.PublicSuffix.RuleProviders
 
         /// <inheritdoc/>
         public Task<bool> BuildAsync(
+            bool ignoreCache = false,
             CancellationToken cancellationToken = default)
         {
             return Task.FromResult(true);
