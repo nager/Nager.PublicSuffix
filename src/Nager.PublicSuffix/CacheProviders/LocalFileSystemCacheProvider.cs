@@ -36,7 +36,7 @@ namespace Nager.PublicSuffix.CacheProviders
             this._cacheFilePath = Path.Combine(tempPath, cacheFileName);
         }
 
-        ///<inheritdoc/>
+        /// <inheritdoc/>
         public bool IsCacheValid()
         {
             var cacheInvalid = true;
@@ -53,7 +53,7 @@ namespace Nager.PublicSuffix.CacheProviders
             return !cacheInvalid;
         }
 
-        ///<inheritdoc/>
+        /// <inheritdoc/>
         public async Task<string> GetAsync()
         {
             if (!this.IsCacheValid())
@@ -65,7 +65,7 @@ namespace Nager.PublicSuffix.CacheProviders
             return await reader.ReadToEndAsync().ConfigureAwait(false);
         }
 
-        ///<inheritdoc/>
+        /// <inheritdoc/>
         public async Task SetAsync(string data)
         {
             using var streamWriter = File.CreateText(this._cacheFilePath);

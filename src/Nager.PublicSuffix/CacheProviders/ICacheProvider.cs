@@ -8,13 +8,13 @@ namespace Nager.PublicSuffix.CacheProviders
     public interface ICacheProvider
     {
         /// <summary>
-        /// Get the data of the cache file
+        /// Get the data from the cache
         /// </summary>
         /// <returns>Returns null if the cache has expired</returns>
         Task<string> GetAsync();
 
         /// <summary>
-        /// Create or update the cache file
+        /// Store data in the cache
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
