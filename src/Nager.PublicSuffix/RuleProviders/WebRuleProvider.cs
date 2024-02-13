@@ -121,7 +121,7 @@ namespace Nager.PublicSuffix.RuleProviders
             using var response = await this._httpClient.GetAsync(url, cancellationToken).ConfigureAwait(false);
             if (!response.IsSuccessStatusCode)
             {
-                throw new RuleLoadException($"Cannot load from {url} {response.StatusCode}");
+                throw new RuleLoadException($"Cannot load file from {url} StatusCode:{(int)response.StatusCode}");
             }
 
             return await response.Content.ReadAsStringAsync().ConfigureAwait(false);

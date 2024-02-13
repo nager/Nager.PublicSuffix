@@ -43,51 +43,27 @@ PM> install-package Nager.PublicSuffix
 ### Analyze domain
 Without a custom config the `WebTldRuleProvider` has a default cache live time of 1 day, then you must refresh the cache with execute `BuildAsync`;
 ```cs
-var domainParser = new DomainParser(new WebTldRuleProvider());
+var ruleProvider = new LocalFileRuleProvider("public_suffix_list.dat");
+await ruleProvider.BuildAsync();
+
+var domainParser = new DomainParser(ruleProvider);
 
 var domainInfo = domainParser.Parse("sub.test.co.uk");
 //domainInfo.Domain = "test";
-//domainInfo.Hostname = "sub.test.co.uk";
+//domainInfo.FullyQualifiedDomainName = "sub.test.co.uk";
 //domainInfo.RegistrableDomain = "test.co.uk";
-//domainInfo.SubDomain = "sub";
-//domainInfo.TLD = "co.uk";
+//domainInfo.Subdomain = "sub";
+//domainInfo.TopLevelDomain = "co.uk";
 ```
 
 ### Check is a valid domain
 Without a custom config the `WebTldRuleProvider` has a default cache live time of 1 day, then you must refresh the cache with execute `BuildAsync`;
 ```cs
-var domainParser = new DomainParser(new WebTldRuleProvider());
+var ruleProvider = new LocalFileRuleProvider("public_suffix_list.dat");
+await ruleProvider.BuildAsync();
+
+var domainParser = new DomainParser(ruleProvider);
 
 var isValid = domainParser.IsValidDomain("sub.test.co.uk");
 ```
 
-### Change the default cache time
-```cs
-//cache data for 10 hours
-var cacheProvider = new FileCacheProvider(cacheTimeToLive: new TimeSpan(10, 0, 0));
-var webTldRuleProvider = new WebTldRuleProvider(cacheProvider: cacheProvider);
-
-var domainParser = new DomainParser(webTldRuleProvider);
-for (var i = 0; i < 100; i++)
-{
-    var isValid = webTldRuleProvider.CacheProvider.IsCacheValid();
-    if (!isValid)
-    {
-        webTldRuleProvider.BuildAsync().GetAwaiter().GetResult(); //Reload data
-    }
-	
-    var domainInfo = domainParser.Parse($"sub{i}.test.co.uk");
-}
-```
-
-### Use a local publicsuffix data file
-```cs
-var domainParser = new DomainParser(new FileTldRuleProvider("effective_tld_names.dat"));
-
-var domainInfo = domainParser.Parse("sub.test.co.uk");
-//domainInfo.Domain = "test";
-//domainInfo.Hostname = "sub.test.co.uk";
-//domainInfo.RegistrableDomain = "test.co.uk";
-//domainInfo.SubDomain = "sub";
-//domainInfo.TLD = "co.uk";
-```
