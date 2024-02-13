@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;net6.0;net8.0</TargetFrameworks>
-    <Version>3.0.0-alpha</Version>
+    <Version>3.0.0-beta.1</Version>
     <Authors>Tino Hager</Authors>
     <Company>nager.at</Company>
     <Nullable>enable</Nullable>
