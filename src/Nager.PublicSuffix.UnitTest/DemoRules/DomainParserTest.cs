@@ -90,7 +90,6 @@ namespace Nager.PublicSuffix.UnitTest.DemoRules
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ParseException))]
         public void Parse_OnlyTopLevelDomain1()
         {
             var rules = new List<TldRule>
@@ -101,11 +100,12 @@ namespace Nager.PublicSuffix.UnitTest.DemoRules
 
             var domainParser = this.GetDomainParser(rules);
 
-            domainParser.Parse("co.uk");
+            var domainInfo = domainParser.Parse("co.uk");
+            Assert.AreEqual("co.uk", domainInfo.TopLevelDomain);
+            Assert.AreEqual(null, domainInfo.RegistrableDomain);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ParseException))]
         public void Parse_OnlyTopLevelDomain2()
         {
             var rules = new List<TldRule>
@@ -115,11 +115,13 @@ namespace Nager.PublicSuffix.UnitTest.DemoRules
 
             var domainParser = this.GetDomainParser(rules);
 
-            domainParser.Parse("com");
+            var domainInfo = domainParser.Parse("com");
+            Assert.AreEqual("com", domainInfo.TopLevelDomain);
+            Assert.AreEqual(null, domainInfo.RegistrableDomain);
         }
 
         [TestMethod]
-        public void CheckDomainNameForUnlistedTld()
+        public void CheckDomainNameForNotListedTld()
         {
             var rules = new List<TldRule>
             {
@@ -129,13 +131,9 @@ namespace Nager.PublicSuffix.UnitTest.DemoRules
 
             var domainParser = this.GetDomainParser(rules);
 
-            var domainName = domainParser.Parse("unlisted.domain.example");
+            var domainInfo = domainParser.Parse("unlisted.domain.example");
 
-            Assert.AreEqual("domain", domainName.Domain);
-            Assert.AreEqual("example", domainName.TopLevelDomain);
-            Assert.AreEqual("domain.example", domainName.RegistrableDomain);
-            Assert.AreEqual("unlisted", domainName.Subdomain);
-            Assert.AreEqual("*", domainName.TopLevelDomainRule.Name);
+            Assert.IsNull(domainInfo);
         }
 
         [TestMethod]

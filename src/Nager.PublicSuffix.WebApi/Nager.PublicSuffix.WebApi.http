@@ -8,3 +8,8 @@ GET {{Nager.PublicSuffix.WebApi_HostAddress}}/DomainInfo/mail.test.de/
 Accept: application/json
 
 ###
+
+GET {{Nager.PublicSuffix.WebApi_HostAddress}}/DomainInfo/s3-1.amazonaws.com/
+Accept: application/json
+
+###

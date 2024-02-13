@@ -52,6 +52,17 @@ namespace Nager.PublicSuffix
         /// <summary>
         /// Domain Info
         /// </summary>
+        /// <param name="tldRule"></param>
+        public DomainInfo(
+            TldRule tldRule)
+        {
+            this.TopLevelDomainRule = tldRule;
+            this.TopLevelDomain = tldRule.Name;
+        }
+
+        /// <summary>
+        /// Domain Info
+        /// </summary>
         /// <param name="domain"></param>
         /// <param name="tldRule"></param>
         public DomainInfo(

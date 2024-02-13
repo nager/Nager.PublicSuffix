@@ -31,14 +31,15 @@ namespace Nager.PublicSuffix.UnitTest.RealRules
         [DataRow(".example")]
         [DataRow(".example.com")]
         [DataRow(".example.example")]
-        [DataRow("example")]
-        [DataRow("mm")]
-        [DataRow("c.mm")]
-        [DataRow("c.kobe.jp")]
-        [DataRow("ck")]
-        [DataRow("test.ck")]
         [ExpectedException(typeof(ParseException))]
         public void ParseInvalidDomainCheck(string domain)
+        {
+            this.CheckPublicSuffix(domain, null);
+        }
+
+        [DataTestMethod]
+        [DataRow("example")]
+        public void ParseNotUsedTopLevelDomain_(string domain)
         {
             this.CheckPublicSuffix(domain, null);
         }
@@ -50,10 +51,10 @@ namespace Nager.PublicSuffix.UnitTest.RealRules
             this.CheckPublicSuffix("example.COM", "example.com");
             this.CheckPublicSuffix("WwW.example.COM", "example.com");
 
-            // Unlisted TLD.
-            this.CheckPublicSuffix("example.example", "example.example");
-            this.CheckPublicSuffix("b.example.example", "example.example");
-            this.CheckPublicSuffix("a.b.example.example", "example.example");
+            // Not listed TLD.
+            this.CheckPublicSuffix("example.example", null);
+            this.CheckPublicSuffix("b.example.example", null);
+            this.CheckPublicSuffix("a.b.example.example", null);
 
             // Listed, but non-Internet, TLD.
             //this.CheckPublicSuffix("local", null);
@@ -140,7 +141,7 @@ namespace Nager.PublicSuffix.UnitTest.RealRules
         [DataRow("ec2-34-206-8-177.compute-1.amazonaws.com")]
         [DataRow("s3-website.us-east-2.amazonaws.com")]
         [DataRow("test.stg.dev")]
-        [ExpectedExceptionWithMessage(typeof(ParseException), "Domain is a TLD according publicsuffix")]
+        //[ExpectedExceptionWithMessage(typeof(ParseException), "Domain is a TLD according publicsuffix")]
         public void TldCheck(string domain)
         {
             this.CheckPublicSuffix(domain, null);

@@ -63,20 +63,19 @@ namespace Nager.PublicSuffix.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ParseException))]
         public void SingleWordTest()
         {
             this.PerformParsingCheck("singleword", null, null);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ParseException))]
+        //[ExpectedException(typeof(ParseException))]
         public void SimpleNumberTest()
         {
             // Uri object transforms 12344 to 48.57 because 12345 = (48 * 256) + (57 * 1)
             // This creates two parts separated by a dot which allows the rule-matching to handle it like a domain name
             // Whereas the IdnMapper does not do this so the rule-matching fails because the 'domain name' is just a single word with no dot.
-            this.PerformParsingCheck("12345", "48.57", null);
+            this.PerformParsingCheck("12345", null, null);
         }
 
         [TestMethod]
@@ -86,14 +85,14 @@ namespace Nager.PublicSuffix.UnitTest
             // For example "sub.-example.com" is valid but "double.sub.-example.com" is not.
 
             this.PerformParsingCheck("-example.com", "-example.com", "-example.com");
-            this.PerformParsingCheck("example.-com", "example.-com", "example.-com");
-            this.PerformParsingCheck("example.com-", "example.com-", "example.com-");
-            this.PerformParsingCheck("example.-com-", "example.-com-", "example.-com-");
+            this.PerformParsingCheck("example.-com", null, null);
+            this.PerformParsingCheck("example.com-", null, null);
+            this.PerformParsingCheck("example.-com-", null, null);
 
             this.PerformParsingCheck("sub.-example.com", "-example.com", "-example.com");
-            this.PerformParsingCheck("sub.example.com-", "example.com-", "example.com-");
+            this.PerformParsingCheck("sub.example.com-", null, null);
 
-            this.PerformParsingCheck("double.sub.example.com-", "example.com-", "example.com-");
+            this.PerformParsingCheck("double.sub.example.com-", null, null);
         }
 
         [TestMethod]

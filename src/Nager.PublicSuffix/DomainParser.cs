@@ -94,7 +94,9 @@ namespace Nager.PublicSuffix
                     return false;
                 }
 
-                return !domainName.TopLevelDomainRule.Equals(this._rootTldRule);
+                var domainDataStructure = this._ruleProvider.GetDomainDataStructure();
+
+                return !domainName.TopLevelDomainRule.Equals(domainDataStructure.TldRule);
             }
             catch (ParseException)
             {
@@ -133,20 +135,30 @@ namespace Nager.PublicSuffix
 
                 if (winningRule.Type == TldRuleType.Wildcard)
                 {
+                    if (winningRule == domainDataStructure.TldRule)
+                    {
+                        return null;
+                    }
+
                     if (tld.EndsWith(winningRule.Name.Substring(1)))
                     {
-                        throw new ParseException("Domain is a TLD according publicsuffix", winningRule);
+                        return new DomainInfo(winningRule);
                     }
                 }
                 else
                 {
                     if (tld.Equals(winningRule.Name))
                     {
-                        throw new ParseException("Domain is a TLD according publicsuffix", winningRule);
+                        return new DomainInfo(winningRule);
                     }
                 }
 
                 throw new ParseException($"Unknown domain {domain}");
+            }
+
+            if (winningRule == domainDataStructure.TldRule)
+            {
+                return null;
             }
 
             return new DomainInfo(domain, winningRule);
