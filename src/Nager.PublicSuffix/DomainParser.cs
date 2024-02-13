@@ -15,7 +15,6 @@ namespace Nager.PublicSuffix
     {
         private readonly IRuleProvider _ruleProvider;
         private readonly IDomainNormalizer _domainNormalizer;
-        private readonly TldRule _rootTldRule = new TldRule("*");
 
         /// <summary>
         /// Creates and initializes a DomainParser
@@ -24,19 +23,14 @@ namespace Nager.PublicSuffix
         /// <param name="domainNormalizer">An <see cref="IDomainNormalizer"/>.</param>
         public DomainParser(
             IRuleProvider ruleProvider,
-            IDomainNormalizer domainNormalizer = default)
-            : this(domainNormalizer)
+            IDomainNormalizer? domainNormalizer = default)
         {
             this._ruleProvider = ruleProvider;
-        }
-
-        private DomainParser(IDomainNormalizer domainNormalizer)
-        {
             this._domainNormalizer = domainNormalizer ?? new UriDomainNormalizer();
         }
 
         /// <inheritdoc/>
-        public DomainInfo Parse(Uri domain)
+        public DomainInfo? Parse(Uri domain)
         {
             var partlyNormalizedDomain = domain.Host;
             var normalizedHost = domain.GetComponents(UriComponents.NormalizedHost, UriFormat.UriEscaped); //Normalize punycode
@@ -50,9 +44,14 @@ namespace Nager.PublicSuffix
         }
 
         /// <inheritdoc/>
-        public DomainInfo Parse(string domain)
+        public DomainInfo? Parse(string domain)
         {
-            var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string partlyNormalizedDomain);
+            var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string? partlyNormalizedDomain);
+            if (parts == null)
+            {
+                return null;
+            }
+
             return this.GetDomainFromParts(partlyNormalizedDomain, parts);
         }
 
@@ -86,7 +85,11 @@ namespace Nager.PublicSuffix
 
             try
             {
-                var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string partlyNormalizedDomain);
+                var parts = this._domainNormalizer.PartlyNormalizeDomainAndExtractFullyNormalizedParts(domain, out string? partlyNormalizedDomain);
+                if (parts == null)
+                {
+                    return false;
+                }
 
                 var domainName = this.GetDomainFromParts(partlyNormalizedDomain, parts);
                 if (domainName == null)
@@ -94,7 +97,16 @@ namespace Nager.PublicSuffix
                     return false;
                 }
 
+                if (domainName.TopLevelDomainRule == null)
+                {
+                    return false;
+                }
+
                 var domainDataStructure = this._ruleProvider.GetDomainDataStructure();
+                if (domainDataStructure == null || domainDataStructure.TldRule == null)
+                {
+                    return false;
+                }
 
                 return !domainName.TopLevelDomainRule.Equals(domainDataStructure.TldRule);
             }
@@ -104,8 +116,13 @@ namespace Nager.PublicSuffix
             }
         }
 
-        private DomainInfo GetDomainFromParts(string domain, List<string> parts)
+        private DomainInfo? GetDomainFromParts(string? domain, List<string> parts)
         {
+            if (domain == null)
+            {
+                throw new ParseException("Invalid domain detected");
+            }
+
             if (parts == null || parts.Count == 0 || parts.Any(x => x.Equals(string.Empty)))
             {
                 throw new ParseException("Invalid domain part detected");
@@ -126,6 +143,10 @@ namespace Nager.PublicSuffix
                 .ThenByDescending(x => x.Name);
 
             var winningRule = sortedMatches.FirstOrDefault();
+            if (winningRule == null)
+            {
+                return null;
+            }
 
             //Domain is TLD
             if (parts.Count == winningRule.LabelCount)
@@ -180,7 +201,7 @@ namespace Nager.PublicSuffix
                 return;
             }
 
-            if (domainDataStructure.Nested.TryGetValue(part, out DomainDataStructure nestedDomainDataStructure))
+            if (domainDataStructure.Nested.TryGetValue(part, out DomainDataStructure? nestedDomainDataStructure))
             {
                 this.FindMatches(parts.Skip(1), nestedDomainDataStructure, matches);
             }

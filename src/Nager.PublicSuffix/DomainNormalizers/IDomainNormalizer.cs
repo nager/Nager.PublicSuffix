@@ -7,6 +7,12 @@ namespace Nager.PublicSuffix.DomainNormalizers
     /// </summary>
     public interface IDomainNormalizer
     {
-        List<string> PartlyNormalizeDomainAndExtractFullyNormalizedParts(string domain, out string partlyNormalizedDomain);
+        /// <summary>
+        /// Partly normalize domain and extract FullyNormalizedParts
+        /// </summary>
+        /// <param name="domain"></param>
+        /// <param name="partlyNormalizedDomain"></param>
+        /// <returns></returns>
+        List<string>? PartlyNormalizeDomainAndExtractFullyNormalizedParts(string domain, out string? partlyNormalizedDomain);
     }
 }

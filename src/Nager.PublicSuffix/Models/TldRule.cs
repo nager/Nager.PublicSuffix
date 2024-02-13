@@ -86,13 +86,18 @@ namespace Nager.PublicSuffix.Models
         }
 
         /// <inheritdoc />
-        public bool Equals(TldRule other)
+        public bool Equals(TldRule? other)
         {
+            if (other == null)
+            {
+                return false;
+            }
+
             return this.Name == other.Name;
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is null)
             {

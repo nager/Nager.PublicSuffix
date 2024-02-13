@@ -5,6 +5,7 @@
     <Version>3.0.0-alpha</Version>
     <Authors>Tino Hager</Authors>
     <Company>nager.at</Company>
+    <Nullable>enable</Nullable>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/nager/Nager.PublicSuffix</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nager/Nager.PublicSuffix</RepositoryUrl>

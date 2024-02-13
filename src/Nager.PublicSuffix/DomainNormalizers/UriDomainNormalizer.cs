@@ -10,7 +10,8 @@ namespace Nager.PublicSuffix.DomainNormalizers
     /// </summary>
     public class UriDomainNormalizer : IDomainNormalizer
     {
-        public List<string> PartlyNormalizeDomainAndExtractFullyNormalizedParts(string domain, out string partlyNormalizedDomain)
+        /// <inheritdoc/>
+        public List<string>? PartlyNormalizeDomainAndExtractFullyNormalizedParts(string domain, out string? partlyNormalizedDomain)
         {
             partlyNormalizedDomain = null;
 
@@ -25,7 +26,7 @@ namespace Nager.PublicSuffix.DomainNormalizers
                 domain = string.Concat("https://", domain);
             }
 
-            if (!Uri.TryCreate(domain, UriKind.RelativeOrAbsolute, out Uri uri))
+            if (!Uri.TryCreate(domain, UriKind.RelativeOrAbsolute, out Uri? uri))
             {
                 throw new ParseException("Cannot parse domain to an uri");
             }

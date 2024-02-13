@@ -15,7 +15,7 @@ namespace Nager.PublicSuffix.Models
         /// <summary>
         /// The type of TLD Domain. <see cref="TldRule"/>.
         /// </summary>
-        public TldRule TldRule { get; set; }
+        public TldRule? TldRule { get; set; }
 
         /// <summary>
         /// The children of this TLD Domain

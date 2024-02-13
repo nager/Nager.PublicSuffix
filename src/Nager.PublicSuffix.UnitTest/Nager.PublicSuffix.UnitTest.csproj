@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net8.0</TargetFrameworks>
-
+    <Nullable>annotations</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

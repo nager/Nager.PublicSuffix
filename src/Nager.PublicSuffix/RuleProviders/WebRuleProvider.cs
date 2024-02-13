@@ -21,7 +21,7 @@ namespace Nager.PublicSuffix.RuleProviders
         private readonly ILogger<WebRuleProvider> _logger;
         private readonly ICacheProvider _cacheProvider;
         private readonly HttpClient _httpClient;
-        private DomainDataStructure _domainDataStructure;
+        private DomainDataStructure? _domainDataStructure;
 
         /// <summary>
         /// Returns the cache provider
@@ -63,7 +63,7 @@ namespace Nager.PublicSuffix.RuleProviders
         {
             var ruleParser = new TldRuleParser();
 
-            string ruleData;
+            string? ruleData;
             if (this._cacheProvider.IsCacheValid())
             {
                 this._logger.LogInformation($"{nameof(BuildAsync)} - Use data from cache");
@@ -84,6 +84,11 @@ namespace Nager.PublicSuffix.RuleProviders
 
                     return false;
                 }
+            }
+
+            if (string.IsNullOrEmpty(ruleData))
+            {
+                return false;
             }
 
             var rules = ruleParser.ParseRules(ruleData);

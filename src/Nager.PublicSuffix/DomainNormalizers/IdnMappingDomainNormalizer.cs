@@ -12,7 +12,8 @@ namespace Nager.PublicSuffix.DomainNormalizers
     {
         private readonly IdnMapping _idnMapping = new IdnMapping();
 
-        public List<string> PartlyNormalizeDomainAndExtractFullyNormalizedParts(string domain, out string partlyNormalizedDomain)
+        /// <inheritdoc/>
+        public List<string>? PartlyNormalizeDomainAndExtractFullyNormalizedParts(string domain, out string? partlyNormalizedDomain)
         {
             partlyNormalizedDomain = null;
 

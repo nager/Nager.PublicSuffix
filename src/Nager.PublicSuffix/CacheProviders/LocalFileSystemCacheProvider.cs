@@ -54,7 +54,7 @@ namespace Nager.PublicSuffix.CacheProviders
         }
 
         /// <inheritdoc/>
-        public async Task<string> GetAsync()
+        public async Task<string?> GetAsync()
         {
             if (!this.IsCacheValid())
             {

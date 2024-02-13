@@ -27,6 +27,12 @@ namespace Nager.PublicSuffix.UnitTest.RealRules
 
         [DataTestMethod]
         [DataRow(null)]
+        public void ParseNullDomainCheck(string domain)
+        {
+            this.CheckPublicSuffix(domain, null);
+        }
+
+        [DataTestMethod]
         [DataRow(".com")]
         [DataRow(".example")]
         [DataRow(".example.com")]

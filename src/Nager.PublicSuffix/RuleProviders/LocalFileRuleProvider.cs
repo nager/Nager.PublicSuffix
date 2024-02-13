@@ -13,7 +13,7 @@ namespace Nager.PublicSuffix.RuleProviders
     public class LocalFileRuleProvider : IRuleProvider
     {
         private readonly string _filePath;
-        private DomainDataStructure _domainDataStructure;
+        private DomainDataStructure? _domainDataStructure;
 
         /// <summary>
         /// LocalFileRuleProvider
@@ -42,7 +42,7 @@ namespace Nager.PublicSuffix.RuleProviders
         }
 
         /// <inheritdoc/>
-        public DomainDataStructure GetDomainDataStructure()
+        public DomainDataStructure? GetDomainDataStructure()
         {
             return this._domainDataStructure;
         }

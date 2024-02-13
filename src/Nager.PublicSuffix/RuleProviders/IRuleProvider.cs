@@ -20,6 +20,6 @@ namespace Nager.PublicSuffix.RuleProviders
         /// Get the DomainDataStructure
         /// </summary>
         /// <returns></returns>
-        DomainDataStructure GetDomainDataStructure();
+        DomainDataStructure? GetDomainDataStructure();
     }
 }
