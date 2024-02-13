@@ -34,14 +34,13 @@ PM> install-package Nager.PublicSuffix
 
 ## Features
 - High performance
-- FileTldRuleProvider or WebTldRuleProvider
+- LocalFileRuleProvider or WebRuleProvider
 - CacheProvider
 - Async support
 
 ## Code Examples
 
 ### Analyze domain
-Without a custom config the `WebTldRuleProvider` has a default cache live time of 1 day, then you must refresh the cache with execute `BuildAsync`;
 ```cs
 var ruleProvider = new LocalFileRuleProvider("public_suffix_list.dat");
 await ruleProvider.BuildAsync();
@@ -57,7 +56,6 @@ var domainInfo = domainParser.Parse("sub.test.co.uk");
 ```
 
 ### Check is a valid domain
-Without a custom config the `WebTldRuleProvider` has a default cache live time of 1 day, then you must refresh the cache with execute `BuildAsync`;
 ```cs
 var ruleProvider = new LocalFileRuleProvider("public_suffix_list.dat");
 await ruleProvider.BuildAsync();
