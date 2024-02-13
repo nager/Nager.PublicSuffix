@@ -31,13 +31,15 @@ namespace Nager.PublicSuffix.RuleProviders
         /// </summary>
         /// <remarks>It is possible to overwrite the url via configuration parameters <c>Nager:PublicSuffix:DataUrl</c></remarks>
         /// <param name="configuration"></param>
+        /// <param name="cacheProvider"></param>
         /// <param name="httpClient"></param>
-        /// <param name="cacheProvider">default is <see cref="FileCacheProvider"/></param>
         public WebRuleProvider(
             IConfiguration configuration,
-            HttpClient httpClient,
-            ICacheProvider cacheProvider = null)
+            ICacheProvider cacheProvider,
+            HttpClient httpClient
+            )
         {
+            this._cacheProvider = cacheProvider;
             this._httpClient = httpClient;
 
             var url = configuration["Nager:PublicSuffix:DataUrl"];
@@ -47,14 +49,6 @@ namespace Nager.PublicSuffix.RuleProviders
             }
 
             this._dataFileUrl = url;
-
-            if (cacheProvider == null)
-            {
-                this._cacheProvider = new FileCacheProvider();
-                return;
-            }
-
-            this._cacheProvider = cacheProvider;
         }
 
         /// <inheritdoc/>

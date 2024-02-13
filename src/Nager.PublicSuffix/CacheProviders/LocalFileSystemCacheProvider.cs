@@ -5,20 +5,22 @@ using System.Threading.Tasks;
 namespace Nager.PublicSuffix.CacheProviders
 {
     /// <summary>
-    /// FileCacheProvider, write the data to a cache file in the temp directory
+    /// LocalFileSystemCacheProvider, write the data to a cache file in the temp directory
     /// </summary>
-    public class FileCacheProvider : ICacheProvider
+    public class LocalFileSystemCacheProvider : ICacheProvider
     {
         private readonly string _cacheFilePath;
         private readonly TimeSpan _timeToLive;
 
         /// <summary>
-        /// FileCacheProvider
+        /// LocalFileSystemCacheProvider
         /// </summary>
         /// <param name="cacheFileName"></param>
+        /// <param name="cachePath">The path of the cache file, default use the temp path of the os</param>
         /// <param name="cacheTimeToLive"></param>
-        public FileCacheProvider(
+        public LocalFileSystemCacheProvider(
             string cacheFileName = "publicsuffixcache.dat",
+            string? cachePath = null,
             TimeSpan? cacheTimeToLive = null)
         {
             if (cacheTimeToLive.HasValue)
@@ -30,7 +32,7 @@ namespace Nager.PublicSuffix.CacheProviders
                 this._timeToLive = TimeSpan.FromDays(1);
             }
 
-            var tempPath = Path.GetTempPath();
+            var tempPath = cachePath ?? Path.GetTempPath();
             this._cacheFilePath = Path.Combine(tempPath, cacheFileName);
         }
 

@@ -1,4 +1,5 @@
 using Nager.PublicSuffix;
+using Nager.PublicSuffix.CacheProviders;
 using Nager.PublicSuffix.RuleProviders;
 using System.Text.Json.Serialization;
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddHttpClient();
+builder.Services.AddSingleton<ICacheProvider, LocalFileSystemCacheProvider>();
 builder.Services.AddSingleton<IRuleProvider, WebRuleProvider>();
 builder.Services.AddSingleton<IDomainParser, DomainParser>();
 
