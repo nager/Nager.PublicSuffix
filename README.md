@@ -3,20 +3,28 @@
 > I am currently working on a new version. This includes some breaking changes.
 
 
-Nager.PublicSuffix
-==========
-The TLD proliferation makes it difficult to check whether domain names are valid. This project uses the rules of publicsuffix.org, a list of known public domain suffixes (TLD) to validate and split domains into three the parts (TLD, domain, subdomain). The validation rules are loaded directly from https://publicsuffix.org. The List is maintained here [publicsuffix list - GitHub](https://github.com/publicsuffix/list)
+# Nager.PublicSuffix (PSL)
 
-For example, if you use Dmarc for e-mail security, it is very important to know what the main domain is.
+With so many different endings for domain names, it's hard to know if they're valid or not. This project uses a list from **publicsuffix.org**, which keeps track of all the common endings like `.com` or `.org`. It checks domain names against this list to see if they're okay. Then, it splits the domain into three parts: the ending (like .com), the main part (like google), and any subparts (like www). You can find the list on GitHub under [publicsuffix list repository](https://github.com/publicsuffix/list).
 
-A domain name has 3 major parts:
+## Use cases
 
-Example | Top Level Domain (TLD) | Domain | Subdomain |
---- | --- | --- | --- |
-blog.google.com | com | google | blog |
-www.wikipedia.org | org | wikipedia | www |
-mail.yandex.ru | ru | yandex | mail |
-www.amazon.co.uk | co.uk | amazon | www |
+- Cookie restriction for browsers
+- Domain highlighting in the URL bar of browsers
+- DMARC E-Mail Security
+- Certificate requests (ACME)
+- Determining Valid Wildcard Certificates
+- Two-factor authentication (FIDO)
+
+## Parts of a Domain
+
+ Fully Qualified Domain Name (FQDN) | Top Level Domain (TLD) | Domain     | Subdomain |
+--------------------------- | ------------------------------ | ---------- | --------- |
+blog.google.com             | com                            | google     | blog      |
+22.cn                       | cn                             | 22         |           |
+www.volkswagen.de           | de                             | volkswagen | www       |
+www.amazon.co.uk            | co.uk                          | amazon     | www       |
+www.wikipedia.org           | org                            | wikipedia  | www       |
 
 ## nuget
 The package is available on [nuget](https://www.nuget.org/packages/Nager.PublicSuffix)
@@ -30,7 +38,7 @@ PM> install-package Nager.PublicSuffix
 - CacheProvider
 - Async support
 
-## Examples
+## Code Examples
 
 ### Analyze domain
 Without a custom config the `WebTldRuleProvider` has a default cache live time of 1 day, then you must refresh the cache with execute `BuildAsync`;
