@@ -2,7 +2,9 @@ using Nager.PublicSuffix;
 using Nager.PublicSuffix.CacheProviders;
 using Nager.PublicSuffix.RuleProviders;
 using Nager.PublicSuffix.WebApi.Models;
+using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
+using System.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +41,8 @@ if (app.Environment.IsDevelopment())
 
 app.MapGet("/DomainInfo/{domain}", (string domain, IDomainParser domainParser) =>
 {
+    domain = HttpUtility.UrlEncode(domain);
+
     var domainInfo = domainParser.Parse(domain);
     return domainInfo;
 })
