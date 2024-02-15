@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Nager.PublicSuffix.CacheProviders
+namespace Nager.PublicSuffix.RuleProviders.CacheProviders
 {
     /// <summary>
     /// ICacheProvider

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Nager.PublicSuffix.CacheProviders;
 using Nager.PublicSuffix.RuleProviders;
+using Nager.PublicSuffix.RuleProviders.CacheProviders;
 using Nager.PublicSuffix.UnitTest.Helpers;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -14,7 +14,7 @@ namespace Nager.PublicSuffix.UnitTest
         [TestMethod]
         public async Task WebTldRuleProviderTest()
         {
-            var loggerMock = LoggerHelper.GetLogger<WebRuleProvider>();
+            var loggerMock = LoggerHelper.GetLogger<CachedHttpRuleProvider>();
 
             var builder = new ConfigurationBuilder();
             using var httpClient = new HttpClient();
@@ -22,7 +22,7 @@ namespace Nager.PublicSuffix.UnitTest
             var configuration = builder.Build();
 
             var cacheProvider = new LocalFileSystemCacheProvider();
-            var webRuleProvider = new WebRuleProvider(loggerMock.Object, configuration, cacheProvider, httpClient);
+            var webRuleProvider = new CachedHttpRuleProvider(loggerMock.Object, configuration, cacheProvider, httpClient);
             var domainDataStructure = await webRuleProvider.BuildAsync();
             Assert.IsNotNull(domainDataStructure);
         }

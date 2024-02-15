@@ -1,6 +1,6 @@
 using Nager.PublicSuffix;
-using Nager.PublicSuffix.CacheProviders;
 using Nager.PublicSuffix.RuleProviders;
+using Nager.PublicSuffix.RuleProviders.CacheProviders;
 using Nager.PublicSuffix.WebApi.Models;
 using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<ICacheProvider, LocalFileSystemCacheProvider>();
-builder.Services.AddSingleton<IRuleProvider, WebRuleProvider>();
+builder.Services.AddSingleton<IRuleProvider, CachedHttpRuleProvider>();
 builder.Services.AddSingleton<IDomainParser, DomainParser>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

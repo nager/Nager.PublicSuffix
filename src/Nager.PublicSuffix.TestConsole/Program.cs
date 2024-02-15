@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Nager.PublicSuffix;
-using Nager.PublicSuffix.CacheProviders;
 using Nager.PublicSuffix.RuleProviders;
+using Nager.PublicSuffix.RuleProviders.CacheProviders;
 
 using var loggerFactory = LoggerFactory.Create(builder =>
 {
@@ -11,7 +11,7 @@ using var loggerFactory = LoggerFactory.Create(builder =>
 });
 
 var logger = loggerFactory.CreateLogger("Program");
-var ruleProviderLogger = loggerFactory.CreateLogger<WebRuleProvider>();
+var ruleProviderLogger = loggerFactory.CreateLogger<CachedHttpRuleProvider>();
 
 IConfiguration configuration = new ConfigurationBuilder()
     .AddInMemoryCollection(new List<KeyValuePair<string, string?>>
@@ -23,7 +23,7 @@ IConfiguration configuration = new ConfigurationBuilder()
 var httpClient = new HttpClient();
 var cacheProvider = new LocalFileSystemCacheProvider();
 
-var ruleProvider = new WebRuleProvider(ruleProviderLogger, configuration, cacheProvider, httpClient);
+var ruleProvider = new CachedHttpRuleProvider(ruleProviderLogger, configuration, cacheProvider, httpClient);
 await ruleProvider.BuildAsync(ignoreCache: true);
 
 //var ruleProvider = new LocalFileRuleProvider("public_suffix_list.dat");

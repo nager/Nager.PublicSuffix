@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Nager.PublicSuffix.CacheProviders
+namespace Nager.PublicSuffix.RuleProviders.CacheProviders
 {
     /// <summary>
     /// LocalFileSystemCacheProvider, write the data to a cache file in the temp directory

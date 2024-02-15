@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Nager.PublicSuffix.CacheProviders;
 using Nager.PublicSuffix.Exceptions;
 using Nager.PublicSuffix.Extensions;
 using Nager.PublicSuffix.Models;
 using Nager.PublicSuffix.RuleParsers;
+using Nager.PublicSuffix.RuleProviders.CacheProviders;
 using System;
 using System.Net.Http;
 using System.Threading;
@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 namespace Nager.PublicSuffix.RuleProviders
 {
     /// <summary>
-    /// Web RuleProvider
+    /// CachedHttp RuleProvider
     /// </summary>
-    public class WebRuleProvider : IRuleProvider
+    public class CachedHttpRuleProvider : IRuleProvider
     {
         private readonly string _dataFileUrl;
-        private readonly ILogger<WebRuleProvider> _logger;
+        private readonly ILogger<CachedHttpRuleProvider> _logger;
         private readonly ICacheProvider _cacheProvider;
         private readonly HttpClient _httpClient;
         private DomainDataStructure? _domainDataStructure;
@@ -29,16 +29,16 @@ namespace Nager.PublicSuffix.RuleProviders
         public ICacheProvider CacheProvider { get { return this._cacheProvider; } }
 
         /// <summary>
-        /// Web RuleProvider<br/>
-        /// Loads the public suffix definition file from the official website
+        /// CachedHttp RuleProvider<br/>
+        /// Loads the public suffix definition file from the official website and use a local cache for quicker initialization
         /// </summary>
         /// <remarks>It is possible to overwrite the url via configuration parameters <c>Nager:PublicSuffix:DataUrl</c></remarks>
         /// <param name="logger"></param>
         /// <param name="configuration"></param>
         /// <param name="cacheProvider"></param>
         /// <param name="httpClient"></param>
-        public WebRuleProvider(
-            ILogger<WebRuleProvider> logger,
+        public CachedHttpRuleProvider(
+            ILogger<CachedHttpRuleProvider> logger,
             IConfiguration configuration,
             ICacheProvider cacheProvider,
             HttpClient httpClient
@@ -62,8 +62,6 @@ namespace Nager.PublicSuffix.RuleProviders
             bool ignoreCache = false,
             CancellationToken cancellationToken = default)
         {
-            var ruleParser = new TldRuleParser();
-
             string? ruleData;
             if (this._cacheProvider.IsCacheValid() && ignoreCache == false)
             {
@@ -92,6 +90,7 @@ namespace Nager.PublicSuffix.RuleProviders
                 return false;
             }
 
+            var ruleParser = new TldRuleParser();
             var rules = ruleParser.ParseRules(ruleData);
 
             var domainDataStructure = new DomainDataStructure("*", new TldRule("*"));
