@@ -30,7 +30,7 @@ namespace Nager.PublicSuffix.RuleProviders
         /// <param name="httpClient"></param>
         /// <param name="logger"></param>
         public SimpleHttpRuleProvider(
-            IConfiguration configuration,
+            IConfiguration? configuration = null,
             HttpClient? httpClient = null,
             ILogger<SimpleHttpRuleProvider>? logger = null)
         {
@@ -39,7 +39,7 @@ namespace Nager.PublicSuffix.RuleProviders
             this._disposeHttpClient = httpClient == null;
             this._httpClient = httpClient ?? new HttpClient();
 
-            var url = configuration["Nager:PublicSuffix:DataUrl"];
+            var url = configuration != null ? configuration["Nager:PublicSuffix:DataUrl"] : string.Empty;
             if (string.IsNullOrEmpty(url))
             {
                 url = "https://publicsuffix.org/list/public_suffix_list.dat";
