@@ -54,7 +54,7 @@ app.MapPost("/CheckLastCommit", async (HttpClient httpClient) =>
     httpClient.DefaultRequestHeaders.Add("User-Agent", "Nager.PublicSuffix");
     var lastGitHubCommit = await httpClient.GetFromJsonAsync<GitHubCommit>("https://api.github.com/repos/publicsuffix/list/commits/master");
 
-    return lastGitHubCommit.Commit.Committer.Date;
+    return lastGitHubCommit?.Commit?.Committer?.Date;
 })
 .WithName("CheckLastCommit")
 .WithOpenApi();

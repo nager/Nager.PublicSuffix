@@ -4,7 +4,7 @@
     public class GitHubCommit
     {
         public string? Sha { get; set; }
-        public CommitInfo Commit { get; set; }
-        public File[] Files { get; set; }
+        public CommitInfo? Commit { get; set; }
+        public File[]? Files { get; set; }
     }
 }
