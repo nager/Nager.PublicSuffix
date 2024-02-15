@@ -1,5 +1,4 @@
-﻿using Nager.PublicSuffix.Extensions;
-using Nager.PublicSuffix.Models;
+﻿using Nager.PublicSuffix.Models;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,10 +8,8 @@ namespace Nager.PublicSuffix.RuleProviders
     /// <summary>
     /// Static RuleProvider
     /// </summary>
-    public class StaticRuleProvider : IRuleProvider
+    public class StaticRuleProvider : BaseRuleProvider
     {
-        private readonly DomainDataStructure _domainDataStructure;
-
         /// <summary>
         /// Static RuleProvider
         /// </summary>
@@ -25,27 +22,18 @@ namespace Nager.PublicSuffix.RuleProviders
         /// <summary>
         /// Static RuleProvider
         /// </summary>
-        /// <param name="tldRules"></param>
-        public StaticRuleProvider(IEnumerable<TldRule> tldRules)
+        /// <param name="rules"></param>
+        public StaticRuleProvider(IEnumerable<TldRule> rules)
         {
-            var domainDataStructure = new DomainDataStructure("*", new TldRule("*"));
-            domainDataStructure.AddRules(tldRules);
-
-            this._domainDataStructure = domainDataStructure;
+            base.CreareDomainDataStructure(rules);
         }
 
         /// <inheritdoc/>
-        public Task<bool> BuildAsync(
+        public override Task<bool> BuildAsync(
             bool ignoreCache = false,
             CancellationToken cancellationToken = default)
         {
             return Task.FromResult(true);
-        }
-
-        /// <inheritdoc/>
-        public DomainDataStructure GetDomainDataStructure()
-        {
-            return this._domainDataStructure;
         }
     }
 }

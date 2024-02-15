@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Nager.PublicSuffix.Exceptions;
-using Nager.PublicSuffix.Extensions;
-using Nager.PublicSuffix.Models;
 using Nager.PublicSuffix.RuleParsers;
 using Nager.PublicSuffix.RuleProviders.CacheProviders;
 using System;
@@ -15,13 +13,12 @@ namespace Nager.PublicSuffix.RuleProviders
     /// <summary>
     /// CachedHttp RuleProvider
     /// </summary>
-    public class CachedHttpRuleProvider : IRuleProvider
+    public class CachedHttpRuleProvider : BaseRuleProvider
     {
         private readonly string _dataFileUrl;
         private readonly ILogger<CachedHttpRuleProvider> _logger;
         private readonly ICacheProvider _cacheProvider;
         private readonly HttpClient _httpClient;
-        private DomainDataStructure? _domainDataStructure;
 
         /// <summary>
         /// Returns the cache provider
@@ -58,7 +55,7 @@ namespace Nager.PublicSuffix.RuleProviders
         }
 
         /// <inheritdoc/>
-        public async Task<bool> BuildAsync(
+        public override async Task<bool> BuildAsync(
             bool ignoreCache = false,
             CancellationToken cancellationToken = default)
         {
@@ -93,18 +90,9 @@ namespace Nager.PublicSuffix.RuleProviders
             var ruleParser = new TldRuleParser();
             var rules = ruleParser.ParseRules(ruleData);
 
-            var domainDataStructure = new DomainDataStructure("*", new TldRule("*"));
-            domainDataStructure.AddRules(rules);
-
-            this._domainDataStructure  = domainDataStructure;
+            base.CreareDomainDataStructure(rules);
 
             return true;
-        }
-
-        /// <inheritdoc/>
-        public DomainDataStructure? GetDomainDataStructure()
-        {
-            return this._domainDataStructure;
         }
 
         /// <summary>

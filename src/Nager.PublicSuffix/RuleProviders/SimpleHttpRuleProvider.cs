@@ -2,8 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Nager.PublicSuffix.Exceptions;
-using Nager.PublicSuffix.Extensions;
-using Nager.PublicSuffix.Models;
 using Nager.PublicSuffix.RuleParsers;
 using System;
 using System.Net.Http;
@@ -15,14 +13,13 @@ namespace Nager.PublicSuffix.RuleProviders
     /// <summary>
     /// Simple Http RuleProvider
     /// </summary>
-    public class SimpleHttpRuleProvider : IRuleProvider, IDisposable
+    public class SimpleHttpRuleProvider : BaseRuleProvider, IDisposable
     {
         private bool _disposed;
         private readonly string _dataFileUrl;
         private readonly ILogger<SimpleHttpRuleProvider> _logger;
         private readonly HttpClient _httpClient;
         private readonly bool _disposeHttpClient;
-        private DomainDataStructure? _domainDataStructure;
 
         /// <summary>
         /// Simple Http RuleProvider<br/>
@@ -78,7 +75,7 @@ namespace Nager.PublicSuffix.RuleProviders
         }
 
         /// <inheritdoc/>
-        public async Task<bool> BuildAsync(
+        public override async Task<bool> BuildAsync(
             bool ignoreCache = false,
             CancellationToken cancellationToken = default)
         {
@@ -105,18 +102,9 @@ namespace Nager.PublicSuffix.RuleProviders
             var ruleParser = new TldRuleParser();
             var rules = ruleParser.ParseRules(ruleData);
 
-            var domainDataStructure = new DomainDataStructure("*", new TldRule("*"));
-            domainDataStructure.AddRules(rules);
-
-            this._domainDataStructure  = domainDataStructure;
+            base.CreareDomainDataStructure(rules);
 
             return true;
-        }
-
-        /// <inheritdoc/>
-        public DomainDataStructure? GetDomainDataStructure()
-        {
-            return this._domainDataStructure;
         }
 
         /// <summary>
