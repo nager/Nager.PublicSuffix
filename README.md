@@ -1,6 +1,5 @@
 > [!IMPORTANT]
-> The current stable development branch **V2** can be found [here](https://github.com/nager/Nager.PublicSuffix/tree/v2)<br>
-> I am currently working on a new version. This includes some breaking changes.
+> The source code of version 2 can be found here [here](https://github.com/nager/Nager.PublicSuffix/tree/v2)
 
 
 # Nager.PublicSuffix (PSL)
