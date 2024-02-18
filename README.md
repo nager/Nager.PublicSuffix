@@ -53,7 +53,6 @@ PM> install-package Nager.PublicSuffix
 
 ## Features
 - High performance
-- LocalFileRuleProvider or WebRuleProvider
 - CacheProvider
 - Async support
 
