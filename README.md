@@ -83,3 +83,31 @@ var domainParser = new DomainParser(ruleProvider);
 var isValid = domainParser.IsValidDomain("sub.test.co.uk");
 ```
 
+### asp.net Intergration
+```cs
+
+// afer -> var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton<ICacheProvider, LocalFileSystemCacheProvider>();
+builder.Services.AddSingleton<IRuleProvider, CachedHttpRuleProvider>();
+builder.Services.AddSingleton<IDomainParser, DomainParser>();
+
+// after -> var app = builder.Build();
+var ruleProvider = app.Services.GetService<IRuleProvider>();
+if (ruleProvider != null)
+{
+    await ruleProvider.BuildAsync();
+}
+
+// minimal api
+app.MapGet("/DomainInfo/{domain}", (string domain, IDomainParser domainParser) =>
+{
+    domain = HttpUtility.UrlEncode(domain);
+
+    var domainInfo = domainParser.Parse(domain);
+    return domainInfo;
+})
+.WithName("DomainInfo")
+.WithOpenApi();
+```
+###
+
