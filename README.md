@@ -87,6 +87,8 @@ var isValid = domainParser.IsValidDomain("sub.test.co.uk");
 ```cs
 
 // afer -> var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHttpClient(); //Required for CachedHttpRuleProvider
 builder.Services.AddSingleton<ICacheProvider, LocalFileSystemCacheProvider>();
 builder.Services.AddSingleton<IRuleProvider, CachedHttpRuleProvider>();
 builder.Services.AddSingleton<IDomainParser, DomainParser>();
