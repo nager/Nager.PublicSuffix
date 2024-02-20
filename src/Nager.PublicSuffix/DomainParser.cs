@@ -91,13 +91,13 @@ namespace Nager.PublicSuffix
                     return false;
                 }
 
-                var domainName = this.GetDomainFromParts(partlyNormalizedDomain, parts);
-                if (domainName == null)
+                var domainInfo = this.GetDomainFromParts(partlyNormalizedDomain, parts);
+                if (domainInfo == null)
                 {
                     return false;
                 }
 
-                if (domainName.TopLevelDomainRule == null)
+                if (domainInfo.TopLevelDomainRule == null)
                 {
                     return false;
                 }
@@ -108,7 +108,12 @@ namespace Nager.PublicSuffix
                     return false;
                 }
 
-                return !domainName.TopLevelDomainRule.Equals(domainDataStructure.TldRule);
+                if (string.IsNullOrEmpty(domainInfo.Domain))
+                {
+                    return false;
+                }
+
+                return true;
             }
             catch (ParseException)
             {
@@ -137,7 +142,7 @@ namespace Nager.PublicSuffix
             var matches = new List<TldRule>();
             this.FindMatches(parts, domainDataStructure, matches);
 
-            //Sort so exceptions are first, then by biggest label count (with wildcards at bottom) 
+            // Sort so exceptions are first, then by biggest label count (with wildcards at bottom) 
             var sortedMatches = matches.OrderByDescending(x => x.Type == TldRuleType.WildcardException ? 1 : 0)
                 .ThenByDescending(x => x.LabelCount)
                 .ThenByDescending(x => x.Name);
@@ -148,7 +153,7 @@ namespace Nager.PublicSuffix
                 return null;
             }
 
-            //Domain is TLD
+            // Domain is TLD
             if (parts.Count == winningRule.LabelCount)
             {
                 parts.Reverse();
