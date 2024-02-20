@@ -52,3 +52,17 @@ if (domainInfo != null)
     Console.WriteLine($"{"Subdomain:",20} {domainInfo.Subdomain}");
     Console.WriteLine("------------------------------------------------");
 }
+
+
+var validDomains = new[] { "www.google.com", "amazon.com", "microsoft.de", "mail.google.com" };
+var invalidDomains = new[] { "www", "uk", "co.uk", ".", "test@test.com" };
+
+foreach (var validDomain in validDomains)
+{
+    Console.WriteLine($"{validDomain} -> {domainParser.IsValidDomain(validDomain)}");
+}
+
+foreach (var invalidDomain in invalidDomains)
+{
+    Console.WriteLine($"{invalidDomain} -> {domainParser.IsValidDomain(invalidDomain)}");
+}
