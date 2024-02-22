@@ -1,6 +1,6 @@
-﻿namespace Nager.PublicSuffix.WebApi.Models
+﻿namespace Nager.PublicSuffix.WebApi.GitHub.Models
 {
-    public class Committer
+    public class Author
     {
         public string? Name { get; set; }
         public string? Email { get; set; }

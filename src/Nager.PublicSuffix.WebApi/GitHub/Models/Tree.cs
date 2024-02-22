@@ -1,4 +1,4 @@
-﻿namespace Nager.PublicSuffix.WebApi.Models
+﻿namespace Nager.PublicSuffix.WebApi.GitHub.Models
 {
     public class Tree
     {
