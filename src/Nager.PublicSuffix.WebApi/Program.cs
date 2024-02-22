@@ -1,7 +1,6 @@
 using Nager.PublicSuffix;
 using Nager.PublicSuffix.RuleProviders;
 using Nager.PublicSuffix.RuleProviders.CacheProviders;
-using Nager.PublicSuffix.WebApi.GitHub;
 using System.Text.Json.Serialization;
 using System.Web;
 
@@ -13,7 +12,6 @@ builder.Services.AddHttpClient();
 builder.Services.AddSingleton<ICacheProvider, LocalFileSystemCacheProvider>();
 builder.Services.AddSingleton<IRuleProvider, CachedHttpRuleProvider>();
 builder.Services.AddSingleton<IDomainParser, DomainParser>();
-builder.Services.AddScoped<GitHubClient>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -47,15 +45,6 @@ app.MapGet("/DomainInfo/{domain}", (string domain, IDomainParser domainParser) =
     return domainInfo;
 })
 .WithName("DomainInfo")
-.WithOpenApi();
-
-app.MapPost("/CheckLastCommit", async (GitHubClient gitHubClient, CancellationToken cancellationToken) =>
-{
-    var lastGitHubCommit = await gitHubClient.GetCommitAsync("publicsuffix", "list", "master", cancellationToken);
-
-    return lastGitHubCommit?.Commit?.Committer?.Date;
-})
-.WithName("CheckLastCommit")
 .WithOpenApi();
 
 app.MapPost("/UpdateRules", async (IRuleProvider ruleProvider) =>
