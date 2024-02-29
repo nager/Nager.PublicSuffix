@@ -36,7 +36,7 @@ namespace Nager.PublicSuffix.RuleProviders
             var domainDataStructure = new DomainDataStructure("*", new TldRule("*"));
             domainDataStructure.AddRules(rules);
 
-            base.CreareDomainDataStructure(rules);
+            base.CreateDomainDataStructure(rules);
 
             return true;
         }
