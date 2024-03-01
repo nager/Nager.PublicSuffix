@@ -25,7 +25,7 @@ namespace Nager.PublicSuffix.RuleProviders
         /// <param name="rules"></param>
         public StaticRuleProvider(IEnumerable<TldRule> rules)
         {
-            base.CreareDomainDataStructure(rules);
+            base.CreateDomainDataStructure(rules);
         }
 
         /// <inheritdoc/>
