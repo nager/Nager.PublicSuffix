@@ -76,10 +76,7 @@ namespace Nager.PublicSuffix.Models
             }
         }
 
-        /// <summary>
-        /// ToString
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override string ToString()
         {
             return this.Name;
