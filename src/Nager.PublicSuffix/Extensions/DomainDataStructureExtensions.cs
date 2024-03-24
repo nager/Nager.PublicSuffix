@@ -55,7 +55,7 @@ namespace Nager.PublicSuffix.Extensions
                 structure.Nested.Add(domainPart, new DomainDataStructure(domainPart, tldRule));
             }
         }
-        
+
         /// <summary>
         /// Get collection of <see cref="TldRule"/> rules from <paramref name="structure"/>.
         /// </summary>

@@ -1,7 +1,7 @@
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Nager.PublicSuffix.Extensions;
 using Nager.PublicSuffix.Models;
+using System.Linq;
 
 namespace Nager.PublicSuffix.UnitTest;
 
@@ -25,6 +25,6 @@ public class DomainDataStructureExtensionsTests
 
         var rulesOut = structure.GetRules().ToArray();
         
-        Assert.IsTrue(rulesIn.SequenceEqual(rulesOut));
+        CollectionAssert.AreEqual(rulesIn,  rulesOut);
     }
 }

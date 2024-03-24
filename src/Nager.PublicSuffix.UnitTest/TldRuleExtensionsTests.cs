@@ -1,8 +1,8 @@
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Nager.PublicSuffix.Extensions;
 using Nager.PublicSuffix.Models;
 using Nager.PublicSuffix.RuleParsers;
+using System.Linq;
 
 namespace Nager.PublicSuffix.UnitTest;
 
