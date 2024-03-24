@@ -25,7 +25,7 @@ namespace Nager.PublicSuffix.Extensions
         /// <summary>
         /// Add <paramref name="tldRule"/> to <paramref name="structure"/>.
         /// </summary>
-        /// <param name="structure">The structure to appened the rule.</param>
+        /// <param name="structure">The structure to append the rule.</param>
         /// <param name="tldRule">The rule to append.</param>
         public static void AddRule(this DomainDataStructure structure, TldRule tldRule)
         {
@@ -53,6 +53,27 @@ namespace Nager.PublicSuffix.Extensions
                 }
 
                 structure.Nested.Add(domainPart, new DomainDataStructure(domainPart, tldRule));
+            }
+        }
+
+        /// <summary>
+        /// Get collection of <see cref="TldRule"/> rules from <paramref name="structure"/>.
+        /// </summary>
+        /// <param name="structure">The <see cref="DomainDataStructure"/> structure from which to obtain the rules</param>
+        /// <returns></returns>
+        public static IEnumerable<TldRule> GetRules(this DomainDataStructure structure)
+        {
+            foreach (var dataStructure in structure.Nested.Values)
+            {
+                if (dataStructure.TldRule != null)
+                {
+                    yield return dataStructure.TldRule;
+                }
+
+                foreach (var tldRule in dataStructure.GetRules())
+                {
+                    yield return tldRule;
+                }
             }
         }
     }
