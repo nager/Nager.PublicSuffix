@@ -102,7 +102,7 @@ namespace Nager.PublicSuffix.RuleProviders
             var ruleParser = new TldRuleParser();
             var rules = ruleParser.ParseRules(ruleData);
 
-            base.CreareDomainDataStructure(rules);
+            base.CreateDomainDataStructure(rules);
 
             return true;
         }
