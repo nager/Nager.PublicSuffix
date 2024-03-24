@@ -25,7 +25,7 @@ namespace Nager.PublicSuffix.RuleProviders
         /// Create a DomainDataStructure
         /// </summary>
         /// <param name="rules"></param>
-        protected void CreareDomainDataStructure(IEnumerable<TldRule> rules)
+        protected void CreateDomainDataStructure(IEnumerable<TldRule> rules)
         {
             var domainDataStructure = new DomainDataStructure("*", new TldRule("*"));
             domainDataStructure.AddRules(rules);
