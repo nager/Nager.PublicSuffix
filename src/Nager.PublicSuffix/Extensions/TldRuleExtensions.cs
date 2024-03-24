@@ -1,9 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Nager.PublicSuffix.Models;
 
 namespace Nager.PublicSuffix.Extensions
 {
+    /// <summary>
+    /// TldRule Extensions
+    /// </summary>
     public static class TldRuleExtensions
     {
         /// <summary>
@@ -11,42 +15,43 @@ namespace Nager.PublicSuffix.Extensions
         /// </summary>
         /// <param name="rules">The collection of <see cref="TldRule"/> rules</param>
         /// <returns></returns>
-        public static string UnParseRules(this IEnumerable<TldRule> rules)
+        public static string UnparseRules(this IEnumerable<TldRule> rules)
         {
-            var rulesData = "";
-            foreach (var division in rules.GroupBy(x=>x.Division))
+            var rulesData = new StringBuilder();
+            foreach (var division in rules.GroupBy(rule => rule.Division))
             {
                 switch (division.Key)
                 {
                     case TldRuleDivision.ICANN:
-                        rulesData += "\n// ===BEGIN ICANN DOMAINS===\n";
+                        rulesData.Append("\n// ===BEGIN ICANN DOMAINS===\n");
                         break;
                     case TldRuleDivision.Private:
-                        rulesData += "\n// ===BEGIN PRIVATE DOMAINS===\n";
+                        rulesData.Append("\n// ===BEGIN PRIVATE DOMAINS===\n");
                         break;
                 }
 
                 foreach (var rule in division)
                 {
-                    rulesData += "\n";
+                    rulesData.Append("\n");
+
                     if (rule.Type == TldRuleType.WildcardException)
                     {
-                        rulesData += "!";
+                        rulesData.Append("!");
                     }
-                    rulesData += rule.Name;
+                    rulesData.Append(rule.Name);
                 }
             
                 switch (division.Key)
                 {
                     case TldRuleDivision.ICANN:
-                        rulesData += "\n// ===END ICANN DOMAINS===\n";
+                        rulesData.Append("\n// ===END ICANN DOMAINS===\n");
                         break;
                     case TldRuleDivision.Private:
-                        rulesData += "\n// ===END PRIVATE DOMAINS===\n";
+                        rulesData.Append("\n// ===END PRIVATE DOMAINS===\n");
                         break;
                 }
             }
 
-            return rulesData;
+            return rulesData.ToString();
         }
     }}

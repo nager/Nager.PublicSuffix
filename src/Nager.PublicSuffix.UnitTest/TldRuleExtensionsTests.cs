@@ -10,21 +10,22 @@ namespace Nager.PublicSuffix.UnitTest;
 public class TldRuleExtensionsTests
 {
     [TestMethod]
-    public void UnParseWithExceptionTest()
+    public void UnparseWithExceptionTest()
     {
         const string rulesInText = """
                                    foo.com
                                    !bar.com
                                    !foo.bar.com
                                    """;
-        var (rules1, rules2) = ParseUnParseRules(rulesInText);
-        
-        Assert.IsTrue(rules1.SequenceEqual(rules2));
-        Assert.IsTrue(rules2[1].Type == TldRuleType.WildcardException);
+
+        var (rules1, rules2) = ParseUnparseRules(rulesInText);
+
+        CollectionAssert.AreEqual(rules1, rules2);
+        Assert.AreEqual(TldRuleType.WildcardException, rules2[1].Type);
     }
 
     [TestMethod]
-    public void UnParseWithWildCardTest()
+    public void UnparseWithWildCardTest()
     {
         const string rulesInText = """
                                    natal.br
@@ -37,17 +38,18 @@ public class TldRuleExtensionsTests
                                    ong.br
                                    org.br
                                    """;
-        var (rules1, rules2) = ParseUnParseRules(rulesInText);
-        Assert.IsTrue(rules1.SequenceEqual(rules2));
-        Assert.IsTrue(rules2[3].Type == TldRuleType.Wildcard);
+        var (rules1, rules2) = ParseUnparseRules(rulesInText);
+
+        CollectionAssert.AreEqual(rules1, rules2);
+        Assert.AreEqual(TldRuleType.Wildcard, rules2[3].Type);
     }
 
-    private static (TldRule[] rules1, TldRule[] rules2) ParseUnParseRules(string rulesText)
+    private static (TldRule[] rules1, TldRule[] rules2) ParseUnparseRules(string rulesText)
     {
         var ruleParser = new TldRuleParser();
 
         var rules1 = ruleParser.ParseRules(rulesText).ToArray();
-        var rulesUnParsedText = rules1.UnParseRules();
+        var rulesUnParsedText = rules1.UnparseRules();
         var rules2 = ruleParser.ParseRules(rulesUnParsedText).ToArray();
 
         return (rules1, rules2);
