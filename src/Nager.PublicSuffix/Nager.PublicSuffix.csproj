@@ -7,6 +7,7 @@
 
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
+    <LangVersion>12.0</LangVersion>
     <IncludeSymbols>true</IncludeSymbols>
 
     <Nullable>enable</Nullable>
@@ -22,7 +23,7 @@
 
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
-    <TargetFrameworks>netstandard2.1;net6.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net8.0</TargetFrameworks>
 	  
     <Version>3.1.0</Version>
   </PropertyGroup>
