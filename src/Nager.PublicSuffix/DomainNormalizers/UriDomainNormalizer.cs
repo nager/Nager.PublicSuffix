@@ -23,7 +23,7 @@ namespace Nager.PublicSuffix.DomainNormalizers
             }
 
             //We use Uri methods to normalize host (So Punycode is converted to UTF-8)
-            if (!domain.StartsWith("https://") && !domain.StartsWith("http://"))
+            if (!domain.StartsWith("https://", StringComparison.OrdinalIgnoreCase) && !domain.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
             {
                 domain = $"https://{domain}";
             }

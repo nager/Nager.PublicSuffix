@@ -25,7 +25,7 @@ namespace Nager.PublicSuffix.DomainNormalizers
             partlyNormalizedDomain = domain.ToLowerInvariant();
 
             string punycodeConvertedDomain = partlyNormalizedDomain;
-            if (partlyNormalizedDomain.Contains("xn--", StringComparison.OrdinalIgnoreCase))
+            if (partlyNormalizedDomain.Contains("xn--"))
             {
                 punycodeConvertedDomain = this._idnMapping.GetUnicode(partlyNormalizedDomain);
             }
