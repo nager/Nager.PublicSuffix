@@ -121,7 +121,9 @@ namespace Nager.PublicSuffix
             }
         }
 
-        private DomainInfo? GetDomainFromParts(string? domain, List<string> parts)
+        private DomainInfo? GetDomainFromParts(
+            string? domain,
+            List<string> parts)
         {
             if (domain == null)
             {

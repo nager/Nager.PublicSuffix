@@ -11,7 +11,9 @@ namespace Nager.PublicSuffix.DomainNormalizers
     public class UriDomainNormalizer : IDomainNormalizer
     {
         /// <inheritdoc/>
-        public List<string>? PartlyNormalizeDomainAndExtractFullyNormalizedParts(string domain, out string? partlyNormalizedDomain)
+        public List<string>? PartlyNormalizeDomainAndExtractFullyNormalizedParts(
+            string domain,
+            out string? partlyNormalizedDomain)
         {
             partlyNormalizedDomain = null;
 

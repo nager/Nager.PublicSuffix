@@ -14,7 +14,9 @@ namespace Nager.PublicSuffix.Extensions
         /// </summary>
         /// <param name="structure">The structure to appened the rule.</param>
         /// <param name="tldRules">The rules to append.</param>
-        public static void AddRules(this DomainDataStructure structure, IEnumerable<TldRule> tldRules)
+        public static void AddRules(
+            this DomainDataStructure structure,
+            IEnumerable<TldRule> tldRules)
         {
             foreach (var tldRule in tldRules)
             {
@@ -27,7 +29,9 @@ namespace Nager.PublicSuffix.Extensions
         /// </summary>
         /// <param name="structure">The structure to append the rule.</param>
         /// <param name="tldRule">The rule to append.</param>
-        public static void AddRule(this DomainDataStructure structure, TldRule tldRule)
+        public static void AddRule(
+            this DomainDataStructure structure,
+            TldRule tldRule)
         {
             var parts = tldRule.Name.Split('.').Reverse().ToList();
             for (var i = 0; i < parts.Count; i++)
