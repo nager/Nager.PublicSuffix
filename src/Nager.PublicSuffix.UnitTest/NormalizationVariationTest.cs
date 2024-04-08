@@ -15,7 +15,7 @@ namespace Nager.PublicSuffix.UnitTest
     // examine behaviour around TLDs and their presence/absence/rules may not wish the outcomes to be
     // influenced by other rules imposed by the Uri class
     [TestClass]
-    public class NormalizationVariationTests
+    public class NormalizationVariationTest
     {
         private IDomainParser _parserUsingUriNormalization;
         private IDomainParser _parserUsingIdnNormalization;
