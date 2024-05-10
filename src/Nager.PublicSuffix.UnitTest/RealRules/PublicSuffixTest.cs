@@ -147,7 +147,6 @@ namespace Nager.PublicSuffix.UnitTest.RealRules
         [DataRow("ec2-34-206-8-177.compute-1.amazonaws.com")]
         [DataRow("s3-website.us-east-2.amazonaws.com")]
         [DataRow("test.stg.dev")]
-        //[ExpectedExceptionWithMessage(typeof(ParseException), "Domain is a TLD according publicsuffix")]
         public void TldCheck(string domain)
         {
             this.CheckPublicSuffix(domain, null);
