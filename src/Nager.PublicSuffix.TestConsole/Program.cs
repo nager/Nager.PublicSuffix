@@ -1,5 +1,4 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using Microsoft.Extensions.Logging;
 using Nager.PublicSuffix;
 using Nager.PublicSuffix.RuleProviders;
 
@@ -26,7 +25,7 @@ using Nager.PublicSuffix.RuleProviders;
 
 #endregion
 
-#region
+#region SimpleHttpRuleProvider
 
 var ruleProvider = new SimpleHttpRuleProvider();
 
@@ -53,8 +52,7 @@ if (domainInfo != null)
     Console.WriteLine("------------------------------------------------");
 }
 
-
-var validDomains = new[] { "www.google.com", "amazon.com", "microsoft.de", "mail.google.com" };
+var validDomains = new[] { "www.google.com", "amazon.com", "microsoft.de", "mail.google.com", "microsoft.de." };
 var invalidDomains = new[] { "www", "uk", "co.uk", ".", "test@test.com" };
 
 foreach (var validDomain in validDomains)
