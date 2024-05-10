@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Nager.PublicSuffix.Exceptions;
 using Nager.PublicSuffix.RuleParsers;
 using Nager.PublicSuffix.RuleProviders.CacheProviders;
@@ -34,6 +36,7 @@ namespace Nager.PublicSuffix.RuleProviders
         /// <param name="configuration"></param>
         /// <param name="cacheProvider"></param>
         /// <param name="httpClient"></param>
+        [ActivatorUtilitiesConstructor]
         public CachedHttpRuleProvider(
             ILogger<CachedHttpRuleProvider> logger,
             IConfiguration configuration,
@@ -49,6 +52,39 @@ namespace Nager.PublicSuffix.RuleProviders
             if (string.IsNullOrEmpty(url))
             {
                 url = "https://publicsuffix.org/list/public_suffix_list.dat";
+            }
+
+            this._dataFileUrl = url;
+        }
+
+        /// <summary>
+        /// CachedHttp RuleProvider<br/>
+        /// Loads the public suffix definition file from the official website and use a local cache for quicker initialization
+        /// </summary>
+        /// <remarks>It is possible to overwrite the url via configuration parameters <c>Nager:PublicSuffix:DataUrl</c></remarks>
+        /// <param name="cacheProvider"></param>
+        /// <param name="httpClient"></param>
+        /// <param name="configuration"></param>
+        /// <param name="logger"></param>
+        public CachedHttpRuleProvider(
+            ICacheProvider cacheProvider,
+            HttpClient httpClient,
+            IConfiguration? configuration = default,
+            ILogger<CachedHttpRuleProvider>? logger = default
+            )
+        {
+            this._cacheProvider = cacheProvider;
+            this._httpClient = httpClient;
+            this._logger = logger ?? new NullLogger<CachedHttpRuleProvider>();
+
+            var url = "https://publicsuffix.org/list/public_suffix_list.dat";
+            if (configuration != default)
+            {
+                var tempUrl = configuration["Nager:PublicSuffix:DataUrl"];
+                if (!string.IsNullOrEmpty(tempUrl))
+                {
+                    url = tempUrl;
+                }
             }
 
             this._dataFileUrl = url;
