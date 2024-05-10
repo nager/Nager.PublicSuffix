@@ -111,5 +111,14 @@ app.MapGet("/DomainInfo/{domain}", (string domain, IDomainParser domainParser) =
 .WithName("DomainInfo")
 .WithOpenApi();
 ```
-###
+### Console App Integration
+var httpClient = new HttpClient();
+var cacheProvider = new Nager.PublicSuffix.RuleProviders.CacheProviders.LocalFileSystemCacheProvider();
+var ruleProvider = new CachedHttpRuleProvider(cacheProvider, httpClient);
+
+await ruleProvider.BuildAsync();
+
+var domainParser = new DomainParser(ruleProvider);
+var domainInfo = domainParser.Parse("example.com");
+### 
 
