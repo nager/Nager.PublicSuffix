@@ -121,4 +121,4 @@ await ruleProvider.BuildAsync();
 
 var domainParser = new DomainParser(ruleProvider);
 var domainInfo = domainParser.Parse("example.com");
-```cs
+```
