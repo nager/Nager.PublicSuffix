@@ -85,7 +85,6 @@ var isValid = domainParser.IsValidDomain("sub.test.co.uk");
 
 ### asp.net Intergration
 ```cs
-
 // after -> var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpClient(); //Required for CachedHttpRuleProvider
@@ -111,7 +110,9 @@ app.MapGet("/DomainInfo/{domain}", (string domain, IDomainParser domainParser) =
 .WithName("DomainInfo")
 .WithOpenApi();
 ```
+
 ### Console App Integration
+```cs
 var httpClient = new HttpClient();
 var cacheProvider = new Nager.PublicSuffix.RuleProviders.CacheProviders.LocalFileSystemCacheProvider();
 var ruleProvider = new CachedHttpRuleProvider(cacheProvider, httpClient);
@@ -120,5 +121,4 @@ await ruleProvider.BuildAsync();
 
 var domainParser = new DomainParser(ruleProvider);
 var domainInfo = domainParser.Parse("example.com");
-### 
-
+```cs
