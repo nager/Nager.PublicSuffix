@@ -62,6 +62,9 @@ namespace Nager.PublicSuffix.UnitTest.RealRules
             this.CheckPublicSuffix("b.example.example", null);
             this.CheckPublicSuffix("a.b.example.example", null);
 
+            //Test with dot at the end
+            this.CheckPublicSuffix("example.com.", "example.com");
+
             // Listed, but non-Internet, TLD.
             //this.CheckPublicSuffix("local", null);
             //this.CheckPublicSuffix("example.local", null);

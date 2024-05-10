@@ -17,6 +17,13 @@ namespace Nager.PublicSuffix.DomainNormalizers
         {
             partlyNormalizedDomain = null;
 
+            if (string.IsNullOrWhiteSpace(domain))
+            {
+                return null;
+            }
+
+            domain = domain.TrimEnd('.');
+
             if (string.IsNullOrEmpty(domain))
             {
                 return null;
