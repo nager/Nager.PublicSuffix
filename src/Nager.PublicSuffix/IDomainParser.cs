@@ -3,22 +3,22 @@
 namespace Nager.PublicSuffix
 {
     /// <summary>
-    /// Interface Domain Parser
+    /// Domain Parser Interface
     /// </summary>
     public interface IDomainParser
     {
         /// <summary>
-        /// Parse the DomainInfo from <paramref name="fullyQualifiedDomainName"/>.
+        /// Parses a fully qualified domain name (FQDN) and retrieves information about the domain.
         /// </summary>
         /// <param name="fullyQualifiedDomainName">The fully qualified domain name (FQDN) to parse</param>
-        /// <returns>DomainInfo object</returns>
+        /// <returns>A DomainInfo object containing details such as TopLevelDomain, Subdomain, RegistrableDomain, or null if the TopLevelDomain is invalid.</returns>
         DomainInfo? Parse(string fullyQualifiedDomainName);
 
         /// <summary>
-        /// Parse the DomainInfo from <paramref name="fullyQualifiedDomainName"/>.
+        /// Parses a fully qualified domain name (FQDN) and retrieves information about the domain.
         /// </summary>
         /// <param name="fullyQualifiedDomainName">The fully qualified domain name (FQDN) to parse</param>
-        /// <returns>DomainInfo object</returns>
+        /// <returns>A DomainInfo object containing details such as TopLevelDomain, Subdomain, RegistrableDomain, or null if the TopLevelDomain is invalid.</returns>
         DomainInfo? Parse(Uri fullyQualifiedDomainName);
 
         /// <summary>
