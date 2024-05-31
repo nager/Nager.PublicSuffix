@@ -12,7 +12,7 @@ namespace Nager.PublicSuffix.RuleProviders
     public abstract class BaseRuleProvider : IRuleProvider
     {
         /// <summary>
-        /// Parsed publix suffix list rules
+        /// Parsed public suffix list rules
         /// </summary>
         protected DomainDataStructure? _domainDataStructure;
 
