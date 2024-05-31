@@ -41,8 +41,7 @@ namespace Nager.PublicSuffix.RuleProviders
             ILogger<CachedHttpRuleProvider> logger,
             IConfiguration configuration,
             ICacheProvider cacheProvider,
-            HttpClient httpClient
-            )
+            HttpClient httpClient)
         {
             this._logger = logger;
             this._cacheProvider = cacheProvider;
