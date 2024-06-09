@@ -88,7 +88,10 @@ var isValid = domainParser.IsValidDomain("sub.test.co.uk");
 // after -> var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpClient(); //Required for CachedHttpRuleProvider
+// You can use LocalFileSystemCacheProvider to store the cache in your as a local file - improves memory usage
 builder.Services.AddSingleton<ICacheProvider, LocalFileSystemCacheProvider>();
+// Or you  can use with is recommended for Azure functions or application where you don't have files access permission
+// builder.Services.AddSingleton<ICacheProvider, MemoryCacheProvider>();
 builder.Services.AddSingleton<IRuleProvider, CachedHttpRuleProvider>();
 builder.Services.AddSingleton<IDomainParser, DomainParser>();
 
