@@ -3,14 +3,16 @@ using Microsoft.Extensions.Logging;
 using Nager.PublicSuffix;
 using Nager.PublicSuffix.RuleProviders;
 
-Console.WriteLine("Run - DemoCachedHttpRuleProviderAsync");
-await DemoCachedHttpRuleProviderAsync();
+Console.WriteLine("Run - DemoLocalFileCachedHttpRuleProviderAsync");
+await DemoLocalFileCachedHttpRuleProviderAsync();
+Console.WriteLine("Run - DemoMemoryCachedHttpRuleProviderAsync");
+await DemoMemoryCachedHttpRuleProviderAsync();
 Console.WriteLine("Run - DemoSimpleHttpRuleProviderAsync");
 await DemoSimpleHttpRuleProviderAsync();
 Console.WriteLine("Run - DemoLocalFileRuleProviderAsync");
 await DemoLocalFileRuleProviderAsync();
 
-async Task DemoCachedHttpRuleProviderAsync()
+async Task DemoLocalFileCachedHttpRuleProviderAsync()
 {
     using var loggerFactory = LoggerFactory.Create(builder =>
     {
@@ -28,6 +30,30 @@ async Task DemoCachedHttpRuleProviderAsync()
 
     using var httpClient = new HttpClient();
     var cacheProvider = new Nager.PublicSuffix.RuleProviders.CacheProviders.LocalFileSystemCacheProvider();
+
+    var ruleProvider = new CachedHttpRuleProvider(ruleProviderLogger, configuration, cacheProvider, httpClient);
+
+    await CheckAsync(ruleProvider);
+}
+
+async Task DemoMemoryCachedHttpRuleProviderAsync()
+{
+    using var loggerFactory = LoggerFactory.Create(builder =>
+    {
+        builder.AddConsole();
+    });
+
+    var ruleProviderLogger = loggerFactory.CreateLogger<CachedHttpRuleProvider>();
+
+    IConfiguration configuration = new ConfigurationBuilder()
+        .AddInMemoryCollection(new List<KeyValuePair<string, string?>>
+        {
+            new("Nager:PublicSuffix:DataUrl", "https://publicsuffix.org/list/public_suffix_list.dat")
+        })
+        .Build();
+
+    using var httpClient = new HttpClient();
+    var cacheProvider = new Nager.PublicSuffix.RuleProviders.CacheProviders.MemoryCacheProvider();
 
     var ruleProvider = new CachedHttpRuleProvider(ruleProviderLogger, configuration, cacheProvider, httpClient);
 
