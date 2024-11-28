@@ -35,6 +35,7 @@ var domainInfo = domainParser.Parse("sub.test.co.uk");
 //domainInfo.Subdomain = "sub";
 //domainInfo.TopLevelDomain = "co.uk";
 
+
 Check is sub.test.co.uk a valid domain
 ══════════════════════════════════════════════════════════════════════════════════════════════════════
 
@@ -44,3 +45,14 @@ await ruleProvider.BuildAsync();
 var domainParser = new DomainParser(ruleProvider);
 
 var isValid = domainParser.IsValidDomain("sub.test.co.uk");
+
+
+Use SimpleHttpRuleProvider (automatic download)
+══════════════════════════════════════════════════════════════════════════════════════════════════════
+
+var ruleProvider = new SimpleHttpRuleProvider();
+await ruleProvider.BuildAsync();
+
+var domainParser = new DomainParser(ruleProvider);
+
+var domainInfo = domainParser.Parse("sub.test.co.uk");
