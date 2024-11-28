@@ -45,7 +45,7 @@ namespace Nager.PublicSuffix.RuleProviders
                 url = "https://publicsuffix.org/list/public_suffix_list.dat";
             }
 
-            this._dataFileUrl = url;
+            this._dataFileUrl = url ?? throw new InvalidOperationException("_dataFileUrl must contain a non-null value");
         }
 
         /// <inheritdoc/>

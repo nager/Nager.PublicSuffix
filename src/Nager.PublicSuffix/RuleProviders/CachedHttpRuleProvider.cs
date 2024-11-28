@@ -53,7 +53,7 @@ namespace Nager.PublicSuffix.RuleProviders
                 url = "https://publicsuffix.org/list/public_suffix_list.dat";
             }
 
-            this._dataFileUrl = url;
+            this._dataFileUrl = url ?? throw new InvalidOperationException("_dataFileUrl must contain a non-null value");
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Nager.PublicSuffix.RuleProviders
                 var tempUrl = configuration["Nager:PublicSuffix:DataUrl"];
                 if (!string.IsNullOrEmpty(tempUrl))
                 {
-                    url = tempUrl;
+                    url = tempUrl!;
                 }
             }
 
@@ -123,7 +123,7 @@ namespace Nager.PublicSuffix.RuleProviders
             }
 
             var ruleParser = new TldRuleParser();
-            var rules = ruleParser.ParseRules(ruleData);
+            var rules = ruleParser.ParseRules(ruleData!);
 
             base.CreateDomainDataStructure(rules);
 
