@@ -9,7 +9,17 @@ namespace Nager.PublicSuffix.RuleParsers
     /// </summary>
     public class TldRuleParser
     {
-        private readonly char[] _lineBreak = ['\n', '\r'];
+        private readonly char[] _newlineSeparators = ['\n', '\r'];
+        private readonly TldRuleDivisionFilter _tldRuleDivisionFilter;
+
+        /// <summary>
+        /// TldRuleParser
+        /// </summary>
+        /// <param name="tldRuleDivisionFilter"></param>
+        public TldRuleParser(TldRuleDivisionFilter tldRuleDivisionFilter)
+        {
+            this._tldRuleDivisionFilter = tldRuleDivisionFilter;
+        }
 
         /// <summary>
         /// ParseRules
@@ -18,7 +28,7 @@ namespace Nager.PublicSuffix.RuleParsers
         /// <returns></returns>
         public IEnumerable<TldRule> ParseRules(string data)
         {
-            var lines = data.Split(this._lineBreak);
+            var lines = data.Split(this._newlineSeparators);
             return this.ParseRules(lines);
         }
 
@@ -30,7 +40,7 @@ namespace Nager.PublicSuffix.RuleParsers
         public IEnumerable<TldRule> ParseRules(IEnumerable<string> lines)
         {
             var items = new List<TldRule>();
-            var division = TldRuleDivision.Unknown;
+            var activeDivision = TldRuleDivision.Unknown;
 
             foreach (var line in lines)
             {
@@ -46,25 +56,37 @@ namespace Nager.PublicSuffix.RuleParsers
                     //Detect Division
                     if (line.StartsWith("// ===BEGIN ICANN DOMAINS===", StringComparison.OrdinalIgnoreCase))
                     {
-                        division = TldRuleDivision.ICANN;
+                        activeDivision = TldRuleDivision.ICANN;
                     }
                     else if (line.StartsWith("// ===END ICANN DOMAINS===", StringComparison.OrdinalIgnoreCase))
                     {
-                        division = TldRuleDivision.Unknown;
+                        activeDivision = TldRuleDivision.Unknown;
                     }
                     else if (line.StartsWith("// ===BEGIN PRIVATE DOMAINS===", StringComparison.OrdinalIgnoreCase))
                     {
-                        division = TldRuleDivision.Private;
+                        activeDivision = TldRuleDivision.Private;
                     }
                     else if (line.StartsWith("// ===END PRIVATE DOMAINS===", StringComparison.OrdinalIgnoreCase))
                     {
-                        division = TldRuleDivision.Unknown;
+                        activeDivision = TldRuleDivision.Unknown;
                     }
 
                     continue;
                 }
 
-                var tldRule = new TldRule(line.Trim(), division);
+                if (activeDivision == TldRuleDivision.Private &&
+                    this._tldRuleDivisionFilter == TldRuleDivisionFilter.ICANNOnly)
+                {
+                    continue;
+                }
+
+                if (activeDivision == TldRuleDivision.ICANN &&
+                    this._tldRuleDivisionFilter == TldRuleDivisionFilter.PrivateOnly)
+                {
+                    continue;
+                }
+
+                var tldRule = new TldRule(line.Trim(), activeDivision);
                 items.Add(tldRule);
             }
 

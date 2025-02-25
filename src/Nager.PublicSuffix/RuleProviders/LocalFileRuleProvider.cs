@@ -13,14 +13,19 @@ namespace Nager.PublicSuffix.RuleProviders
     public class LocalFileRuleProvider : BaseRuleProvider
     {
         private readonly string _filePath;
+        private readonly TldRuleDivisionFilter _tldRuleDivisionFilter;
 
         /// <summary>
         /// LocalFile RuleProvider
         /// </summary>
         /// <param name="filePath"></param>
-        public LocalFileRuleProvider(string filePath)
+        /// <param name="tldRuleDivisionFilter"></param>
+        public LocalFileRuleProvider(
+            string filePath,
+            TldRuleDivisionFilter tldRuleDivisionFilter = TldRuleDivisionFilter.All)
         {
             this._filePath = filePath;
+            this._tldRuleDivisionFilter = tldRuleDivisionFilter;
         }
 
         /// <inheritdoc/>
@@ -30,7 +35,7 @@ namespace Nager.PublicSuffix.RuleProviders
         {
             var ruleData = await this.LoadFromFile().ConfigureAwait(false);
 
-            var ruleParser = new TldRuleParser();
+            var ruleParser = new TldRuleParser(this._tldRuleDivisionFilter);
             var rules = ruleParser.ParseRules(ruleData);
 
             var domainDataStructure = new DomainDataStructure("*", new TldRule("*"));

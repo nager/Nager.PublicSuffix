@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Nager.PublicSuffix.Exceptions;
+using Nager.PublicSuffix.Models;
 using Nager.PublicSuffix.RuleParsers;
 using System;
 using System.Net.Http;
@@ -20,6 +21,7 @@ namespace Nager.PublicSuffix.RuleProviders
         private readonly ILogger<SimpleHttpRuleProvider> _logger;
         private readonly HttpClient _httpClient;
         private readonly bool _disposeHttpClient;
+        private readonly TldRuleDivisionFilter _tldRuleDivisionFilter;
 
         /// <summary>
         /// Simple Http RuleProvider<br/>
@@ -29,15 +31,18 @@ namespace Nager.PublicSuffix.RuleProviders
         /// <param name="configuration"></param>
         /// <param name="httpClient"></param>
         /// <param name="logger"></param>
+        /// <param name="tldRuleDivisionFilter"></param>
         public SimpleHttpRuleProvider(
             IConfiguration? configuration = null,
             HttpClient? httpClient = null,
-            ILogger<SimpleHttpRuleProvider>? logger = null)
+            ILogger<SimpleHttpRuleProvider>? logger = null,
+            TldRuleDivisionFilter tldRuleDivisionFilter = TldRuleDivisionFilter.All)
         {
             this._logger = logger ?? new NullLogger<SimpleHttpRuleProvider>();
 
             this._disposeHttpClient = httpClient == null;
             this._httpClient = httpClient ?? new HttpClient();
+            this._tldRuleDivisionFilter = tldRuleDivisionFilter;
 
             var url = configuration != null ? configuration["Nager:PublicSuffix:DataUrl"] : string.Empty;
             if (string.IsNullOrEmpty(url))
@@ -99,7 +104,7 @@ namespace Nager.PublicSuffix.RuleProviders
                 return false;
             }
 
-            var ruleParser = new TldRuleParser();
+            var ruleParser = new TldRuleParser(this._tldRuleDivisionFilter);
             var rules = ruleParser.ParseRules(ruleData);
 
             base.CreateDomainDataStructure(rules);

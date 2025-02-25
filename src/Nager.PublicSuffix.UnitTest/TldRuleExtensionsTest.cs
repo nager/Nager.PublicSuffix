@@ -46,7 +46,7 @@ namespace Nager.PublicSuffix.UnitTest
 
         private static (TldRule[] rules1, TldRule[] rules2) ParseUnparseRules(string rulesText)
         {
-            var ruleParser = new TldRuleParser();
+            var ruleParser = new TldRuleParser(TldRuleDivisionFilter.All);
 
             var rules1 = ruleParser.ParseRules(rulesText).ToArray();
             var rulesUnParsedText = rules1.UnparseRules();

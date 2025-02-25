@@ -13,7 +13,7 @@ namespace Nager.PublicSuffix.UnitTest
         {
             var lines = new string[] { "com", "uk", "co.uk" };
 
-            var ruleParser = new TldRuleParser();
+            var ruleParser = new TldRuleParser(TldRuleDivisionFilter.All);
             var tldRules = ruleParser.ParseRules(lines).ToList();
 
             Assert.AreEqual("com", tldRules[0].Name);
@@ -26,7 +26,7 @@ namespace Nager.PublicSuffix.UnitTest
         {
             var lines = new string[] { "com", "//this is a example comment", "uk", "co.uk" };
 
-            var ruleParser = new TldRuleParser();
+            var ruleParser = new TldRuleParser(TldRuleDivisionFilter.All);
             var tldRules = ruleParser.ParseRules(lines).ToList();
 
             Assert.AreEqual("com", tldRules[0].Name);
@@ -50,7 +50,7 @@ namespace Nager.PublicSuffix.UnitTest
                 "example.after"
             };
 
-            var ruleParser = new TldRuleParser();
+            var ruleParser = new TldRuleParser(TldRuleDivisionFilter.All);
             var tldRules = ruleParser.ParseRules(lines).ToList();
 
             Assert.AreEqual("example.above", tldRules[0].Name);

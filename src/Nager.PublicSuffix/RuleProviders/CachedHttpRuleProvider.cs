@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Nager.PublicSuffix.Exceptions;
+using Nager.PublicSuffix.Models;
 using Nager.PublicSuffix.RuleParsers;
 using Nager.PublicSuffix.RuleProviders.CacheProviders;
 using System;
@@ -21,6 +22,7 @@ namespace Nager.PublicSuffix.RuleProviders
         private readonly ILogger<CachedHttpRuleProvider> _logger;
         private readonly ICacheProvider _cacheProvider;
         private readonly HttpClient _httpClient;
+        private readonly TldRuleDivisionFilter _tldRuleDivisionFilter;
 
         /// <summary>
         /// Returns the cache provider
@@ -36,12 +38,14 @@ namespace Nager.PublicSuffix.RuleProviders
         /// <param name="configuration"></param>
         /// <param name="cacheProvider"></param>
         /// <param name="httpClient"></param>
+        /// <param name="tldRuleDivisionFilter"></param>
         [ActivatorUtilitiesConstructor]
         public CachedHttpRuleProvider(
             ILogger<CachedHttpRuleProvider> logger,
             IConfiguration configuration,
             ICacheProvider cacheProvider,
-            HttpClient httpClient)
+            HttpClient httpClient,
+            TldRuleDivisionFilter tldRuleDivisionFilter = TldRuleDivisionFilter.All)
         {
             this._logger = logger;
             this._cacheProvider = cacheProvider;
@@ -54,6 +58,7 @@ namespace Nager.PublicSuffix.RuleProviders
             }
 
             this._dataFileUrl = url ?? throw new InvalidOperationException("_dataFileUrl must contain a non-null value");
+            this._tldRuleDivisionFilter = tldRuleDivisionFilter;
         }
 
         /// <summary>
@@ -65,16 +70,18 @@ namespace Nager.PublicSuffix.RuleProviders
         /// <param name="httpClient"></param>
         /// <param name="configuration"></param>
         /// <param name="logger"></param>
+        /// <param name="tldRuleDivisionFilter"></param>
         public CachedHttpRuleProvider(
             ICacheProvider cacheProvider,
             HttpClient httpClient,
             IConfiguration? configuration = default,
-            ILogger<CachedHttpRuleProvider>? logger = default
-            )
+            ILogger<CachedHttpRuleProvider>? logger = default,
+            TldRuleDivisionFilter tldRuleDivisionFilter = TldRuleDivisionFilter.All)
         {
             this._cacheProvider = cacheProvider;
             this._httpClient = httpClient;
             this._logger = logger ?? new NullLogger<CachedHttpRuleProvider>();
+            this._tldRuleDivisionFilter = tldRuleDivisionFilter;
 
             var url = "https://publicsuffix.org/list/public_suffix_list.dat";
             if (configuration != default)
@@ -122,7 +129,7 @@ namespace Nager.PublicSuffix.RuleProviders
                 return false;
             }
 
-            var ruleParser = new TldRuleParser();
+            var ruleParser = new TldRuleParser(this._tldRuleDivisionFilter);
             var rules = ruleParser.ParseRules(ruleData!);
 
             base.CreateDomainDataStructure(rules);
