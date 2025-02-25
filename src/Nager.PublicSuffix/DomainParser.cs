@@ -102,12 +102,6 @@ namespace Nager.PublicSuffix
                     return false;
                 }
 
-                var domainDataStructure = this._ruleProvider.GetDomainDataStructure();
-                if (domainDataStructure == null || domainDataStructure.TldRule == null)
-                {
-                    return false;
-                }
-
                 if (string.IsNullOrEmpty(domainInfo.Domain))
                 {
                     return false;
@@ -136,7 +130,7 @@ namespace Nager.PublicSuffix
             }
 
             var domainDataStructure = this._ruleProvider.GetDomainDataStructure();
-            if (domainDataStructure == null)
+            if (domainDataStructure == null || domainDataStructure.TldRule == null)
             {
                 throw new NullReferenceException("DomainDataStructure is not available");
             }

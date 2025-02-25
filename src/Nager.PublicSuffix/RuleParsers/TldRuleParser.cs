@@ -9,7 +9,7 @@ namespace Nager.PublicSuffix.RuleParsers
     /// </summary>
     public class TldRuleParser
     {
-        private readonly char[] _lineBreak = new char[] { '\n', '\r' };
+        private readonly char[] _lineBreak = ['\n', '\r'];
 
         /// <summary>
         /// ParseRules

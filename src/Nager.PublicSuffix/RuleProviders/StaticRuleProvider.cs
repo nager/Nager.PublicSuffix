@@ -16,7 +16,7 @@ namespace Nager.PublicSuffix.RuleProviders
         /// <param name="domainDataStructure"></param>
         public StaticRuleProvider(DomainDataStructure domainDataStructure)
         {
-            this._domainDataStructure = domainDataStructure;
+            base._domainDataStructure = domainDataStructure;
         }
 
         /// <summary>
