@@ -2,29 +2,17 @@
 
 With so many different endings for domain names, it's hard to know if they're valid or not. This project uses a list from **publicsuffix.org**, which keeps track of all the common endings like `.com` or `.org`. It checks domain names against this list to see if they're okay. Then, it splits the domain into three parts: the ending (like .com), the main part (like google), and any subparts (like www). You can find the list on GitHub under [publicsuffix list repository](https://github.com/publicsuffix/list).
 
-## Changes to version 3
+## Improvements in version 3
 
 If you like the new version then give the project a :star: or become a [sponsor](https://github.com/sponsors/nager)
 
 - Add Support for `.NET8`
 - Allow hot reload of rule data over the `IRuleProvider`
 - Optimize Dependency Injection support
-- Remove obsolete methods
 - Fix UriDomainNormalizer bug with http://
-- Cleanup project structure
-- Optimize code documentation
 - Add ILogger interface for logging issues
 - Allow inject `HttpClient` for `CachedHttpRuleProvider`
 - Error handling with `TLD` domains improved
-- Optimize custom exception logic, use default message of exception class
-
-### Breaking changes
-
-- Some namespaces have changed
-- `DomainInfo->Hostname` renamed to `DomainInfo->FullyQualifiedDomainName`
-
-### Previous code for V2
-The source code of version 2 can be found [here](https://github.com/nager/Nager.PublicSuffix/tree/v2)
 
 ## Use cases
 
