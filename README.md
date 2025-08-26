@@ -2,17 +2,11 @@
 
 With so many different endings for domain names, it's hard to know if they're valid or not. This project uses a list from **publicsuffix.org**, which keeps track of all the common endings like `.com` or `.org`. It checks domain names against this list to see if they're okay. Then, it splits the domain into three parts: the ending (like .com), the main part (like google), and any subparts (like www). You can find the list on GitHub under [publicsuffix list repository](https://github.com/publicsuffix/list).
 
-## Improvements in version 3
-
-If you like the new version then give the project a :star: or become a [sponsor](https://github.com/sponsors/nager)
-
-- Add Support for `.NET8`
-- Allow hot reload of rule data over the `IRuleProvider`
-- Optimize Dependency Injection support
-- Fix UriDomainNormalizer bug with http://
-- Add ILogger interface for logging issues
-- Allow inject `HttpClient` for `CachedHttpRuleProvider`
-- Error handling with `TLD` domains improved
+## Features
+- High performance
+- CacheProvider
+- Async support
+- Hot reload of rule data
 
 ## Use cases
 
@@ -33,18 +27,12 @@ If you like the new version then give the project a :star: or become a [sponsor]
 | www.amazon.co.uk            | co.uk                          | amazon     | www       |
 | www.wikipedia.org           | org                            | wikipedia  | www       |
 
-## nuget
-The package is available on [nuget](https://www.nuget.org/packages/Nager.PublicSuffix)
-```
+## Installation
+The package is available on [NuGet](https://www.nuget.org/packages/Nager.PublicSuffix)
+```powershell
 PM> install-package Nager.PublicSuffix
 ```
-
-## Features
-- High performance
-- CacheProvider
-- Async support
-
-## Code Examples
+## Usage Examples
 
 ### Analyze domain
 ```cs
