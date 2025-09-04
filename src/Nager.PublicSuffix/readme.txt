@@ -8,9 +8,9 @@
 
 Thank you for using this project. This project is completely free for commercial use.
 
-However, if you use our project commercially we would like you to support us with a sponsorship.
-The maintenance and support costs time and we would like to ensure this for the future with your help.
-You can easily support us via the Github Sponsor function. https://github.com/sponsors/nager
+If you use it commercially, we would greatly appreciate your support through a sponsorship. 
+Maintaining and supporting this project takes time, and your contribution helps ensure its future. 
+You can easily sponsor us via GitHub: https://github.com/sponsors/nager
 
 We would also be very happy about a GitHub Star ★
 
@@ -20,8 +20,25 @@ Project Source: https://github.com/nager/Nager.PublicSuffix
 
 Examples of use:
 
-Get DomainInfo for sub.test.co.uk
-══════════════════════════════════════════════════════════════════════════════════════════════════════
+-------------------------------------------------------------------------------
+1. AUTOMATIC RULE PROVIDER (HTTP)
+-------------------------------------------------------------------------------
+
+// Automatically downloads the public suffix list:
+
+var ruleProvider = new SimpleHttpRuleProvider();
+await ruleProvider.BuildAsync();
+
+var domainParser = new DomainParser(ruleProvider);
+
+var domainInfo = domainParser.Parse("sub.test.co.uk");
+
+
+-------------------------------------------------------------------------------
+2. LOCAL RULE PROVIDER
+-------------------------------------------------------------------------------
+
+// Use a local copy of the public suffix list:
 
 var ruleProvider = new LocalFileRuleProvider("public_suffix_list.dat");
 await ruleProvider.BuildAsync();
@@ -36,8 +53,11 @@ var domainInfo = domainParser.Parse("sub.test.co.uk");
 //domainInfo.TopLevelDomain = "co.uk";
 
 
-Check is sub.test.co.uk a valid domain
-══════════════════════════════════════════════════════════════════════════════════════════════════════
+-------------------------------------------------------------------------------
+3. VALIDATE A DOMAIN
+-------------------------------------------------------------------------------
+
+// Check whether a domain is valid:
 
 var ruleProvider = new LocalFileRuleProvider("public_suffix_list.dat");
 await ruleProvider.BuildAsync();
@@ -45,14 +65,3 @@ await ruleProvider.BuildAsync();
 var domainParser = new DomainParser(ruleProvider);
 
 var isValid = domainParser.IsValidDomain("sub.test.co.uk");
-
-
-Use SimpleHttpRuleProvider (automatic download)
-══════════════════════════════════════════════════════════════════════════════════════════════════════
-
-var ruleProvider = new SimpleHttpRuleProvider();
-await ruleProvider.BuildAsync();
-
-var domainParser = new DomainParser(ruleProvider);
-
-var domainInfo = domainParser.Parse("sub.test.co.uk");

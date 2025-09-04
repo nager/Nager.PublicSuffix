@@ -17,12 +17,12 @@ You can find the list on GitHub under [publicsuffix list repository](https://git
 
 ## Code Examples
 
-### Analyze a Domain Using a Local Public Suffix List
+### Analyze a Domain Using the Online Public Suffix List
 
-Use a local public suffix list file to analyze domains
+Use a remote source to always work with the latest public suffix list
 
 ```cs
-var ruleProvider = new LocalFileRuleProvider("public_suffix_list.dat");
+var ruleProvider = new SimpleHttpRuleProvider();
 await ruleProvider.BuildAsync();
 
 var domainParser = new DomainParser(ruleProvider);
@@ -35,12 +35,12 @@ var domainInfo = domainParser.Parse("sub.test.co.uk");
 //domainInfo.TopLevelDomain = "co.uk";
 ```
 
-### Analyze a Domain Using the Online Public Suffix List
+### Analyze a Domain Using a Local Public Suffix List
 
-Use a remote source to always work with the latest public suffix list
+Use a local public suffix list file to analyze domains
 
 ```cs
-var ruleProvider = new SimpleHttpRuleProvider();
+var ruleProvider = new LocalFileRuleProvider("public_suffix_list.dat");
 await ruleProvider.BuildAsync();
 
 var domainParser = new DomainParser(ruleProvider);
