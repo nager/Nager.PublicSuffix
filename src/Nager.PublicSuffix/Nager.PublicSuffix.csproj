@@ -8,6 +8,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
     <LangVersion>12.0</LangVersion>
+    <IncludeSource>true</IncludeSource>
     <IncludeSymbols>true</IncludeSymbols>
 
     <Nullable>enable</Nullable>
@@ -17,7 +18,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/nager/Nager.PublicSuffix</PackageProjectUrl>
-    <PackageTags>PublicSuffix publicsuffix.org public-suffix PSL TLD DomainParser domain-parser FQDN RegistrableDomain DomainName Hostname Subdomain</PackageTags>
+    <PackageTags>PublicSuffix;PSL;TLD;DomainParser;FQDN;RegistrableDomain;Hostname;Subdomain</PackageTags>
 
     <RepositoryUrl>https://github.com/nager/Nager.PublicSuffix</RepositoryUrl>
 
@@ -33,9 +34,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="readme.txt" Pack="true" PackagePath="\" />
-    <None Include="README.md" Pack="true" PackagePath="\" />
-    <None Include="..\..\doc\icon\logo.png" Pack="true" PackagePath="\" Visible="false" />
+    <Content Include="readme.txt" Pack="true" PackagePath="" />
+    <None Include="README.md" Pack="true" PackagePath="" />
+    <None Include="..\..\doc\icon\logo.png" Pack="true" PackagePath="" Visible="false" />
   </ItemGroup>
  
   <ItemGroup>
