@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Nager.PublicSuffix.Exceptions;
 using Nager.PublicSuffix.Models;
 using System.Collections.Generic;
 
@@ -186,7 +185,7 @@ namespace Nager.PublicSuffix.UnitTest.DemoRules
         }
 
         [TestMethod]
-        public void IsValidDomain_InvalidDomain1()
+        public void IsValidDomain_WithHttpScheme_ReturnsFalse()
         {
             var rules = new List<TldRule>
             {
@@ -203,7 +202,7 @@ namespace Nager.PublicSuffix.UnitTest.DemoRules
         }
 
         [TestMethod]
-        public void IsValidDomain_InvalidDomain2()
+        public void IsValidDomain_WithHttpsScheme_ReturnsFalse()
         {
             var rules = new List<TldRule>
             {
@@ -220,7 +219,7 @@ namespace Nager.PublicSuffix.UnitTest.DemoRules
         }
 
         [TestMethod]
-        public void IsValidDomain_InvalidDomain3()
+        public void IsValidDomain_WithUriScheme_ReturnsFalse()
         {
             var rules = new List<TldRule>
             {
@@ -237,7 +236,7 @@ namespace Nager.PublicSuffix.UnitTest.DemoRules
         }
 
         [TestMethod]
-        public void IsValidDomain_InvalidDomain4()
+        public void IsValidDomain_WithLeadingDots_ReturnsFalse()
         {
             var rules = new List<TldRule>
             {
@@ -254,7 +253,7 @@ namespace Nager.PublicSuffix.UnitTest.DemoRules
         }
 
         [TestMethod]
-        public void IsValidDomain_InvalidDomain5()
+        public void IsValidDomain_SingleDot_ReturnsFalse()
         {
             var rules = new List<TldRule>
             {
@@ -271,7 +270,7 @@ namespace Nager.PublicSuffix.UnitTest.DemoRules
         }
 
         [TestMethod]
-        public void IsValidDomain_InvalidDomain6()
+        public void IsValidDomain_WithoutTopLevelDomain_ReturnsFalse()
         {
             var rules = new List<TldRule>
             {
@@ -288,7 +287,7 @@ namespace Nager.PublicSuffix.UnitTest.DemoRules
         }
 
         [TestMethod]
-        public void IsValidDomain_InvalidDomain7()
+        public void IsValidDomain_WithWildcardCharacter_ReturnsFalse()
         {
             var rules = new List<TldRule>
             {
@@ -305,7 +304,7 @@ namespace Nager.PublicSuffix.UnitTest.DemoRules
         }
 
         [TestMethod]
-        public void IsValidDomain_InvalidDomain8()
+        public void IsValidDomain_WithLeadingWhitespace_ReturnsFalse()
         {
             var rules = new List<TldRule>
             {
@@ -322,7 +321,7 @@ namespace Nager.PublicSuffix.UnitTest.DemoRules
         }
 
         [TestMethod]
-        public void IsValidDomain_InvalidDomain9()
+        public void IsValidDomain_WithEmailAddressInsteadOfDomain_ReturnsFalse()
         {
             var rules = new List<TldRule>
             {
@@ -336,6 +335,48 @@ namespace Nager.PublicSuffix.UnitTest.DemoRules
             var isValid = domainParser.IsValidDomain("test@ripe.net");
 
             Assert.IsFalse(isValid);
+        }
+
+        [TestMethod]
+        public void TryParse_WithValidDomain_ReturnsDomainInfo()
+        {
+            var rules = new List<TldRule>
+            {
+                new TldRule("com"),
+                new TldRule("de"),
+                new TldRule("net")
+            };
+
+            var domainParser = this.GetDomainParser(rules);
+
+            if (domainParser.TryParse("ripe.net", out var domainInfo))
+            {
+                Assert.IsNotNull(domainInfo);
+                return;
+            }
+
+            Assert.Fail("Parse domain failure");
+        }
+
+        [TestMethod]
+        public void TryParse_WithInvalidDomain_ReturnsNull()
+        {
+            var rules = new List<TldRule>
+            {
+                new TldRule("com"),
+                new TldRule("de"),
+                new TldRule("net")
+            };
+
+            var domainParser = this.GetDomainParser(rules);
+
+            if (domainParser.TryParse("ripe.86aa", out var domainInfo))
+            {
+                Assert.Fail("Invalid domain parsed");
+                return;
+            }
+
+            Assert.IsNull(domainInfo);
         }
     }
 }
