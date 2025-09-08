@@ -34,6 +34,20 @@ PM> install-package Nager.PublicSuffix
 ```
 ## Usage Examples
 
+
+### Automatic rule provider
+
+Automatically downloads the public suffix list:
+
+```cs
+var ruleProvider = new SimpleHttpRuleProvider();
+await ruleProvider.BuildAsync();
+
+var domainParser = new DomainParser(ruleProvider);
+
+var domainInfo = domainParser.Parse("sub.test.co.uk");
+```
+
 ### Analyze domain
 ```cs
 var ruleProvider = new LocalFileRuleProvider("public_suffix_list.dat");
