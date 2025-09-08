@@ -6,6 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+#if NETSTANDARD2_1_OR_GREATER || NET6_0_OR_GREATER
+
+using System.Diagnostics.CodeAnalysis;
+
+#endif
+
 namespace Nager.PublicSuffix
 {
     /// <summary>
@@ -114,6 +120,31 @@ namespace Nager.PublicSuffix
                 return false;
             }
         }
+
+#if NETSTANDARD2_1_OR_GREATER || NET6_0_OR_GREATER
+
+        /// <inheritdoc/>
+        public bool TryParse(
+            string fullyQualifiedDomainName,
+            [NotNullWhen(true)] out DomainInfo? domainInfo)
+        {
+            if (!this.IsValidDomain(fullyQualifiedDomainName))
+            {
+                domainInfo = null;
+                return false;
+            }
+
+            domainInfo = this.Parse(fullyQualifiedDomainName);
+
+            if (domainInfo is null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+#endif
 
         private DomainInfo? GetDomainFromParts(
             string? domain,
