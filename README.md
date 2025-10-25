@@ -112,3 +112,13 @@ await ruleProvider.BuildAsync();
 var domainParser = new DomainParser(ruleProvider);
 var domainInfo = domainParser.Parse("example.com");
 ```
+
+### Use only ICANN Rules
+```cs
+var ruleProvider = new SimpleHttpRuleProvider(tldRuleDivisionFilter: TldRuleDivisionFilter.ICANNOnly);
+await ruleProvider.BuildAsync();
+
+var domainParser = new DomainParser(ruleProvider);
+
+var domainInfo = domainParser.Parse("sub.test.co.uk");
+```
