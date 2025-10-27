@@ -51,14 +51,8 @@ namespace Nager.PublicSuffix.RuleProviders
             this._cacheProvider = cacheProvider;
             this._httpClient = httpClient;
 
-            var url = configuration["Nager:PublicSuffix:DataUrl"];
-            if (string.IsNullOrEmpty(url))
-            {
-                url = "https://publicsuffix.org/list/public_suffix_list.dat";
-            }
-
-            this._dataFileUrl = url ?? throw new InvalidOperationException("_dataFileUrl must contain a non-null value");
-            this._tldRuleDivisionFilter = tldRuleDivisionFilter;
+            this._dataFileUrl = base.GetDataUrl(configuration);
+            this._tldRuleDivisionFilter = base.GetTldRuleDivisionFilter(configuration, tldRuleDivisionFilter);
         }
 
         /// <summary>
@@ -81,19 +75,9 @@ namespace Nager.PublicSuffix.RuleProviders
             this._cacheProvider = cacheProvider;
             this._httpClient = httpClient;
             this._logger = logger ?? new NullLogger<CachedHttpRuleProvider>();
-            this._tldRuleDivisionFilter = tldRuleDivisionFilter;
 
-            var url = "https://publicsuffix.org/list/public_suffix_list.dat";
-            if (configuration != default)
-            {
-                var tempUrl = configuration["Nager:PublicSuffix:DataUrl"];
-                if (!string.IsNullOrEmpty(tempUrl))
-                {
-                    url = tempUrl!;
-                }
-            }
-
-            this._dataFileUrl = url;
+            this._dataFileUrl = base.GetDataUrl(configuration);
+            this._tldRuleDivisionFilter = base.GetTldRuleDivisionFilter(configuration, tldRuleDivisionFilter);
         }
 
         /// <inheritdoc/>

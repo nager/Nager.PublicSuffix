@@ -1,4 +1,5 @@
-﻿using Nager.PublicSuffix.Extensions;
+﻿using Microsoft.Extensions.Configuration;
+using Nager.PublicSuffix.Extensions;
 using Nager.PublicSuffix.Models;
 using Nager.PublicSuffix.RuleParsers;
 using System.IO;
@@ -20,12 +21,14 @@ namespace Nager.PublicSuffix.RuleProviders
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="tldRuleDivisionFilter"></param>
+        /// <param name="configuration"></param>
         public LocalFileRuleProvider(
             string filePath,
-            TldRuleDivisionFilter tldRuleDivisionFilter = TldRuleDivisionFilter.All)
+            TldRuleDivisionFilter tldRuleDivisionFilter = TldRuleDivisionFilter.All,
+            IConfiguration? configuration = null)
         {
             this._filePath = filePath;
-            this._tldRuleDivisionFilter = tldRuleDivisionFilter;
+            this._tldRuleDivisionFilter = base.GetTldRuleDivisionFilter(configuration, tldRuleDivisionFilter);
         }
 
         /// <inheritdoc/>

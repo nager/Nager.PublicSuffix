@@ -44,13 +44,8 @@ namespace Nager.PublicSuffix.RuleProviders
             this._httpClient = httpClient ?? new HttpClient();
             this._tldRuleDivisionFilter = tldRuleDivisionFilter;
 
-            var url = configuration != null ? configuration["Nager:PublicSuffix:DataUrl"] : string.Empty;
-            if (string.IsNullOrEmpty(url))
-            {
-                url = "https://publicsuffix.org/list/public_suffix_list.dat";
-            }
-
-            this._dataFileUrl = url ?? throw new InvalidOperationException("_dataFileUrl must contain a non-null value");
+            this._dataFileUrl = base.GetDataUrl(configuration);
+            this._tldRuleDivisionFilter = base.GetTldRuleDivisionFilter(configuration, tldRuleDivisionFilter);
         }
 
         /// <inheritdoc/>

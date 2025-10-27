@@ -28,7 +28,7 @@ namespace Nager.PublicSuffix
 
         /// <summary>
         /// The Registrable Domain<para />
-        /// e.g. microsoft.com, amazon.co.uk
+        /// e.g. microsoft.com, amazon.co.uk, google.com
         /// </summary>
         public string? RegistrableDomain { get; private set; }
 

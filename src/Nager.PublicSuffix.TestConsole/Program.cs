@@ -22,7 +22,8 @@ async Task DemoCachedHttpRuleProviderAsync()
     IConfiguration configuration = new ConfigurationBuilder()
         .AddInMemoryCollection(new List<KeyValuePair<string, string?>>
         {
-            new("Nager:PublicSuffix:DataUrl", "https://publicsuffix.org/list/public_suffix_list.dat")
+            new("Nager:PublicSuffix:DataUrl", "https://publicsuffix.org/list/public_suffix_list.dat"),
+            //new("Nager:PublicSuffix:TldRuleDivisionFilter", "ICANNOnly"),
         })
         .Build();
 
